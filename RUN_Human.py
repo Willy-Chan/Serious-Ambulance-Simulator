@@ -27,9 +27,9 @@ if __name__ == '__main__':
     data_log_file = args.outfile
     map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
     max_energy = 50
-    rand_prof = MapProfiles.trolley
+    rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 25
-    num_cols = 25
+    num_cols = 25                       #set map size
 
     # Create and run game with those params
     sgw_env = SGW(
