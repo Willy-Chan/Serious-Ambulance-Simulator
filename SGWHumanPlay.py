@@ -5,6 +5,9 @@ import gym_sgw  # Required, don't remove!
 import pygame as pg
 from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors
 
+#####
+
+
 
 class SGW:
     """
@@ -57,12 +60,13 @@ class SGW:
     def _draw_screen(self):
         # Update the screen with the new observation, use the grid object directly
         # Populate each cell
+
         for r_ in range(self.env.grid.rows):
             for c_ in range(self.env.grid.cols):
                 cell = self.env.grid.grid[r_][c_]
                 if cell.terrain == Terrains.none:
                     cell_color = pg.color.Color(MapColors.black_tile.value)
-                elif cell.terrain == Terrains.out_of_bounds:
+                elif cell.terrain == Terrains.out_of_bounds:            # Terrains.out_of_bounds == 1 in the xls sheet
                     cell_color = pg.color.Color(MapColors.black_tile.value)
                 elif cell.terrain == Terrains.wall:
                     cell_color = pg.color.Color(MapColors.wall_tile.value)
@@ -77,11 +81,22 @@ class SGW:
                 else:
                     raise ValueError('Invalid cell terrain while rendering game image.')
 
+
+
                 # Draw the rectangle with the right color for the terrains
                 # rect is play area, color, and (left point, top point, width, height)
-                pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
+                pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,     #play_area is none here
                                                           self.cell_size, self.cell_size))
-                self.game_screen.blit(self.play_area, self.play_area.get_rect())
+                self.game_screen.blit(self.play_area, self.play_area.get_rect())            #renders the actual rectangle
+
+
+#################################IMAGE TILES
+                # load images
+                grass_tile = pg.image.load('Images/Grass_Tile.png').convert_alpha()
+                self.game_screen.blit(grass_tile, self.play_area.get_rect())
+
+
+
 
                 # Add in the cell value string
                 pg.font.init()
@@ -101,11 +116,24 @@ class SGW:
         self.env.render_mode = PlayTypes.machine  # We'll draw the screen manually and not render each turn
         pg.init()
         self.game_screen = pg.display.set_mode((1000, 800))
-        pg.display.set_caption('SGW Human Play')
+
+
+        # caption and icon
+        pg.display.set_caption('SGW Caption Test')
+        icon = pg.image.load('Images/icon.jpg')
+        pg.display.set_icon(icon)
+
+
         self.play_area = pg.Surface((self.env.grid.rows * self.cell_size, self.env.grid.cols * self.cell_size))
         self.play_area.fill(pg.color.Color(MapColors.play_area.value))
         self.game_screen.fill(pg.color.Color(MapColors.game_screen.value))
+        #self.game_screen.blit(grass_tile, (500,400))
         self._draw_screen()
+
+
+
+
+
 
         # Main game loop, capture window events, actions, and redraw the screen with updates until game over
         game_exit = False
