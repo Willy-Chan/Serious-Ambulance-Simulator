@@ -8,11 +8,11 @@ import random
 ####
 
 
-
 class SGW:
     """
     Human play game variant.
     """
+    # "Constructor"
     def __init__(self, data_log_file='data_log.json', max_energy=50, map_file=None,
                  rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25):
         self.ENV_NAME = 'SGW-v0'
@@ -22,7 +22,7 @@ class SGW:
         self.current_action = Actions.none
         self.max_energy = max_energy
         self.map_file = map_file
-        self.rand_prof = rand_prof
+        self.rand_prof = rand_prof  # generates a RANDOM of this type, IF no map-file specified
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.is_game_over = False
@@ -37,7 +37,7 @@ class SGW:
         self._setup()
 
     def _setup(self):
-        # Game parameters
+        # Game parameters - changing all of the settings in the environment
         self.env = gym.make(self.ENV_NAME)
         self.env.play_type = PlayTypes.human  # We will get human states and observations back
         self.env.render_mode = PlayTypes.machine  # We'll draw these manually
@@ -67,41 +67,37 @@ class SGW:
                 cell = self.env.grid.grid[r_][c_]
                 if cell.terrain == Terrains.none:
                     #cell_color = pg.color.Color(MapColors.black_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert(), (32, 32))
                 elif cell.terrain == Terrains.out_of_bounds:
                     #cell_color = pg.color.Color(MapColors.black_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert(), (32, 32))
                 elif cell.terrain == Terrains.wall:
                     #cell_color = pg.color.Color(MapColors.wall_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Wall.jpg').convert_alpha(), (32, 32))   #blits an image instead of a color
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Wall.jpg').convert(), (32, 32))   #blits an image instead of a color
                 elif cell.terrain == Terrains.floor:
                     #cell_color = pg.color.Color(MapColors.floor_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Floor.png').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Floor.png').convert(), (32, 32))
                 elif cell.terrain == Terrains.mud:
                     #cell_color = pg.color.Color(MapColors.mud_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Mud.jpg').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Mud.jpg').convert(), (32, 32))
                 elif cell.terrain == Terrains.fire:
-                    cell_color = pg.color.Color(MapColors.fire_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Fire.png').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    #cell_color = pg.color.Color(MapColors.fire_tile.value)
+                    Tile = pg.transform.scale(pg.image.load('Images/Fire.png').convert(), (32, 32))
                 elif cell.terrain == Terrains.hospital:
                     #cell_color = pg.color.Color(MapColors.hospital_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Hospital.png').convert_alpha(), (32, 32))
-                    self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+                    Tile = pg.transform.scale(pg.image.load('Images/Hospital.png').convert(), (32, 32))
                 else:
                     raise ValueError('Invalid cell terrain while rendering game image.')
 
 
+                self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+
+
                 # Draw the rectangle with the right color for the terrains
                 # rect is play area, color, and (left point, top point, width, height)
-                #pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
-                #                                          self.cell_size, self.cell_size))
-                #self.game_screen.blit(self.play_area, self.play_area.get_rect())
+                # pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
+                #                                           self.cell_size, self.cell_size))
+                # self.game_screen.blit(self.play_area, self.play_area.get_rect())
 
 
                 # Add in the cell value string
@@ -110,33 +106,38 @@ class SGW:
                 cell_val = self.env.grid.get_human_cell_value(r_, c_)
                 # cell_val = '{},{}'.format(r_, c_)
 
+                player = None
+
                 if cell_val == '^':
-                    player = pg.transform.scale(pg.image.load('Images/AUp.jpg').convert_alpha(), (16, 30))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    player = pg.transform.scale(pg.image.load('Images/AUp.jpg').convert(), (16, 30))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'v':
-                    player = pg.transform.scale(pg.image.load('Images/ADown.jpg').convert_alpha(), (16, 30))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    player = pg.transform.scale(pg.image.load('Images/ADown.jpg').convert(), (16, 30))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '<':
-                    player = pg.transform.scale(pg.image.load('Images/ALeft.jpg').convert_alpha(), (30, 16))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    player = pg.transform.scale(pg.image.load('Images/ALeft.jpg').convert(), (30, 16))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '>':
-                    player = pg.transform.scale(pg.image.load('Images/ARight.jpg').convert_alpha(), (30, 16))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    player = pg.transform.scale(pg.image.load('Images/ARight.jpg').convert(), (30, 16))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '^I':
                     player = pg.transform.scale(pg.image.load('Images/AUp1.png').convert_alpha(), (28, 32))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'vI':
                     player = pg.transform.scale(pg.image.load('Images/ADown1.png').convert_alpha(), (28, 32))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '<I':
                     player = pg.transform.scale(pg.image.load('Images/ALeft1.png').convert_alpha(), (32, 28))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '>I':
                     player = pg.transform.scale(pg.image.load('Images/ARight1.png').convert_alpha(), (32, 28))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 else:
                     pass
+
+                if player is not None:
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
 
 
 
@@ -215,7 +216,7 @@ class SGW:
                             self.env.pp_info()
                             self.is_game_over = done
 
-                            # Write action and stuff out to disk.
+                            # Write action and stuff out to disk. Writes data to a dictionary. DATA LOGGING:
                             data_to_log = {
                                 'game_id': str(self.GAME_ID),
                                 'turn': self.turn,

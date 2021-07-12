@@ -77,7 +77,7 @@ class SGW:
 
         # Create agent and test
         memory = SequentialMemory(limit=10000, window_length=1)
-        policy = EpsGreedyQPolicy()
+        policy = EpsGreedyQPolicy()         #how often it runs the best policies (?)
         sgw_dqn = DQNAgent(model=model,
                            policy=policy,
                            memory=memory,
@@ -188,6 +188,7 @@ class SGW:
 
                         # Take a step, print the status, render the new state
                         observation, reward, done, info = self.env.step(encoded_action)
+                        self.latest_obs = observation
                         self.env.pp_info()
                         self.is_game_over = done
 

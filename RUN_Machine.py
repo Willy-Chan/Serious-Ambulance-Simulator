@@ -1,3 +1,6 @@
+#Any input just moves the machine forward - as if a human were playing it.
+#Except, it's not actually looking at YOUR input, but the training data's.
+
 import os
 import argparse
 from SGWMachinePlay import SGW
@@ -7,7 +10,7 @@ parser = argparse.ArgumentParser(description='CLI Argument Parser for Human Play
 parser.add_argument('--agentfile', help='Agent file path and file name.', default='sgw_dqn_rl-agent-test_weights.h5f')
 parser.add_argument('--outfile', help='Data logging file name.', default='data_log.json')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
-
+# add new arguments
 
 def validate_data(out_file, allow_creation=False):
     if allow_creation and not os.path.exists(out_file):

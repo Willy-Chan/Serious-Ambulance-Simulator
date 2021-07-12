@@ -6,7 +6,7 @@ from gym_sgw.envs.enums.Enums import MapProfiles
 parser = argparse.ArgumentParser(description='CLI Argument Parser for Human Play.')
 parser.add_argument('--outfile', help='Data logging file name.', default='data_log.json')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
-
+# parser.add_argument('--NEWARGUMENT',...)          #Add new arguments
 
 def validate_data(out_file, allow_creation=False):
     if allow_creation and not os.path.exists(out_file):
@@ -25,10 +25,10 @@ if __name__ == '__main__':
 
     # Set runtime args
     data_log_file = args.outfile
-    #map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
-    map_file = None
+    map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
+    #map_file = None
     max_energy = 50
-    rand_prof = MapProfiles.volcano     #can change map to "volcano"
+    rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 25
     num_cols = 25                       #set map size
 

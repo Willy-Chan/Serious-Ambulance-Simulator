@@ -1,3 +1,7 @@
+# This file creates a new playing agent by using RL.
+# The output are those "h5f" files, which then get imported into RUN_Machine.py to have the machine play.
+
+
 import os
 import argparse
 from SGWMachineTrain import SGW
@@ -7,7 +11,7 @@ parser = argparse.ArgumentParser(description='CLI Argument Parser for RL Trainin
 parser.add_argument('--modelfilename', help='Output file name for learned model.', default='rl-agent-test')
 parser.add_argument('--logpath', help='Data logging file path.', default='./logs')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
-parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=10000)
+parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=10000)  #NUMBER OF TRAINING STEPS, should probably be more steps
 
 
 def validate_data(out_dirs, allow_creation=False):
