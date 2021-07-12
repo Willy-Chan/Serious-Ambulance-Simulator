@@ -1,6 +1,5 @@
 from enum import IntEnum, Enum
 
-
 class Terrains(IntEnum):
     none = 0
     out_of_bounds = 1
@@ -47,6 +46,8 @@ class MapProfiles(IntEnum):
     spoiled = 4
     twisty = 5
     volcano = 6
+
+
 
 
 class MapColors(Enum):
