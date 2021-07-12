@@ -126,13 +126,13 @@ class SGW:
                     player = pg.transform.scale(pg.image.load('Images/AUp1.png').convert_alpha(), (28, 32))
                     self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'vI':
-                    player = pg.transform.scale(pg.image.load('Images/ADown1.jpg').convert_alpha(), (28, 32))
+                    player = pg.transform.scale(pg.image.load('Images/ADown1.png').convert_alpha(), (28, 32))
                     self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '<I':
-                    player = pg.transform.scale(pg.image.load('Images/ALeft1.jpg').convert_alpha(), (32, 28))
+                    player = pg.transform.scale(pg.image.load('Images/ALeft1.png').convert_alpha(), (32, 28))
                     self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '>I':
-                    player = pg.transform.scale(pg.image.load('Images/ARight1.jpg').convert_alpha(), (32, 28))
+                    player = pg.transform.scale(pg.image.load('Images/ARight1.png').convert_alpha(), (32, 28))
                     self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
 
                 else:
