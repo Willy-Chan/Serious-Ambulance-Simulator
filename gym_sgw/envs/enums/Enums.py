@@ -17,6 +17,22 @@ class MapObjects(IntEnum):
     zombie = 3
     battery = 4
     player = 5
+    injured_rich = 6
+    pedestrian_rich = 7
+    injured_poor = 8
+    pedestrian_poor = 9
+    injured_young = 10
+    pedestrian_young = 11
+    injured_old = 12
+    pedestrian_old = 13
+    injured_female = 14
+    pedestrian_female = 15
+    injured_male = 16
+    pedestrian_male = 17
+
+
+
+
 
 
 class Actions(IntEnum):
