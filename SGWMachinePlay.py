@@ -38,7 +38,7 @@ class SGW:
         self.cell_size = 30
         self.game_screen = None
         self.play_area = None
-        self.latest_obs = None
+        self.latest_obs = None      # latest observation - helps us draw screen better
 
         # Always do these actions upon start
         self._setup()

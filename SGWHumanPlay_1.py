@@ -8,6 +8,9 @@ import random
 ####
 
 
+
+
+
 class SGW:
     """
     Human play game variant.
@@ -66,38 +69,52 @@ class SGW:
             for c_ in range(self.env.grid.cols):
                 cell = self.env.grid.grid[r_][c_]
                 if cell.terrain == Terrains.none:
-                    #cell_color = pg.color.Color(MapColors.black_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert(), (32, 32))
+                    # Tile = pg.transform.scale(pg.image.load('Images/none.png').convert(), (32, 32))
+                    Tile = pg.image.load('Images/none.png').convert_alpha()
                 elif cell.terrain == Terrains.out_of_bounds:
-                    #cell_color = pg.color.Color(MapColors.black_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Black.jpg').convert(), (32, 32))
+                    cell_color = pg.color.Color(MapColors.black_tile.value)
+                    Tile = pg.image.load('Images/none.png').convert_alpha()
                 elif cell.terrain == Terrains.wall:
-                    #cell_color = pg.color.Color(MapColors.wall_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Wall.jpg').convert(), (32, 32))   #blits an image instead of a color
+                    cell_color = pg.color.Color(MapColors.wall_tile.value)
+                    Tile = pg.image.load('Images/Tiles/iso_wall.png').convert_alpha()   #convert_alpha is what makes the transparency work
                 elif cell.terrain == Terrains.floor:
-                    #cell_color = pg.color.Color(MapColors.floor_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Floor.png').convert(), (32, 32))
+                    cell_color = pg.color.Color(MapColors.floor_tile.value)
+                    Tile = pg.image.load('Images/Tiles/iso_floor.png').convert_alpha()
                 elif cell.terrain == Terrains.mud:
-                    #cell_color = pg.color.Color(MapColors.mud_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Mud.jpg').convert(), (32, 32))
+                    cell_color = pg.color.Color(MapColors.mud_tile.value)
+                    Tile = pg.image.load('Images/Tiles/iso_mud.png').convert_alpha()
                 elif cell.terrain == Terrains.fire:
-                    #cell_color = pg.color.Color(MapColors.fire_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Fire.png').convert(), (32, 32))
+                    cell_color = pg.color.Color(MapColors.fire_tile.value)
+                    Tile = pg.image.load('Images/Tiles/iso_lava.png').convert_alpha()
                 elif cell.terrain == Terrains.hospital:
-                    #cell_color = pg.color.Color(MapColors.hospital_tile.value)
-                    Tile = pg.transform.scale(pg.image.load('Images/Hospital.png').convert(), (32, 32))
+                    cell_color = pg.color.Color(MapColors.hospital_tile.value)
+                    Tile = None
+                    Tile_hos = pg.image.load('Images/Tiles/iso_hos.png').convert_alpha()
                 else:
                     raise ValueError('Invalid cell terrain while rendering game image.')
 
+                # Render Tiles
+                # x = c_ * self.cell_size
+                # y = r_ * self.cell_size
 
-                self.game_screen.blit(Tile, (c_ * self.cell_size, r_ * self.cell_size))
+
+                if Tile:
+                    self.game_screen.blit(Tile, (700 + r_*51 - c_*51, 100 + r_ * 24 + c_ * 24))     #wonky offsets are what cause the isometric effect
+                elif Tile_hos:
+                    self.game_screen.blit(Tile_hos, (700 + r_ * 51 - c_ * 51, 70 + r_ * 24 + c_ * 24))
+                else:
+                    raise ValueError('fix your tile rendering, you bum.')
+
+
+
 
 
                 # Draw the rectangle with the right color for the terrains
                 # rect is play area, color, and (left point, top point, width, height)
-                # pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
-                #                                           self.cell_size, self.cell_size))
-                # self.game_screen.blit(self.play_area, self.play_area.get_rect())
+                # DEBUG ISOMETRY
+                pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
+                                                          self.cell_size, self.cell_size))
+                self.game_screen.blit(self.play_area, self.play_area.get_rect())
 
 
                 # Add in the cell value string
@@ -107,45 +124,65 @@ class SGW:
                 # cell_val = '{},{}'.format(r_, c_)
 
                 player = None
+                agent = None
+
+                UI_Helper = pg.image.load('Images/UI/Helper.png').convert_alpha()
+                self.game_screen.blit(UI_Helper, (750, 600))
+
+
+                pop1, pop2 = 51, 51
 
                 if cell_val == '^':
-                    player = pg.transform.scale(pg.image.load('Images/AUp.jpg').convert(), (16, 30))
+                    player = pg.transform.scale(pg.image.load('Images/player_default/iso_up.png').convert_alpha(), (pop1, pop2))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'v':
-                    player = pg.transform.scale(pg.image.load('Images/ADown.jpg').convert(), (16, 30))
+                    player = pg.transform.scale(pg.image.load('Images/player_default/iso_down.png').convert_alpha(), (pop1, pop2))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '<':
-                    player = pg.transform.scale(pg.image.load('Images/ALeft.jpg').convert(), (30, 16))
+                    player = pg.transform.scale(pg.image.load('Images/player_default/iso_left.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '>':
-                    player = pg.transform.scale(pg.image.load('Images/ARight.jpg').convert(), (30, 16))
+                    player = pg.transform.scale(pg.image.load('Images/player_default/iso_right.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '^I':
-                    player = pg.transform.scale(pg.image.load('Images/AUp1.png').convert_alpha(), (28, 32))
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_up1.png').convert_alpha(), (pop1, pop2))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'vI':
-                    player = pg.transform.scale(pg.image.load('Images/ADown1.png').convert_alpha(), (28, 32))
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_down1.png').convert_alpha(), (pop1, pop2))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '<I':
-                    player = pg.transform.scale(pg.image.load('Images/ALeft1.png').convert_alpha(), (32, 28))
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_left1.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == '>I':
-                    player = pg.transform.scale(pg.image.load('Images/ARight1.png').convert_alpha(), (32, 28))
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == 'Z':
+                    agent = pg.transform.scale(pg.image.load('Images/agents/Zombie.png').convert_alpha(), (pop2, pop1))
+                elif cell_val == 'B':
+                    agent = pg.transform.scale(pg.image.load('Images/agents/battery.png').convert_alpha(), (pop2, pop1))
+                elif cell_val == 'I':
+                    agent = pg.transform.scale(pg.image.load('Images/agents/Injury_default.png').convert_alpha(), (pop2, pop1))
+                elif cell_val == 'P':
+                    agent = pg.transform.scale(pg.image.load('Images/agents/Pedestrian.png').convert_alpha(), (pop2, pop1))
                 else:
                     pass
-
-                if player is not None:
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                    self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-
-
 
                 text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
                 self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
                                                 (r_ * self.cell_size) + self.cell_size // 2))
                 self.game_screen.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
                                                 (r_ * self.cell_size) + self.cell_size // 2))
+
+
+                # Player Isometric Rendering
+                if player is not None:
+                    self.game_screen.blit(player, (724 + r_*51 - c_*51, 94 + r_ * 24 + c_ * 24))
+                # Agent Isometric Rendering
+                elif agent is not None:
+                    self.game_screen.blit(agent, (724 + r_*51 - c_*51, 94 + r_ * 24 + c_ * 24))
+
+
+
         pg.display.update()
 
     def run(self):
@@ -156,7 +193,7 @@ class SGW:
         self.env.render_mode = PlayTypes.machine  # We'll draw the screen manually and not render each turn
         pg.init()
         #self.game_screen = pg.display.set_mode((1000, 800))
-        self.game_screen = pg.display.set_mode((800, 800))
+        self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
         pg.display.set_caption('SGW Caption Test')
@@ -165,13 +202,9 @@ class SGW:
 
 
         self.play_area = pg.Surface((self.env.grid.rows * self.cell_size, self.env.grid.cols * self.cell_size))
-        self.play_area.fill(pg.color.Color(MapColors.play_area.value))
-        self.game_screen.fill(pg.color.Color(MapColors.game_screen.value))
-        #self.game_screen.blit(grass_tile, (500,400))
+        #self.play_area.fill(pg.color.Color(MapColors.play_area.value))
+        #self.game_screen.fill(pg.color.Color(MapColors.game_screen.value))
         self._draw_screen()
-
-
-
 
 
 
@@ -204,6 +237,8 @@ class SGW:
                             action = Actions.turn_right
                         if event.key in [pg.K_s, pg.K_DOWN, pg.K_0]:
                             action = Actions.none
+
+
 
                     if action is not None:
                         if action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.none]:

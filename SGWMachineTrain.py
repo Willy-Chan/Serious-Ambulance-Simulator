@@ -1,6 +1,8 @@
 import os
 import uuid
 import gym
+import keras.models
+
 import gym_sgw  # Required, leave in
 import pandas as pd
 from gym_sgw.envs.enums.Enums import MapProfiles, PlayTypes
@@ -13,6 +15,7 @@ from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
 
+
 class SGW:
     """
     RL Algorithm: DQN
@@ -23,7 +26,7 @@ class SGW:
     """
     def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs',
                  max_turns=500, training_steps=10000,
-                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25):
+                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10):
         # General
         self.env_name = 'SGW-v0'
         self.game_id = uuid.uuid4()
@@ -63,6 +66,7 @@ class SGW:
     def _cleanup(self):
         self.env.close()
 
+
     def run(self):
         print('Starting new game for training!')
         action_size = self.env.action_space.n
@@ -81,10 +85,15 @@ class SGW:
         model.add(Activation('linear'))  # try softsign or others?
         print(model.summary())  # give it a nice look :)
 
+
+###########################
+        model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
+
+
         # Create agent and test
         memory = SequentialMemory(limit=10000, window_length=1)
         policy = EpsGreedyQPolicy()
-        sgw_dqn = DQNAgent(model=model,
+        sgw_dqn = DQNAgent(model=model,             #Deep Q Reinforcement Learning Agent: can be replaced
                            policy=policy,
                            memory=memory,
                            nb_actions=action_size,
@@ -94,14 +103,14 @@ class SGW:
                            enable_dueling_network=True,
                            # dueling_type='avg'  # what other options are there?
                            )
-        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mae'])
+        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mae'])             #Learns off of the "Mean Average Error"
 
-        # Training
+        # Training - yes that's all there is to it.
         history_callback = sgw_dqn.fit(self.env,
                                        nb_steps=self.training_steps,
                                        verbose=self._verbosity,
                                        nb_max_episode_steps=self.max_turns,
-                                       log_interval=int(self.training_steps / 100)
+                                       log_interval=int(self.training_steps / 100),
                                        )
         # Create a dataframe and output the per epoch data
         hist_df = pd.DataFrame(history_callback.history)
@@ -114,23 +123,24 @@ class SGW:
             hist_df.to_csv(f_)
             f_.close()
 
-        # Test whole episodes and single action
+        ############ Test whole "episodes" and single action
         self.env.render_mode = PlayTypes.machine
-        sgw_dqn.test(self.env,
+        sgw_dqn.test(self.env,                                                  #Actually tuns through your agent as many times as you say
                      nb_episodes=self.test_cases,
                      nb_max_episode_steps=self.max_turns
                      )
 
-        # Testing an action
+        # Testing an action (Step-by-step)
         self.env.reset()
-        new_obs, t_score, t_game_over, t_info = self.env.step(self.env.action_space.sample())
+        new_obs, t_score, t_game_over, t_info = self.env.step(self.env.action_space.sample())       #Gets a random sample
         print(t_info)
-        selected_action = sgw_dqn.forward(observation=new_obs)
-        pretty_action = self.env.decode_raw_action(self.env.encode_raw_action(selected_action))
+        selected_action = sgw_dqn.forward(observation=new_obs)      #Test new sample from agent
+        pretty_action = self.env.decode_raw_action(self.env.encode_raw_action(selected_action))     #feed forward, instead of random
         print(pretty_action)
 
         # Save model
         sgw_dqn.save_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename), overwrite=self.allow_overwrite)
         sgw_dqn.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))
+
 
         self.done()

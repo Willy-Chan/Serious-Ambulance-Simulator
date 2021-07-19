@@ -60,3 +60,8 @@ class MapColors(Enum):
     fire_tile = '#bd4713ff'
     hospital_tile = '#8c2e3aff'
     text = '#ffffff'
+
+
+
+
+
