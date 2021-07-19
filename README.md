@@ -1,8 +1,4 @@
-SGW are the base classes
-
-RUN refers to the "Runner" files - providing an interface between you and the game Classes (SGW files)
-Runners = Things you're supposed to change (things that are running)
-
+THIS IS THE DEVELOPMENT BRANCH (with isometric graphics)
 
 # Serious Grid World Game (now with zombies!)
 
