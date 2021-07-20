@@ -1,7 +1,7 @@
 import os
 import uuid
 import gym
-import keras.models
+# import keras.models
 
 import gym_sgw  # Required, leave in
 import pandas as pd

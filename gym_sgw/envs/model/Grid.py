@@ -5,7 +5,7 @@ from typing import List
 import numpy as np
 import pygame as pg
 from gym_sgw.envs.model.Cell import Cell
-from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors
+from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
 
 
 class Grid:
@@ -156,13 +156,13 @@ class Grid:
         mode = self.random_profile
 
         if mode == MapProfiles.trolley:
-            p_wall = 30
-            p_floor = 79
+            p_wall = 10
+            p_floor = 69
             p_hospital = 80
-            p_fire = 83
-            p_mud = 86
+            p_fire = 81
+            p_mud = 82
             p_injured = 89
-            p_pedestrian = 94
+            p_pedestrian = 93
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.sparse:
@@ -267,10 +267,10 @@ class Grid:
         return grid
 
     def do_turn(self, action: Actions):
-
+        subscore = 0
         # Update player position based on current location and orientation
         if action == Actions.step_forward:
-            self._execute_step_forward()
+            subscore += self._execute_step_forward()
         # Update player orientation
         elif action == Actions.turn_left:
             self._execute_turn_left()
@@ -284,14 +284,14 @@ class Grid:
 
         # Process penalties and rewards
         # Baseline score, energy numbers for each move, modify these based on the cell we end up at
-        turn_score = self._get_score_of_action()  # Total score is captured in the env
+        turn_score = self._get_score_of_action(subscore)  # Total score is captured in the env
         energy_action = self._get_energy_of_action()  # can be negative if gained energy
         done = False  # always false, the game object will keep track of total energy and total score
 
         return turn_score, energy_action, done
 
     def _execute_step_forward(self):
-
+        subscore = 0
         # Get the next position based on orientation
         curr_pos = self.player_location
         if self.player_orientation == Orientations.right:
@@ -308,6 +308,11 @@ class Grid:
         # Check validity of move
         if not self._is_valid_move(next_pos):
             next_pos = curr_pos
+            subscore -= Scores.MOVING_FORWARD
+        elif MapObjects.injured in self.grid[next_pos[0]][next_pos[1]].objects:
+            subscore += Scores.PICKUP_REWARD
+        else:
+            subscore += Scores.MOVING_FORWARD
 
         # Update the player's position
         self.player_location = next_pos
@@ -324,6 +329,8 @@ class Grid:
         if MapObjects.injured in curr_cell.objects:
             curr_cell.remove_map_object(MapObjects.injured)
             next_cell.add_map_object(MapObjects.injured)
+
+        return subscore
 
     def _execute_turn_left(self):
         if self.player_orientation == Orientations.right:
@@ -349,14 +356,8 @@ class Grid:
         else:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
-    def _get_score_of_action(self):
-        # Default Reward Scheme
-        RESCUE_REWARD = 9  # +9 per rescued victim (picked up one by one and delivered to hospital)
-        PED_PENALTY = -10  # -10 per squished pedestrian (or mobile pedestrian)
-        VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
-        FIRE_PENALTY = -5  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
-        ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
-        t_score = 0
+    def _get_score_of_action(self, subscore):
+        t_score = subscore  # scores received from moving forward
 
         # Grab the cell where the player is (after the move)
         end_cell: Cell = self.grid[self.player_location[0]][self.player_location[1]]
@@ -364,26 +365,26 @@ class Grid:
         # Add a reward if they rescued a victim
         if end_cell.terrain == Terrains.hospital:
             if MapObjects.injured in end_cell.objects:
-                t_score += RESCUE_REWARD  # Deliver the injured
+                t_score += Scores.RESCUE_REWARD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured)  # Remove them from the board
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
-            t_score += PED_PENALTY  # Oh no, watch out!
+            t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
 
         # Add a penalty if you squish an injured person
         if end_cell.objects.count(MapObjects.injured) > 1:
-            t_score += VIC_PENALTY  # Can only carry one so if there's more than one, squish
+            t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
             end_cell.remove_map_object(MapObjects.injured)
 
         # Add a penalty for going into fire
         if end_cell.terrain == Terrains.fire:
-            t_score += FIRE_PENALTY  # ouch
+            t_score += Scores.FIRE_PENALTY  # ouch
 
         # Add reward for squishing a zombie
         if MapObjects.zombie in end_cell.objects:
-            t_score += ZOMBIE_REWARD  # RUN IT OVER!
+            t_score += Scores.ZOMBIE_REWARD  # RUN IT OVER!
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
