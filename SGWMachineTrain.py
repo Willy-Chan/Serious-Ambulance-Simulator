@@ -26,7 +26,7 @@ class SGW:
     """
     def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs',
                  max_turns=500, training_steps=10000,
-                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10):
+                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10, map_file=None):
         # General
         self.env_name = 'SGW-v0'
         self.game_id = uuid.uuid4()
@@ -44,6 +44,7 @@ class SGW:
         self.rand_prof = rand_prof
         self.num_rows = num_rows
         self.num_cols = num_cols
+        self.map_file = map_file
         self._setup()
 
     def _setup(self):
@@ -55,6 +56,7 @@ class SGW:
         self.env.rand_profile = self.rand_prof
         self.env.num_rows = self.num_rows
         self.env.num_cols = self.num_cols
+        self.env.map_file = self.map_file
         self.env.reset()
         # Report success
         print('Created new environment {0} with GameID: {1}'.format(self.env_name, self.game_id))

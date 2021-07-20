@@ -6,7 +6,7 @@ import numpy as np
 import pygame as pg
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
-
+import os
 
 class Grid:
 
@@ -17,7 +17,15 @@ class Grid:
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        self.grid = self.read_in_map() if map_file is not None else self.random_grid()
+        print("WOWOWOWOWOWOWOWOWWOWOWOWOWOOWOWWOW",map_file)
+        if map_file == "im so cool, im using custom maps":
+            self.map_file = random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
+            print(self.map_file)
+            self.grid = self.read_in_map()
+        elif map_file is not None:
+            self.grid = self.read_in_map()
+        else:
+            self.grid = self.random_grid()
         self.map_max_energy = None
 
     def read_in_map(self):
@@ -154,7 +162,8 @@ class Grid:
 
         # Define map element's cumulative probability table based on the mode (magic numbers tuned by instructors)
         mode = self.random_profile
-
+        print("mode")
+        print(mode)
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
