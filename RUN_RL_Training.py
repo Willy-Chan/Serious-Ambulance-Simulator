@@ -51,7 +51,7 @@ if __name__ == '__main__':
         map_file=testing_path,
 
         training_steps=training_steps,
-        max_turns=200,
+        max_turns=150,
         max_energy=50,
         rand_prof=MapProfiles.trolley,       # Set a Custom Map to train on!!!
         num_rows=10,

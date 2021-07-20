@@ -1,7 +1,6 @@
 import os
 import uuid
 import gym
-import keras.models
 
 import gym_sgw  # Required, leave in
 import pandas as pd
@@ -10,12 +9,17 @@ import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import load_model
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
+import numpy as np
+
+
 
 #load weights of model, set to None for default file
 load_weights = 'sgw_dqn_{preprocessor}_weights.h5f'
+
 
 
 class SGW:
@@ -96,11 +100,15 @@ class SGW:
         print(model.summary())  # give it a nice look :)
 
 
+
 ###########################     Set Load Weights
         if load_weights is not None:
             model.load_weights(load_weights)
         elif load_weights is None:
             model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
+
+###########################
+        # model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
 
 
         # Create agent and test

@@ -211,6 +211,30 @@ class SGW(gym.Env):
                 cell_val = 'P'
             elif MapObjects(mapobject_index) == MapObjects.zombie:
                 cell_val = 'Z'
+            elif MapObjects(mapobject_index) == MapObjects.injured_rich:
+                cell_val = 'IR'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_rich:
+                cell_val = 'PR'
+            elif MapObjects(mapobject_index) == MapObjects.injured_poor:
+                cell_val = 'IP'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_poor:
+                cell_val = 'PP'
+            elif MapObjects(mapobject_index) == MapObjects.injured_young:
+                cell_val = 'IY'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_young:
+                cell_val = 'PY'
+            elif MapObjects(mapobject_index) == MapObjects.injured_old:
+                cell_val = 'IO'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_old:
+                cell_val = 'PO'
+            elif MapObjects(mapobject_index) == MapObjects.injured_female:
+                cell_val = 'IF'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_female:
+                cell_val = 'PF'
+            elif MapObjects(mapobject_index) == MapObjects.injured_male:
+                cell_val = 'IM'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_male:
+                cell_val = 'PM'
             else:
                 raise ValueError('Invalid cell MapObject while printing state key.')
             name = MapObjects(mapobject_index).name
