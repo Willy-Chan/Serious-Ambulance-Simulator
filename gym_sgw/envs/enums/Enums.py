@@ -46,6 +46,7 @@ class MapProfiles(IntEnum):
     spoiled = 4
     twisty = 5
     volcano = 6
+    custom = 7
 
 
 

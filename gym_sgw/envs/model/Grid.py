@@ -1,4 +1,5 @@
 import random
+import os
 import json
 import xlrd
 from typing import List
@@ -17,7 +18,7 @@ class Grid:
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        self.grid = self.read_in_map() if map_file is not None else self.random_grid()
+        self.grid = self.read_in_map() if map_file is not None else self.random_grid()      #Will choose random map from directory
         self.map_max_energy = None
 
     def read_in_map(self):
@@ -32,6 +33,7 @@ class Grid:
 
         # Open Excel file
         book = xlrd.open_workbook(self.map_file, formatting_info=True)
+
 
         # Each sheet (tabs at the bottom) contains 1 map
         sheet = book.sheet_by_index(SHEET_INDEX)
