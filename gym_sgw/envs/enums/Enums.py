@@ -62,6 +62,7 @@ class MapProfiles(IntEnum):
     spoiled = 4
     twisty = 5
     volcano = 6
+    custom = 7
 
 class Scores(IntEnum):
     RESCUE_REWARD = 15  # +9 per rescued victim (picked up one by one and delivered to hospital)
