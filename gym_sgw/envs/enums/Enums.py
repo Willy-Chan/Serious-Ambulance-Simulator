@@ -47,8 +47,14 @@ class MapProfiles(IntEnum):
     twisty = 5
     volcano = 6
 
-
-
+class Scores(IntEnum):
+    RESCUE_REWARD = 15  # +9 per rescued victim (picked up one by one and delivered to hospital)
+    PED_PENALTY = -5  # -10 per squished pedestrian (or mobile pedestrian)
+    VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
+    FIRE_PENALTY = -1  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
+    ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
+    PICKUP_REWARD = 10  # picked up person FINALLY
+    MOVING_FORWARD = 1  # wow they didn't just spin
 
 class MapColors(Enum):
     play_area = '#000000'
