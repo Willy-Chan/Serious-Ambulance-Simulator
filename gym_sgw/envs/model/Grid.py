@@ -431,7 +431,6 @@ class Grid:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
     def _get_score_of_action(self, subscore):
-<<<<<<< HEAD
         # Default Reward Scheme
         RESCUE_REWARD = 9  # +9 per rescued victim (picked up one by one and delivered to hospital)
         RESCUE_RICH = 0
@@ -451,10 +450,6 @@ class Grid:
         FIRE_PENALTY = -5  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
         ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
         t_score = subscore  # scores received from moving forward
-
-=======
-        t_score = subscore  # scores received from moving forward
->>>>>>> rl
 
         # Grab the cell where the player is (after the move)
         end_cell: Cell = self.grid[self.player_location[0]][self.player_location[1]]
