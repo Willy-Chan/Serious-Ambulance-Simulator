@@ -16,6 +16,12 @@ from rl.memory import SequentialMemory
 import numpy as np
 
 
+
+#load weights of model, set to None for default file
+load_weights = 'sgw_dqn_{preprocessor}_weights.h5f'
+
+
+
 class SGW:
     """
     RL Algorithm: DQN
@@ -24,12 +30,15 @@ class SGW:
     pip uninstall tensorflow
     pip install tensorflow keras keras-rl2
     """
-    def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs',
+    def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs', map_file=None,
                  max_turns=500, training_steps=10000,
                  max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10):
         # General
         self.env_name = 'SGW-v0'
         self.game_id = uuid.uuid4()
+
+        self.map_file = map_file
+
         # Training specific
         self.model_filename = model_filename
         self.data_log_path = data_log_path
@@ -55,6 +64,11 @@ class SGW:
         self.env.rand_profile = self.rand_prof
         self.env.num_rows = self.num_rows
         self.env.num_cols = self.num_cols
+
+
+        self.env.map_file = self.map_file
+
+
         self.env.reset()
         # Report success
         print('Created new environment {0} with GameID: {1}'.format(self.env_name, self.game_id))
@@ -85,6 +99,13 @@ class SGW:
         model.add(Activation('linear'))  # try softsign or others?
         print(model.summary())  # give it a nice look :)
 
+
+
+###########################     Set Load Weights
+        if load_weights is not None:
+            model.load_weights(load_weights)
+        elif load_weights is None:
+            model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
 
 ###########################
         # model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
@@ -139,8 +160,12 @@ class SGW:
         print(pretty_action)
 
         # Save model
-        sgw_dqn.save_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename), overwrite=self.allow_overwrite)
-        sgw_dqn.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))
+        if load_weights is None:
+            sgw_dqn.save_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename), overwrite=self.allow_overwrite)
+            sgw_dqn.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))
+        elif load_weights is not None:
+            sgw_dqn.save_weights('sgw_dqn_{preprocessor}_weights.h5f', overwrite=self.allow_overwrite)
+            sgw_dqn.load_weights('sgw_dqn_{preprocessor}_weights.h5f')
 
 
         self.done()

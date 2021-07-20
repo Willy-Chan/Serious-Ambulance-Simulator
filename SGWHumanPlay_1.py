@@ -157,7 +157,7 @@ class SGW:
                     player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
                 elif cell_val == 'Z':
-                    agent = pg.transform.scale(pg.image.load('Images/agents/Zombie.png').convert_alpha(), (pop2, pop1))
+                    agent = pg.transform.scale(pg.image.load('Images/agents/Zombie1.png').convert_alpha(), (pop2//2, pop1))
                 elif cell_val == 'B':
                     agent = pg.transform.scale(pg.image.load('Images/agents/battery.png').convert_alpha(), (pop2, pop1))
                 elif cell_val == 'I':
