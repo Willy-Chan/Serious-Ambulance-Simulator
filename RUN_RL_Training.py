@@ -47,8 +47,8 @@ if __name__ == '__main__':
         max_turns=200,
         max_energy=50,
         rand_prof=MapProfiles.trolley,
-        num_rows=10,
-        num_cols=10,
+        num_rows=11,
+        num_cols=11,
         map_file="im so cool, im using custom maps"
     )
     sgw_env.run()
