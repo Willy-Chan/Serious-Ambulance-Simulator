@@ -8,6 +8,7 @@ import pygame as pg
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
 
+import os
 
 class Grid:
 
@@ -18,7 +19,16 @@ class Grid:
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        self.grid = self.read_in_map() if map_file is not None else self.random_grid()      #Will choose random map from directory
+
+        print("map file:",map_file)
+        if map_file == "im so cool, im using custom maps":
+            self.map_file = "gym_sgw/envs/maps/custom/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
+            print("WOWOWOWOWOWOWOWOWWOWOWOWOWOOWOWWOW",self.map_file)
+            self.grid = self.read_in_map()
+        elif map_file is not None:
+            self.grid = self.read_in_map()
+        else:
+            self.grid = self.random_grid()
         self.map_max_energy = None
 
     def read_in_map(self):
@@ -193,7 +203,8 @@ class Grid:
 
         # Define map element's cumulative probability table based on the mode (magic numbers tuned by instructors)
         mode = self.random_profile
-
+        print("mode")
+        print(mode)
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
@@ -300,6 +311,30 @@ class Grid:
                     grid[r_][c_].add_map_object(MapObjects.zombie)
                 elif cell_roll <= p_battery:
                     grid[r_][c_].add_map_object(MapObjects.battery)
+                elif cell_roll <= p_injured_rich:
+                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
+                elif cell_roll <= p_pedestrian_rich:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
+                elif cell_roll <= p_injured_poor:
+                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
+                elif cell_roll <= p_pedestrian_poor:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
+                elif cell_roll <= p_injured_old:
+                    grid[r_][c_].add_map_object(MapObjects.injured_old)
+                elif cell_roll <= p_pedestrian_old:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
+                elif cell_roll <= p_injured_young:
+                    grid[r_][c_].add_map_object(MapObjects.injured_young)
+                elif cell_roll <= p_pedestrian_young:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
+                elif cell_roll <= p_injured_female:
+                    grid[r_][c_].add_map_object(MapObjects.injured_female)
+                elif cell_roll <= p_pedestrian_female:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
+                elif cell_roll <= p_injured_male:
+                    grid[r_][c_].add_map_object(MapObjects.injured_male)
+                elif cell_roll <= p_pedestrian_female:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
                 else:
                     raise RuntimeError('Random cell value out of range?')
 
@@ -396,6 +431,24 @@ class Grid:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
     def _get_score_of_action(self, subscore):
+        # Default Reward Scheme
+        RESCUE_REWARD = 9  # +9 per rescued victim (picked up one by one and delivered to hospital)
+        RESCUE_RICH = 0
+        RESCUE_POOR = 0
+        RESCUE_OLD = 0
+        RESCUE_YOUNG = 0
+        RESCUE_FEMALE = 0
+        RESCUE_MALE = 0
+        PED_PENALTY = -10  # -10 per squished pedestrian (or mobile pedestrian)
+        RICH_PENALTY = 0
+        POOR_PENALTY = 0
+        OLD_PENALTY = 0
+        POOR_PENALTY = 0
+        FEMALE_PENALTY = 0
+        MALE_PENALTY = 0
+        VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
+        FIRE_PENALTY = -5  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
+        ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
         t_score = subscore  # scores received from moving forward
 
         # Grab the cell where the player is (after the move)
@@ -512,8 +565,8 @@ class Grid:
 
     def _get_machine_cell_value(self, row, col):
 
-        # Encode each cell value with an integer between 0 and 70
-        # The ten's place is a map of the terrains as follows:
+        # Encode each cell value with an integer between 0 and 700
+        # The hundred's place is a map of the terrains as follows:
         #     none = 00's
         #     out_of_bounds = 10's
         #     wall = 20's
@@ -521,7 +574,7 @@ class Grid:
         #     mud = 40's
         #     fire = 50's
         #     hospital = 60's
-        # The one's place is a map of the map object as follows:
+        # The one's/ten's place is a map of the map object as follows:
         #     none = 0
         #     injured = 1
         #     pedestrian = 2
@@ -531,6 +584,18 @@ class Grid:
         #     player_down = 6
         #     player_left = 7
         #     player_right = 8
+        #     injured_rich = 9
+        #     pedestrian_rich = 10
+        #     injured_poor = 11
+        #     pedestrian_poor = 12
+        #     injured_old = 13
+        #     pedestrian_old = 14
+        #     injured_young = 15
+        #     pedestrian_young = 16
+        #     injured_female = 17
+        #     pedestrian_female = 18
+        #     injured_male = 19
+        #     pedestrian_male = 20
 
         cell = self.grid[row][col]
         cell_val = 0
@@ -539,17 +604,17 @@ class Grid:
         if cell.terrain == Terrains.none:
             cell_val += 0
         elif cell.terrain == Terrains.out_of_bounds:
-            cell_val += 10
+            cell_val += 100
         elif cell.terrain == Terrains.wall:
-            cell_val += 20
+            cell_val += 200
         elif cell.terrain == Terrains.floor:
-            cell_val += 30
+            cell_val += 300
         elif cell.terrain == Terrains.mud:
-            cell_val += 40
+            cell_val += 400
         elif cell.terrain == Terrains.fire:
-            cell_val += 50
+            cell_val += 500
         elif cell.terrain == Terrains.hospital:
-            cell_val += 60
+            cell_val += 600
         else:
             raise ValueError('Invalid cell terrain while retrieving cell value for encoding/decoding.')
 
@@ -573,6 +638,30 @@ class Grid:
             cell_val += 4
         elif MapObjects.zombie in cell.objects:
             cell_val += 3
+        elif MapObjects.injured_rich in cell.objects:
+            cell_val += 9
+        elif MapObjects.pedestrian_rich in cell.objects:
+            cell_val += 10
+        elif MapObjects.injured_poor in cell.objects:
+            cell_val += 11
+        elif MapObjects.pedestrian_poor in cell.objects:
+            cell_val += 12
+        elif MapObjects.injured_old in cell.objects:
+            cell_val += 13
+        elif MapObjects.pedestrian_old in cell.objects:
+            cell_val += 14
+        elif MapObjects.injured_young in cell.objects:
+            cell_val += 15
+        elif MapObjects.pedestrian_young in cell.objects:
+            cell_val += 16
+        elif MapObjects.injured_female in cell.objects:
+            cell_val += 17
+        elif MapObjects.pedestrian_female in cell.objects:
+            cell_val += 18
+        elif MapObjects.injured_male in cell.objects:
+            cell_val += 19
+        elif MapObjects.pedestrian_male in cell.objects:
+            cell_val += 20
         elif MapObjects.none in cell.objects:
             cell_val += 0
         else:

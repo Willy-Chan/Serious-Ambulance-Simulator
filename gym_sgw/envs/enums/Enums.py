@@ -84,7 +84,3 @@ class MapColors(Enum):
     hospital_tile = '#8c2e3aff'
     text = '#ffffff'
 
-
-
-
-

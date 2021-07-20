@@ -210,3 +210,4 @@ node_modules/
 
 # Project Specific
 checkpoint
+data_log.json
