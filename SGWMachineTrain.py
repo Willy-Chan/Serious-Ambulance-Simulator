@@ -89,7 +89,7 @@ class SGW:
 
 
 ###########################
-        model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
+        # model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
 
 
         # Create agent and test

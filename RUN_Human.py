@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # Set runtime args
     data_log_file = args.outfile
     #map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
-    map_file = None
+    map_file = "im so cool, im using custom maps"
     max_energy = 50
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 10
