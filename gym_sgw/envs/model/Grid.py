@@ -28,6 +28,18 @@ class Grid:
         SYMBOL_ZOMBIE = 'Z'
         SYMBOL_BATTERY = 'B'
         SYMBOL_PEDESTRIAN = '@'
+        SYMBOL_INJURED_RICH = 'IR'
+        SYMBOL_PEDESTRIAN_RICH = 'PR'
+        SYMBOL_INJURED_POOR = 'IR'
+        SYMBOL_PEDESTRIAN_POOR = 'PP'
+        SYMBOL_INJURED_YOUNG = 'IY'
+        SYMBOL_PEDESTRIAN_YOUNG = 'PY'
+        SYMBOL_INJURED_OLD = 'IO'
+        SYMBOL_PEDESTRIAN_OLD = 'PO'
+        SYMBOL_INJURED_FEMALE = 'IF'
+        SYMBOL_PEDESTRIAN_FEMALE = 'PF'
+        SYMBOL_INJURED_MALE = 'IM'
+        SYMBOL_PEDESTRIAN_MALE = 'PM'
         SHEET_INDEX = 0
 
         # Open Excel file
@@ -117,6 +129,31 @@ class Grid:
                     grid_cell.add_map_object(MapObjects(4))
                 elif sheet_cell.value == SYMBOL_PEDESTRIAN:
                     grid_cell.add_map_object(MapObjects(2))
+                elif sheet_cell.value == SYMBOL_INJURED_RICH:
+                    grid_cell.add_map_object(MapObjects(6))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_RICH:
+                    grid_cell.add_map_object(MapObjects(7))
+                elif sheet_cell.value == SYMBOL_INJURED_POOR:
+                    grid_cell.add_map_object(MapObjects(8))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_POOR:
+                    grid_cell.add_map_object(MapObjects(9))
+                elif sheet_cell.value == SYMBOL_INJURED_YOUNG:
+                    grid_cell.add_map_object(MapObjects(10))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_YOUNG:
+                    grid_cell.add_map_object(MapObjects(11))
+                elif sheet_cell.value == SYMBOL_INJURED_OLD:
+                    grid_cell.add_map_object(MapObjects(12))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_OLD:
+                    grid_cell.add_map_object(MapObjects(13))
+                elif sheet_cell.value == SYMBOL_INJURED_FEMALE:
+                    grid_cell.add_map_object(MapObjects(14))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_FEMALE:
+                    grid_cell.add_map_object(MapObjects(15))
+                elif sheet_cell.value == SYMBOL_INJURED_MALE:
+                    grid_cell.add_map_object(MapObjects(16))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_MALE:
+                    grid_cell.add_map_object(MapObjects(17))
+
 
                 # Add cell to grid[][]
                 grid_row.append(grid_cell)
@@ -444,6 +481,30 @@ class Grid:
             cell_val += 'P'
         if MapObjects.zombie in cell.objects:
             cell_val += 'Z'
+        if MapObjects.injured_rich in cell.objects:
+            cell_val += 'IR'
+        if MapObjects.pedestrian_rich in cell.objects:
+            cell_val += 'PR'
+        if MapObjects.injured_poor in cell.objects:
+            cell_val += 'IP'
+        if MapObjects.pedestrian_poor in cell.objects:
+            cell_val += 'PP'
+        if MapObjects.injured_young in cell.objects:
+            cell_val += 'IY'
+        if MapObjects.pedestrian_young in cell.objects:
+            cell_val += 'PY'
+        if MapObjects.injured_old in cell.objects:
+            cell_val += 'IO'
+        if MapObjects.pedestrian_old in cell.objects:
+            cell_val += 'PO'
+        if MapObjects.injured_female in cell.objects:
+            cell_val += 'IF'
+        if MapObjects.pedestrian_female in cell.objects:
+            cell_val += 'PF'
+        if MapObjects.injured_male in cell.objects:
+            cell_val += 'IM'
+        if MapObjects.pedestrian_male in cell.objects:
+            cell_val += 'PM'
 
         return cell_val
 
