@@ -8,6 +8,7 @@ import pygame as pg
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
 
+import os
 
 class Grid:
 
@@ -18,7 +19,16 @@ class Grid:
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        self.grid = self.read_in_map() if map_file is not None else self.random_grid()      #Will choose random map from directory
+
+        print("map file:",map_file)
+        if map_file == "im so cool, im using custom maps":
+            self.map_file = "gym_sgw/envs/maps/custom/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
+            print("WOWOWOWOWOWOWOWOWWOWOWOWOWOOWOWWOW",self.map_file)
+            self.grid = self.read_in_map()
+        elif map_file is not None:
+            self.grid = self.read_in_map()
+        else:
+            self.grid = self.random_grid()
         self.map_max_energy = None
 
     def read_in_map(self):
@@ -193,7 +203,8 @@ class Grid:
 
         # Define map element's cumulative probability table based on the mode (magic numbers tuned by instructors)
         mode = self.random_profile
-
+        print("mode")
+        print(mode)
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
@@ -420,6 +431,7 @@ class Grid:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
     def _get_score_of_action(self, subscore):
+<<<<<<< HEAD
         # Default Reward Scheme
         RESCUE_REWARD = 9  # +9 per rescued victim (picked up one by one and delivered to hospital)
         RESCUE_RICH = 0
@@ -440,6 +452,9 @@ class Grid:
         ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
         t_score = subscore  # scores received from moving forward
 
+=======
+        t_score = subscore  # scores received from moving forward
+>>>>>>> rl
 
         # Grab the cell where the player is (after the move)
         end_cell: Cell = self.grid[self.player_location[0]][self.player_location[1]]

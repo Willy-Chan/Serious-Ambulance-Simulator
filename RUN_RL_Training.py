@@ -47,14 +47,13 @@ if __name__ == '__main__':
     sgw_env = SGW(
         model_filename=model_filename,
         data_log_path=data_log_path,
-
         map_file=testing_path,
-
         training_steps=training_steps,
         max_turns=150,
         max_energy=50,
-        rand_prof=MapProfiles.trolley,       # Set a Custom Map to train on!!!
-        num_rows=10,
-        num_cols=10
+        rand_prof=MapProfiles.trolley,
+        num_rows=11,
+        num_cols=11,
+        map_file="im so cool, im using custom maps"
     )
     sgw_env.run()
