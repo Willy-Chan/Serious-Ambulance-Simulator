@@ -16,6 +16,7 @@ class Cell:
         # What would you do to protect against this?
         self.objects.remove(obj)
 
+
     def get_data(self):
         meta_data = {
             'terrain': self.terrain.name,

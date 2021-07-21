@@ -530,27 +530,32 @@ class Grid:
 
 
         # Add a penalty if you squish an injured person
-        if end_cell.objects.count(MapObjects.injured) > 1:
-            t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured)
-        elif end_cell.objects.count(MapObjects.injured_rich) > 1:
-            t_score += Scores.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_rich)
-        elif end_cell.objects.count(MapObjects.injured_poor) > 1:
-            t_score += Scores.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_poor)
-        elif end_cell.objects.count(MapObjects.injured_young) > 1:
-            t_score += Scores.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_young)
-        elif end_cell.objects.count(MapObjects.injured_old) > 1:
-            t_score += Scores.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_old)
-        elif end_cell.objects.count(MapObjects.injured_female) > 1:
-            t_score += Scores.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_female)
-        elif end_cell.objects.count(MapObjects.injured_male) > 1:
-            t_score += Scores.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured_male)
+        if end_cell.objects.count(MapObjects.injured) + end_cell.objects.count(MapObjects.injured_rich) \
+                + end_cell.objects.count(MapObjects.injured_poor) + end_cell.objects.count(MapObjects.injured_young) \
+                + end_cell.objects.count(MapObjects.injured_old) + end_cell.objects.count(MapObjects.injured_female) \
+                + end_cell.objects.count(MapObjects.injured_male) > 1:
+
+            if MapObjects.injured == end_cell.objects[0]:
+                t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured)
+            elif MapObjects.injured_rich == end_cell.objects[0]:
+                t_score += Scores.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_rich)
+            elif MapObjects.injured_poor == end_cell.objects[0]:
+                t_score += Scores.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_poor)
+            elif MapObjects.injured_young == end_cell.objects[0]:
+                t_score += Scores.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_young)
+            elif MapObjects.injured_old == end_cell.objects[0]:
+                t_score += Scores.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_old)
+            elif MapObjects.injured_female == end_cell.objects[0]:
+                t_score += Scores.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_female)
+            elif MapObjects.injured_male == end_cell.objects[0]:
+                t_score += Scores.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_male)
 
 
 
