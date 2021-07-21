@@ -72,6 +72,26 @@ class Scores(IntEnum):
     ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
     PICKUP_REWARD = 10  # picked up person FINALLY
     MOVING_FORWARD = 1  # wow they didn't just spin
+    # Default Reward Scheme
+    RESCUE_RICH = 0
+    RESCUE_POOR = 0
+    RESCUE_OLD = 0
+    RESCUE_YOUNG = 0
+    RESCUE_FEMALE = 0
+    RESCUE_MALE = 0
+    RICH_PENALTY = 0
+    POOR_PENALTY = 0
+    YOUNG_PENALTY = 0
+    OLD_PENALTY = 0
+    FEMALE_PENALTY = 0
+    MALE_PENALTY = 0
+    #penalty for running over people with an injured person
+    RICH_PENALTY_VI = 0
+    POOR_PENALTY_VI = 0
+    YOUNG_PENALTY_VI = 0
+    OLD_PENALTY_VI = 0
+    FEMALE_PENALTY_VI = 0
+    MALE_PENALTY_VI = 0
 
 class MapColors(Enum):
     play_area = '#000000'

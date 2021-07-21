@@ -403,6 +403,26 @@ class Grid:
         if MapObjects.injured in curr_cell.objects:
             curr_cell.remove_map_object(MapObjects.injured)
             next_cell.add_map_object(MapObjects.injured)
+        if MapObjects.injured_rich in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_rich)
+            next_cell.add_map_object(MapObjects.injured_rich)
+        if MapObjects.injured_poor in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_poor)
+            next_cell.add_map_object(MapObjects.injured_poor)
+        if MapObjects.injured_young in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_young)
+            next_cell.add_map_object(MapObjects.injured_young)
+        if MapObjects.injured_old in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_old)
+            next_cell.add_map_object(MapObjects.injured_old)
+        if MapObjects.injured_female in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_female)
+            next_cell.add_map_object(MapObjects.injured_female)
+        if MapObjects.injured_male in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_male)
+            next_cell.add_map_object(MapObjects.injured_male)
+
+
 
         return subscore
 
@@ -431,44 +451,88 @@ class Grid:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
     def _get_score_of_action(self, subscore):
-        # Default Reward Scheme
-        RESCUE_REWARD = 9  # +9 per rescued victim (picked up one by one and delivered to hospital)
-        RESCUE_RICH = 0
-        RESCUE_POOR = 0
-        RESCUE_OLD = 0
-        RESCUE_YOUNG = 0
-        RESCUE_FEMALE = 0
-        RESCUE_MALE = 0
-        PED_PENALTY = -10  # -10 per squished pedestrian (or mobile pedestrian)
-        RICH_PENALTY = 0
-        POOR_PENALTY = 0
-        OLD_PENALTY = 0
-        POOR_PENALTY = 0
-        FEMALE_PENALTY = 0
-        MALE_PENALTY = 0
-        VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
-        FIRE_PENALTY = -5  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
-        ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
+
         t_score = subscore  # scores received from moving forward
 
         # Grab the cell where the player is (after the move)
         end_cell: Cell = self.grid[self.player_location[0]][self.player_location[1]]
+
 
         # Add a reward if they rescued a victim
         if end_cell.terrain == Terrains.hospital:
             if MapObjects.injured in end_cell.objects:
                 t_score += Scores.RESCUE_REWARD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured)  # Remove them from the board
+            if MapObjects.injured_rich in end_cell.objects:
+                t_score += Scores.RESCUE_RICH  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_rich)  # Remove them from the board
+            if MapObjects.injured_poor in end_cell.objects:
+                t_score += Scores.RESCUE_POOR  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_poor)  # Remove them from the board
+            if MapObjects.injured_young in end_cell.objects:
+                t_score += Scores.RESCUE_YOUNG  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_young)  # Remove them from the board
+            if MapObjects.injured_old in end_cell.objects:
+                t_score += Scores.RESCUE_OLD  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_old)  # Remove them from the board
+            if MapObjects.injured_female in end_cell.objects:
+                t_score += Scores.RESCUE_FEMALE  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_female)  # Remove them from the board
+            if MapObjects.injured_male in end_cell.objects:
+                t_score += Scores.RESCUE_MALE  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_male)  # Remove them from the board
+
+
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
+        if MapObjects.pedestrian_rich in end_cell.objects:
+            t_score += Scores.RICH_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_rich)
+        if MapObjects.pedestrian_poor in end_cell.objects:
+            t_score += Scores.POOR_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_poor)
+        if MapObjects.pedestrian_young in end_cell.objects:
+            t_score += Scores.YOUNG_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_young)
+        if MapObjects.pedestrian_old in end_cell.objects:
+            t_score += Scores.OLD_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_old)
+        if MapObjects.pedestrian_female in end_cell.objects:
+            t_score += Scores.FEMALE_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_female)
+        if MapObjects.pedestrian_male in end_cell.objects:
+            t_score += Scores.MALE_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_male)
+
 
         # Add a penalty if you squish an injured person
         if end_cell.objects.count(MapObjects.injured) > 1:
             t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
             end_cell.remove_map_object(MapObjects.injured)
+        elif end_cell.objects.count(MapObjects.injured_rich) > 1:
+            t_score += Scores.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_rich)
+        elif end_cell.objects.count(MapObjects.injured_poor) > 1:
+            t_score += Scores.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_poor)
+        elif end_cell.objects.count(MapObjects.injured_young) > 1:
+            t_score += Scores.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_young)
+        elif end_cell.objects.count(MapObjects.injured_old) > 1:
+            t_score += Scores.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_old)
+        elif end_cell.objects.count(MapObjects.injured_female) > 1:
+            t_score += Scores.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_female)
+        elif end_cell.objects.count(MapObjects.injured_male) > 1:
+            t_score += Scores.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+            end_cell.remove_map_object(MapObjects.injured_male)
+
+
+
 
         # Add a penalty for going into fire
         if end_cell.terrain == Terrains.fire:

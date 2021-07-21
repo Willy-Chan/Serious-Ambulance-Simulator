@@ -54,6 +54,5 @@ if __name__ == '__main__':
         rand_prof=MapProfiles.trolley,
         num_rows=11,
         num_cols=11,
-        map_file="im so cool, im using custom maps"
     )
     sgw_env.run()

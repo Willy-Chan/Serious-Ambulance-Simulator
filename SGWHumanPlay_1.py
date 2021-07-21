@@ -61,6 +61,10 @@ class SGW:
     def _cleanup(self):
         self.env.close()
 
+
+# Generate a bunch of unchanging dice
+# for i in range(1, 13):
+#     exec("dice" + str(i) + "=None")
     global dice1
     dice1 = random.randint(1, 4)
     global dice2
@@ -94,9 +98,7 @@ class SGW:
         # Update the screen with the new observation, use the grid object directly
         # Populate each cell
 
-        # Generate a bunch of unchanging dice
-        # for i in range(1, 13):
-        #     exec("dice" + str(i) + "=None")
+
 
 
         for r_ in range(self.env.grid.rows):
@@ -134,6 +136,7 @@ class SGW:
 
 
                 if Tile:
+                    self.game_screen.flip()
                     self.game_screen.blit(Tile, (700 + r_*51 - c_*51, 100 + r_ * 24 + c_ * 24))     #wonky offsets are what cause the isometric effect
                 elif Tile_hos:
                     self.game_screen.blit(Tile_hos, (700 + r_ * 51 - c_ * 51, 70 + r_ * 24 + c_ * 24))
@@ -183,18 +186,7 @@ class SGW:
                 elif cell_val == '>':
                     player = pg.transform.scale(pg.image.load('Images/player_default/iso_right.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '^I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_up1.png').convert_alpha(), (pop1, pop2))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == 'vI':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_down1.png').convert_alpha(), (pop1, pop2))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '<I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_left1.png').convert_alpha(), (pop2, pop1))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '>I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+
                 elif cell_val == 'Z':
                     agent = pg.transform.scale(pg.image.load('Images/agents/Zombie1.png').convert_alpha(), (pop2//2, pop1))
                 elif cell_val == 'B':
@@ -321,6 +313,19 @@ class SGW:
                         att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
 
 
+                #Render player with injured person graphics
+                elif cell_val == '^I' or cell_val == '^IR' or cell_val == '^PR' or cell_val == '^IP' or cell_val == '^IY' or cell_val == '^PY' or cell_val == '^IO' or cell_val == '^PO' or cell_val == '^IF' or cell_val == '^PF' or cell_val == '^IM' or cell_val == '^PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_up1.png').convert_alpha(), (pop1, pop2))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == 'vI' or cell_val == 'vIR' or cell_val == 'vPR' or cell_val == 'vIP' or cell_val == 'vIY' or cell_val == 'vPY' or cell_val == 'vIO' or cell_val == 'vPO' or cell_val == 'vIF' or cell_val == 'vPF' or cell_val == 'vIM' or cell_val == 'vPM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_down1.png').convert_alpha(), (pop1, pop2))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == '<I' or cell_val == '<IR' or cell_val == '<PR' or cell_val == '<IP' or cell_val == '<IY' or cell_val == '<PY' or cell_val == '<IO' or cell_val == '<PO' or cell_val == '<IF' or cell_val == '<PF' or cell_val == '<IM' or cell_val == '<PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_left1.png').convert_alpha(), (pop2, pop1))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == '>I' or cell_val == '>IR' or cell_val == '>PR' or cell_val == '>IP' or cell_val == '>IY' or cell_val == '>PY' or cell_val == '>IO' or cell_val == '>PO' or cell_val == '>IF' or cell_val == '>PF' or cell_val == '>IM' or cell_val == '>PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
 
 
                 text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))

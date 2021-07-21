@@ -33,7 +33,7 @@ class SGW:
     """
     def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs', map_file=None,
                  max_turns=500, training_steps=10000,
-                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10, map_file=None):
+                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10):
         # General
         self.env_name = 'SGW-v0'
         self.game_id = uuid.uuid4()
