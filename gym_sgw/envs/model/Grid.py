@@ -17,10 +17,8 @@ class Grid:
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        print("map file:",map_file)
         if map_file == "im so cool, im using custom maps":
             self.map_file = "gym_sgw/envs/maps/custom/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
-            print("WOWOWOWOWOWOWOWOWWOWOWOWOWOOWOWWOW",self.map_file)
             self.grid = self.read_in_map()
         elif map_file is not None:
             self.grid = self.read_in_map()
