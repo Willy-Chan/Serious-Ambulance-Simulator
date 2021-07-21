@@ -136,7 +136,6 @@ class SGW:
 
 
                 if Tile:
-                    self.game_screen.flip()
                     self.game_screen.blit(Tile, (700 + r_*51 - c_*51, 100 + r_ * 24 + c_ * 24))     #wonky offsets are what cause the isometric effect
                 elif Tile_hos:
                     self.game_screen.blit(Tile_hos, (700 + r_ * 51 - c_ * 51, 70 + r_ * 24 + c_ * 24))
