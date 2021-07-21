@@ -93,6 +93,8 @@ class SGW:
         model.add(Activation('relu'))  # why this?
         model.add(Dense(500))  # why not sparse?
         model.add(Activation('relu'))  # try sigmoid or others?
+        model.add(Dense(500))  # why not sparse?
+        model.add(Activation('sigmoid'))  # try sigmoid or others?
         model.add(Dense(action_size))  # force the output to be the same size as our action space
         model.add(Activation('linear'))  # try softsign or others?
         print(model.summary())  # give it a nice look :)
