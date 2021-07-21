@@ -61,13 +61,50 @@ class SGW:
     def _cleanup(self):
         self.env.close()
 
+
+# Generate a bunch of unchanging dice
+# for i in range(1, 13):
+#     exec("dice" + str(i) + "=None")
+    global dice1
+    dice1 = random.randint(1, 4)
+    global dice2
+    dice2 = random.randint(1, 4)
+    global dice3
+    dice3 = random.randint(1, 4)
+    global dice4
+    dice4 = random.randint(1, 4)
+    global dice5
+    dice5 = random.randint(1, 4)
+    global dice6
+    dice6 = random.randint(1, 4)
+    global dice7
+    dice7 = random.randint(1, 4)
+    global dice8
+    dice8 = random.randint(1, 4)
+    global dice9
+    dice9 = random.randint(1, 4)
+    global dice10
+    dice10 = random.randint(1, 4)
+    global dice11
+    dice11 = random.randint(1, 4)
+    global dice12
+    dice12 = random.randint(1, 4)
+    global dice13
+    dice13 = random.randint(1, 4)
+
+
+
     def _draw_screen(self):
         # Update the screen with the new observation, use the grid object directly
         # Populate each cell
 
+
+
+
         for r_ in range(self.env.grid.rows):
             for c_ in range(self.env.grid.cols):
                 cell = self.env.grid.grid[r_][c_]
+
                 if cell.terrain == Terrains.none:
                     # Tile = pg.transform.scale(pg.image.load('Images/none.png').convert(), (32, 32))
                     Tile = pg.image.load('Images/none.png').convert_alpha()
@@ -125,12 +162,16 @@ class SGW:
 
                 player = None
                 agent = None
+                att = None
 
                 UI_Helper = pg.image.load('Images/UI/Helper.png').convert_alpha()
                 self.game_screen.blit(UI_Helper, (750, 600))
 
 
                 pop1, pop2 = 51, 51
+                alpha, beta = 48, 90
+
+
 
                 if cell_val == '^':
                     player = pg.transform.scale(pg.image.load('Images/player_default/iso_up.png').convert_alpha(), (pop1, pop2))
@@ -144,28 +185,147 @@ class SGW:
                 elif cell_val == '>':
                     player = pg.transform.scale(pg.image.load('Images/player_default/iso_right.png').convert_alpha(), (pop2, pop1))
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '^I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_up1.png').convert_alpha(), (pop1, pop2))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == 'vI':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_down1.png').convert_alpha(), (pop1, pop2))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '<I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_left1.png').convert_alpha(), (pop2, pop1))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
-                elif cell_val == '>I':
-                    player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
-                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+
                 elif cell_val == 'Z':
-                    agent = pg.transform.scale(pg.image.load('Images/agents/Zombie.png').convert_alpha(), (pop2, pop1))
+                    agent = pg.transform.scale(pg.image.load('Images/agents/Zombie1.png').convert_alpha(), (pop2//2, pop1))
                 elif cell_val == 'B':
                     agent = pg.transform.scale(pg.image.load('Images/agents/battery.png').convert_alpha(), (pop2, pop1))
                 elif cell_val == 'I':
                     agent = pg.transform.scale(pg.image.load('Images/agents/Injury_default.png').convert_alpha(), (pop2, pop1))
                 elif cell_val == 'P':
                     agent = pg.transform.scale(pg.image.load('Images/agents/Pedestrian.png').convert_alpha(), (pop2, pop1))
-                else:
-                    pass
+                elif cell_val == 'IR':
+                    if dice1 == 1:
+                        att = pg.transform.scale(
+                            pg.image.load('Images/agents/injured/Rich_old_male_injured.png').convert_alpha(),
+                            (alpha, beta))
+                    elif dice1 == 2:
+                        att = pg.transform.scale(
+                            pg.image.load('Images/agents/injured/Rich_old_female_injured.png').convert_alpha(),
+                            (alpha, beta))
+                    elif dice1 == 3:
+                        att = pg.transform.scale(
+                            pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(),
+                            (alpha, beta))
+                    elif dice1 == 4:
+                        att = pg.transform.scale(
+                            pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(),
+                            (alpha, beta))
+                elif cell_val == 'PR':
+                    if dice2 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice2 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice2 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice2 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'PP':
+                    if dice3 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice3 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice3 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice3 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'IP':
+                    if dice4 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice4 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice4 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice4 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_female_injured.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'IY':
+                    if dice5 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice5 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice5 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice5 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_female_injured.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'PY':
+                    if dice6 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice6 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice6 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice6 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'IO':
+                    if dice7 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice7 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice7 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice7 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_female_injured.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'PO':
+                    if dice8 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice8 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice8 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice8 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'IF':
+                    if dice9 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice9 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice9 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice9 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_female_injured.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'PF':
+                    if dice10 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice10 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice10 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice10 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'IM':
+                    if dice11 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice11 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice11 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    elif dice11 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_male_injured.png').convert_alpha(), (alpha, beta))
+                elif cell_val == 'PM':
+                    if dice12 == 1:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice12 == 2:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice12 == 3:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    elif dice12 == 4:
+                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+
+
+                #Render player with injured person graphics
+                elif cell_val == '^I' or cell_val == '^IR' or cell_val == '^PR' or cell_val == '^IP' or cell_val == '^IY' or cell_val == '^PY' or cell_val == '^IO' or cell_val == '^PO' or cell_val == '^IF' or cell_val == '^PF' or cell_val == '^IM' or cell_val == '^PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_up1.png').convert_alpha(), (pop1, pop2))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == 'vI' or cell_val == 'vIR' or cell_val == 'vPR' or cell_val == 'vIP' or cell_val == 'vIY' or cell_val == 'vPY' or cell_val == 'vIO' or cell_val == 'vPO' or cell_val == 'vIF' or cell_val == 'vPF' or cell_val == 'vIM' or cell_val == 'vPM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_down1.png').convert_alpha(), (pop1, pop2))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == '<I' or cell_val == '<IR' or cell_val == '<PR' or cell_val == '<IP' or cell_val == '<IY' or cell_val == '<PY' or cell_val == '<IO' or cell_val == '<PO' or cell_val == '<IF' or cell_val == '<PF' or cell_val == '<IM' or cell_val == '<PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_left1.png').convert_alpha(), (pop2, pop1))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+                elif cell_val == '>I' or cell_val == '>IR' or cell_val == '>PR' or cell_val == '>IP' or cell_val == '>IY' or cell_val == '>PY' or cell_val == '>IO' or cell_val == '>PO' or cell_val == '>IF' or cell_val == '>PF' or cell_val == '>IM' or cell_val == '>PM':
+                    player = pg.transform.scale(pg.image.load('Images/savers/iso_right1.png').convert_alpha(), (pop2, pop1))
+                    #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
+
 
                 text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
                 self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
@@ -180,7 +340,8 @@ class SGW:
                 # Agent Isometric Rendering
                 elif agent is not None:
                     self.game_screen.blit(agent, (724 + r_*51 - c_*51, 94 + r_ * 24 + c_ * 24))
-
+                elif att is not None:
+                    self.game_screen.blit(att, (730 + r_ * 51 - c_ * 51, 50 + r_ * 24 + c_ * 24))
 
 
         pg.display.update()

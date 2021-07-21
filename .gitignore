@@ -3,7 +3,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+data_log.json
 # C extensions
 *.so
 
@@ -210,3 +210,4 @@ node_modules/
 
 # Project Specific
 checkpoint
+data_log.json

@@ -43,7 +43,7 @@ class SGW(gym.Env):
         self.turns_executed = 0
         self._num_actions = len(Actions)
         self.action_space = spaces.Discrete(self._num_actions)
-        self.observation_space = spaces.Box(low=0, high=70, shape=(self.num_rows + 1, self.num_cols), dtype='uint8')
+        self.observation_space = spaces.Box(low=0, high=700, shape=(self.num_rows + 1, self.num_cols), dtype='uint8')
         obs = self.get_obs()
         return obs
 
@@ -211,6 +211,30 @@ class SGW(gym.Env):
                 cell_val = 'P'
             elif MapObjects(mapobject_index) == MapObjects.zombie:
                 cell_val = 'Z'
+            elif MapObjects(mapobject_index) == MapObjects.injured_rich:
+                cell_val = 'IR'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_rich:
+                cell_val = 'PR'
+            elif MapObjects(mapobject_index) == MapObjects.injured_poor:
+                cell_val = 'IP'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_poor:
+                cell_val = 'PP'
+            elif MapObjects(mapobject_index) == MapObjects.injured_young:
+                cell_val = 'IY'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_young:
+                cell_val = 'PY'
+            elif MapObjects(mapobject_index) == MapObjects.injured_old:
+                cell_val = 'IO'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_old:
+                cell_val = 'PO'
+            elif MapObjects(mapobject_index) == MapObjects.injured_female:
+                cell_val = 'IF'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_female:
+                cell_val = 'PF'
+            elif MapObjects(mapobject_index) == MapObjects.injured_male:
+                cell_val = 'IM'
+            elif MapObjects(mapobject_index) == MapObjects.pedestrian_male:
+                cell_val = 'PM'
             else:
                 raise ValueError('Invalid cell MapObject while printing state key.')
             name = MapObjects(mapobject_index).name

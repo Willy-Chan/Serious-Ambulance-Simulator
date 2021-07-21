@@ -25,8 +25,9 @@ if __name__ == '__main__':
 
     # Set runtime args
     data_log_file = args.outfile
+
     #map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
-    map_file = None
+    map_file = "C:/Users/lehma/PycharmProjects/SGW_CW1/gym_sgw/envs/maps/precursor/tester.xls"
     max_energy = 50
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 10
@@ -42,3 +43,5 @@ if __name__ == '__main__':
         num_cols=num_cols
     )
     sgw_env.run()
+
+# changed here
