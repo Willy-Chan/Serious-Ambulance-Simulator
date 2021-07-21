@@ -482,8 +482,6 @@ class Grid:
                 t_score += Scores.RESCUE_MALE  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_male)  # Remove them from the board
 
-
-
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
@@ -506,6 +504,32 @@ class Grid:
         if MapObjects.pedestrian_male in end_cell.objects:
             t_score += Scores.MALE_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_male)
+
+
+        elif MapObjects.pedestrian_rich in end_cell.objects:
+            t_score += Scores.RICH_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_rich)
+
+        elif MapObjects.pedestrian_poor in end_cell.objects:
+            t_score += Scores.POOR_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_poor)
+
+        elif MapObjects.pedestrian_old in end_cell.objects:
+            t_score += Scores.OLD_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_old)
+
+        elif MapObjects.pedestrian_young in end_cell.objects:
+            t_score += Scores.YOUNG_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_young)
+
+        elif MapObjects.pedestrian_female in end_cell.objects:
+            t_score += Scores.FEMALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_female)
+
+        elif MapObjects.pedestrian_male in end_cell.objects:
+            t_score += Scores.MALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_male)
+
 
 
         # Add a penalty if you squish an injured person

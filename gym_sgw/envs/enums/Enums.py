@@ -93,6 +93,7 @@ class Scores(IntEnum):
     FEMALE_PENALTY_VI = 0
     MALE_PENALTY_VI = 0
 
+
 class MapColors(Enum):
     play_area = '#000000'
     game_screen = '#6665adff'
