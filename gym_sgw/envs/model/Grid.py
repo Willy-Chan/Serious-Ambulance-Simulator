@@ -459,11 +459,55 @@ class Grid:
             if MapObjects.injured in end_cell.objects:
                 t_score += Scores.RESCUE_REWARD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured)  # Remove them from the board
+            if MapObjects.injured_rich in end_cell.objects:
+                t_score += Scores.RICH_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_rich)
+            if MapObjects.injured_poor in end_cell.objects:
+                t_score += Scores.POOR_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_poor)
+            if MapObjects.injured_old in end_cell.objects:
+                t_score += Scores.OLD_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_old)
+            if MapObjects.injured_young in end_cell.objects:
+                t_score += Scores.YOUNG_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_young)
+            if MapObjects.injured_female in end_cell.objects:
+                t_score += Scores.FEMALE_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_female)
+            if MapObjects.injured_male in end_cell.objects:
+                t_score += Scores.MALE_RESCUE
+                end_cell.remove_map_object(MapObjects.injured_male)
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
+
+        elif MapObjects.pedestrian_rich in end_cell.objects:
+            t_score += Scores.RICH_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_rich)
+
+        elif MapObjects.pedestrian_poor in end_cell.objects:
+            t_score += Scores.POOR_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_poor)
+
+        elif MapObjects.pedestrian_old in end_cell.objects:
+            t_score += Scores.OLD_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_old)
+
+        elif MapObjects.pedestrian_young in end_cell.objects:
+            t_score += Scores.YOUNG_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_young)
+
+        elif MapObjects.pedestrian_female in end_cell.objects:
+            t_score += Scores.FEMALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_female)
+
+        elif MapObjects.pedestrian_male in end_cell.objects:
+            t_score += Scores.MALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_male)
+
+
 
         # Add a penalty if you squish an injured person
         if end_cell.objects.count(MapObjects.injured) > 1:
