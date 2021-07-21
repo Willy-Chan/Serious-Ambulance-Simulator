@@ -31,10 +31,11 @@ if __name__ == '__main__':
     agent_file = args.agentfile
     data_log_file = args.outfile
     map_file = None  # 'gym_sgw/envs/maps/_SampleMap.xls'  # None will generate a random map, map files have top priority
+    map_file = "im so cool, im using custom maps"
     max_energy = 50
     rand_prof = MapProfiles.trolley
-    num_rows = 10
-    num_cols = 10
+    num_rows = 11
+    num_cols = 11
 
     # Create and run game with those params
     sgw_env = SGW(
