@@ -409,7 +409,7 @@ class Grid:
 
         # Add in base energy
         t_energy += BASE_ENERGY
-
+        #print(t_energy)
         return t_energy
 
     def _is_valid_move(self, pos) -> bool:
@@ -529,6 +529,13 @@ class Grid:
             'energy_remaining': energy_remaining,
             'game_score': game_score
         }
+        #if energy_remaining == 50:
+         #   battery = pg.transform.scale(pg.image.load('Images/UI/fullbattery.png').convert_alpha(), (200,100))
+          #  self.game_screen.blit(battery, (1200, 10))
+        #if energy_remaining == 45:
+         #   battery = pg.transform.scale(pg.image.load('Images/UI/90per.png').convert_alpha(), (200,100))
+          #  self.game_screen.blit(battery, (1200, 10))
+        #print(energy_remaining)
         return json.dumps(grid_data)
 
     def machine_encode(self, turns_executed, action_taken, energy_remaining, game_score):
@@ -622,6 +629,8 @@ class Grid:
     def pp_info(turns_executed, action_taken, energy_remaining, game_score):
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
               'Score: {3}'.format(turns_executed, action_taken, energy_remaining, game_score))
+    def energy_info(turns_executed, action_taken, energy_remaining, game_score):
+        print("ENERGY left: {0}".format(energy_remaining))
 
 
 if __name__ == '__main__':

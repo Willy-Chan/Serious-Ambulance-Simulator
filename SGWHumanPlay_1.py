@@ -193,6 +193,7 @@ class SGW:
         self.env.render_mode = PlayTypes.machine  # We'll draw the screen manually and not render each turn
         pg.init()
         #self.game_screen = pg.display.set_mode((1000, 800))
+
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
@@ -205,11 +206,17 @@ class SGW:
         #self.play_area.fill(pg.color.Color(MapColors.play_area.value))
         #self.game_screen.fill(pg.color.Color(MapColors.game_screen.value))
         self._draw_screen()
-
-
+        #the battery doesnt appear until one key is pressed. why?
+        #battery = pg.transform.scale(pg.image.load('Images/UI/fullbattery.png').convert_alpha(), (200,100))
+        #self.game_screen.blit(battery, (1200, 10))
+        #####   make a total energy rn variable, and show a different value battery every time it changes >10%
+        #####
+        #####
+        #####
 
         # Main game loop, capture window events, actions, and redraw the screen with updates until game over
         game_exit = False
+        energyvar = self.env.max_energy
         while not game_exit:
             for event in pg.event.get():
 
@@ -247,6 +254,56 @@ class SGW:
                             action_decoded = self.env.decode_raw_action(encoded_action)
 
                             # Take a step, print the status, render the new state
+                            ######## this hasn't taken batteries into account ^^
+                            battery = None
+                            energyvar -= 1
+
+                            if energyvar<=self.env.max_energy and energyvar>(self.env.max_energy*0.9):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/100per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.9) and energyvar>(self.env.max_energy*0.8):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/90per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.8) and energyvar>(self.env.max_energy*0.7):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/80per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.7) and energyvar>(self.env.max_energy*0.6):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/70per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.6) and energyvar>(self.env.max_energy*0.5):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/60per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.5) and energyvar>(self.env.max_energy*0.4):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/50per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.4) and energyvar>(self.env.max_energy*0.3):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/40per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.3) and energyvar>(self.env.max_energy*0.2):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/30per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.2) and energyvar>(self.env.max_energy*0.1):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/20per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar<=(self.env.max_energy*0.1) and energyvar>(self.env.max_energy*0.0):
+
+                                battery = pg.transform.scale(pg.image.load('Images/UI/10per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+                            if energyvar==0:
+                                battery = pg.transform.scale(pg.image.load('Images/UI/0per.png').convert_alpha(), (200,100))
+                                self.game_screen.blit(battery, (1200, 10))
+
+                            if battery is not None:
+                                self.game_screen.blit(battery, (1200, 10))
                             observation, reward, done, info = self.env.step(encoded_action)
                             self.env.pp_info()
                             self.is_game_over = done
@@ -262,6 +319,12 @@ class SGW:
                                 'game_info': {k.replace('.', '_'): v for (k, v) in info.items()},
                                 'raw_state': observation
                             }
+                            #this is where we need to update the battery sprite depending on the energy variable
+
+                            #print(self.env.pp_info())
+                            #self.env.energy_info()
+                            #battery = pg.transform.scale(pg.image.load('Images/UI/<%>.png').convert_alpha(), (200,100))
+                            #self.game_screen.blit(battery, (1200, 10))
                             with open(self.DATA_LOG_FILE_NAME, 'a') as f_:
                                 f_.write(json.dumps(data_to_log) + '\n')
                                 f_.close()
