@@ -61,7 +61,7 @@ class Grid:
 
         # Each sheet (tabs at the bottom) contains 1 map
         sheet = book.sheet_by_index(SHEET_INDEX)
-        print('Loading Map: {}'.format(sheet.name))
+        # print('Loading Map: {}'.format(sheet.name))
 
         # Get constants defined in spreadsheet -- cells are 0 indexed (hardcoded references for now)
         max_width = int(sheet.cell(19, 3).value)
