@@ -62,6 +62,145 @@ class MapProfiles(IntEnum):
     spoiled = 4
     twisty = 5
     volcano = 6
+    custom = 7
+
+class Scores(IntEnum):
+    # Default Reward Scheme
+    RESCUE_REWARD = 15  # +15 per rescued victim (picked up one by one and delivered to hospital)
+    PED_PENALTY = -5  # -10 per squished pedestrian (or mobile pedestrian)
+    VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
+    FIRE_PENALTY = -1  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
+    ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
+    PICKUP_REWARD = 10  # picked up person FINALLY
+    MOVING_FORWARD = 1  # wow they didn't just spin
+
+class wealth_structure_1():
+    tag = "Rich/Poor"
+    RESCUE_RICH = 15
+    RESCUE_POOR = 5
+    RESCUE_OLD = 0
+    RESCUE_YOUNG = 0
+    RESCUE_FEMALE = 0
+    RESCUE_MALE = 0
+    RICH_PENALTY = -15
+    POOR_PENALTY = -5
+    OLD_PENALTY = 0
+    YOUNG_PENALTY = 0
+    FEMALE_PENALTY = 0
+    MALE_PENALTY = 0
+    RICH_PENALTY_VI = -3
+    POOR_PENALTY_VI = -1
+    YOUNG_PENALTY_VI = 0
+    OLD_PENALTY_VI = 0
+    FEMALE_PENALTY_VI = 0
+    MALE_PENALTY_VI = 0
+
+class wealth_structure_2():
+    tag = "Poor/Rich"
+    RESCUE_RICH = 5
+    RESCUE_POOR = 15
+    RESCUE_OLD = 0
+    RESCUE_YOUNG = 0
+    RESCUE_FEMALE = 0
+    RESCUE_MALE = 0
+    RICH_PENALTY = -5
+    POOR_PENALTY = -15
+    OLD_PENALTY = 0
+    YOUNG_PENALTY = 0
+    FEMALE_PENALTY = 0
+    MALE_PENALTY = 0
+    RICH_PENALTY_VI = -1
+    POOR_PENALTY_VI = -3
+    YOUNG_PENALTY_VI = 0
+    OLD_PENALTY_VI = 0
+    FEMALE_PENALTY_VI = 0
+    MALE_PENALTY_VI = 0
+
+class age_structure_1():
+    tag = "Young/Old"
+    RESCUE_RICH = 0
+    RESCUE_POOR = 0
+    RESCUE_OLD = 5
+    RESCUE_YOUNG = 15
+    RESCUE_FEMALE = 0
+    RESCUE_MALE = 0
+    RICH_PENALTY = 0
+    POOR_PENALTY = 0
+    OLD_PENALTY = -5
+    YOUNG_PENALTY = -15
+    FEMALE_PENALTY = 0
+    MALE_PENALTY = 0
+    RICH_PENALTY_VI = 0
+    POOR_PENALTY_VI = 0
+    YOUNG_PENALTY_VI = -3
+    OLD_PENALTY_VI = -1
+    FEMALE_PENALTY_VI = 0
+    MALE_PENALTY_VI = 0
+
+class age_structure_2():
+    tag = "Old/Young"
+    RESCUE_RICH = 0
+    RESCUE_POOR = 0
+    RESCUE_OLD = 15
+    RESCUE_YOUNG = 5
+    RESCUE_FEMALE = 0
+    RESCUE_MALE = 0
+    RICH_PENALTY = 0
+    POOR_PENALTY = 0
+    OLD_PENALTY = -15
+    YOUNG_PENALTY = -5
+    FEMALE_PENALTY = 0
+    MALE_PENALTY = 0
+    RICH_PENALTY_VI = 0
+    POOR_PENALTY_VI = 0
+    YOUNG_PENALTY_VI = -5
+    OLD_PENALTY_VI = -15
+    FEMALE_PENALTY_VI = 0
+    MALE_PENALTY_VI = 0
+
+class gender_structure_1():
+    tag = "Female/Male"
+    RESCUE_RICH = 0
+    RESCUE_POOR = 0
+    RESCUE_OLD = 0
+    RESCUE_YOUNG = 0
+    RESCUE_FEMALE = 15
+    RESCUE_MALE = 5
+    RICH_PENALTY = 0
+    POOR_PENALTY = 0
+    OLD_PENALTY = 0
+    YOUNG_PENALTY = 0
+    FEMALE_PENALTY = -15
+    MALE_PENALTY = -5
+    RICH_PENALTY_VI = 0
+    POOR_PENALTY_VI = 0
+    YOUNG_PENALTY_VI = 0
+    OLD_PENALTY_VI = 0
+    FEMALE_PENALTY_VI = -15
+    MALE_PENALTY_VI = -5
+
+class gender_structure_2():
+    tag = "Male/Female"
+    RESCUE_RICH = 0
+    RESCUE_POOR = 0
+    RESCUE_OLD = 0
+    RESCUE_YOUNG = 0
+    RESCUE_FEMALE = 5
+    RESCUE_MALE = 15
+    RICH_PENALTY = 0
+    POOR_PENALTY = 0
+    OLD_PENALTY = 0
+    YOUNG_PENALTY = 0
+    FEMALE_PENALTY = -5
+    MALE_PENALTY = -15
+    RICH_PENALTY_VI = 0
+    POOR_PENALTY_VI = 0
+    YOUNG_PENALTY_VI = 0
+    OLD_PENALTY_VI = 0
+    FEMALE_PENALTY_VI = -5
+    MALE_PENALTY_VI = -15
+
+
 
 
 
@@ -76,8 +215,4 @@ class MapColors(Enum):
     fire_tile = '#bd4713ff'
     hospital_tile = '#8c2e3aff'
     text = '#ffffff'
-
-
-
-
 
