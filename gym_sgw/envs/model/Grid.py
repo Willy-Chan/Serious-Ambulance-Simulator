@@ -544,7 +544,7 @@ class Grid:
                 + end_cell.objects.count(MapObjects.injured_male) > 1:
 
             if MapObjects.injured == end_cell.objects[0]:
-                t_score += hierarchy.VIC_PENALTY  # Can only carry one so if there's more than one, squish
+                t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured)
             elif MapObjects.injured_rich == end_cell.objects[0]:
                 t_score += hierarchy.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
