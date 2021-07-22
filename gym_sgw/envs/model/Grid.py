@@ -61,7 +61,7 @@ class Grid:
 
         # Each sheet (tabs at the bottom) contains 1 map
         sheet = book.sheet_by_index(SHEET_INDEX)
-        print('Loading Map: {}'.format(sheet.name))
+        # print('Loading Map: {}'.format(sheet.name))
 
         # Get constants defined in spreadsheet -- cells are 0 indexed (hardcoded references for now)
         max_width = int(sheet.cell(19, 3).value)
@@ -210,11 +210,11 @@ class Grid:
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
-            p_hospital = 80
-            p_fire = 81
-            p_mud = 82
-            p_injured = 89
-            p_pedestrian = 93
+            p_injured_poor = 82
+            p_hospital = 86
+            p_fire = 87
+            p_mud = 88
+            p_pedestrian_rich = 94
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.sparse:
@@ -222,9 +222,9 @@ class Grid:
             p_floor = 79
             p_hospital = 80
             p_fire = 83
-            p_mud = 86
-            p_injured = 89
-            p_pedestrian = 94
+            p_mud = 85
+            p_injured_rich = 88
+            p_pedestrian_poor = 95
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.pacman:
@@ -233,8 +233,8 @@ class Grid:
             p_hospital = 65
             p_fire = 65
             p_mud = 65
-            p_injured = 65
-            p_pedestrian = 75
+            p_injured_old = 70
+            p_pedestrian_young = 85
             p_zombie = 95
             p_battery = 100
         elif mode == MapProfiles.spoiled:
@@ -243,8 +243,8 @@ class Grid:
             p_hospital = 69
             p_fire = 72
             p_mud = 75
-            p_injured = 95
-            p_pedestrian = 100
+            p_injured_young = 95
+            p_pedestrian_old = 98
             p_zombie = 100
             p_battery = 100
         elif mode == MapProfiles.twisty:
@@ -253,8 +253,8 @@ class Grid:
             p_hospital = 89
             p_fire = 90
             p_mud = 91
-            p_injured = 96
-            p_pedestrian = 96
+            p_injured_male = 96
+            p_pedestrian_female = 96
             p_zombie = 96
             p_battery = 100
         elif mode == MapProfiles.volcano:
@@ -263,8 +263,8 @@ class Grid:
             p_hospital = 54
             p_fire = 79
             p_mud = 91
-            p_injured = 96
-            p_pedestrian = 96
+            p_injured_female = 96
+            p_pedestrian_male = 96
             p_zombie = 96
             p_battery = 100
         else:  # Default to the uniform case
@@ -273,7 +273,19 @@ class Grid:
             p_hospital = 34
             p_fire = 45
             p_mud = 56
+            p_injured_female = 67
+            p_pedestrian_female = 67
             p_injured = 67
+            p_pedestrian_poor = 70
+            p_injured_poor = 70
+            p_pedestrian_young = 70
+            p_injured_young = 70
+            p_pedestrian_rich = 78
+            p_injured_rich = 78
+            p_pedestrian_old = 78
+            p_injured_old = 78
+            p_pedestrian_male = 78
+            p_injured_male = 78
             p_pedestrian = 78
             p_zombie = 89
             p_battery = 100
@@ -335,8 +347,8 @@ class Grid:
                     grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
                 elif cell_roll <= p_injured_male:
                     grid[r_][c_].add_map_object(MapObjects.injured_male)
-                elif cell_roll <= p_pedestrian_female:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
+                elif cell_roll <= p_pedestrian_male:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
                 else:
                     raise RuntimeError('Random cell value out of range?')
 
