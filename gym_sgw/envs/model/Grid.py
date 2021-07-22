@@ -6,13 +6,18 @@ from typing import List
 import numpy as np
 import pygame as pg
 from gym_sgw.envs.model.Cell import Cell
-from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
+from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores, \
+    wealth_structure_1, wealth_structure_2, age_structure_1, age_structure_2, gender_structure_1, gender_structure_2
+
+
 
 import os
+
 
 class Grid:
 
     def __init__(self, map_file: str = None, rows=25, cols=25, random_profile: MapProfiles = MapProfiles.uniform):
+        self.tag = None
         self.map_file = map_file
         self.rows = rows
         self.cols = cols
@@ -447,6 +452,10 @@ class Grid:
         else:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
+    # Set the Reward Structure
+    global hierarchy
+    hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
+    tag = hierarchy.tag
     def _get_score_of_action(self, subscore):
 
         t_score = subscore  # scores received from moving forward
@@ -454,29 +463,28 @@ class Grid:
         # Grab the cell where the player is (after the move)
         end_cell: Cell = self.grid[self.player_location[0]][self.player_location[1]]
 
-
         # Add a reward if they rescued a victim
         if end_cell.terrain == Terrains.hospital:
             if MapObjects.injured in end_cell.objects:
                 t_score += Scores.RESCUE_REWARD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured)  # Remove them from the board
             if MapObjects.injured_rich in end_cell.objects:
-                t_score += Scores.RESCUE_RICH  # Deliver the injured
+                t_score += hierarchy.RESCUE_RICH  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_rich)  # Remove them from the board
             if MapObjects.injured_poor in end_cell.objects:
-                t_score += Scores.RESCUE_POOR  # Deliver the injured
+                t_score += hierarchy.RESCUE_POOR  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_poor)  # Remove them from the board
             if MapObjects.injured_young in end_cell.objects:
-                t_score += Scores.RESCUE_YOUNG  # Deliver the injured
+                t_score += hierarchy.RESCUE_YOUNG  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_young)  # Remove them from the board
             if MapObjects.injured_old in end_cell.objects:
-                t_score += Scores.RESCUE_OLD  # Deliver the injured
+                t_score += hierarchy.RESCUE_OLD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_old)  # Remove them from the board
             if MapObjects.injured_female in end_cell.objects:
-                t_score += Scores.RESCUE_FEMALE  # Deliver the injured
+                t_score += hierarchy.RESCUE_FEMALE  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_female)  # Remove them from the board
             if MapObjects.injured_male in end_cell.objects:
-                t_score += Scores.RESCUE_MALE  # Deliver the injured
+                t_score += hierarchy.RESCUE_MALE  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured_male)  # Remove them from the board
 
         # Add a penalty if you squished a pedestrian
@@ -484,47 +492,47 @@ class Grid:
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
         if MapObjects.pedestrian_rich in end_cell.objects:
-            t_score += Scores.RICH_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.RICH_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_rich)
         if MapObjects.pedestrian_poor in end_cell.objects:
-            t_score += Scores.POOR_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.POOR_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_poor)
         if MapObjects.pedestrian_young in end_cell.objects:
-            t_score += Scores.YOUNG_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.YOUNG_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_young)
         if MapObjects.pedestrian_old in end_cell.objects:
-            t_score += Scores.OLD_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.OLD_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_old)
         if MapObjects.pedestrian_female in end_cell.objects:
-            t_score += Scores.FEMALE_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.FEMALE_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_female)
         if MapObjects.pedestrian_male in end_cell.objects:
-            t_score += Scores.MALE_PENALTY  # Oh no, watch out!
+            t_score += hierarchy.MALE_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_male)
 
 
         elif MapObjects.pedestrian_rich in end_cell.objects:
-            t_score += Scores.RICH_PENALTY
+            t_score += hierarchy.RICH_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_rich)
 
         elif MapObjects.pedestrian_poor in end_cell.objects:
-            t_score += Scores.POOR_PENALTY
+            t_score += hierarchy.POOR_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_poor)
 
         elif MapObjects.pedestrian_old in end_cell.objects:
-            t_score += Scores.OLD_PENALTY
+            t_score += hierarchy.OLD_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_old)
 
         elif MapObjects.pedestrian_young in end_cell.objects:
-            t_score += Scores.YOUNG_PENALTY
+            t_score += hierarchy.YOUNG_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_young)
 
         elif MapObjects.pedestrian_female in end_cell.objects:
-            t_score += Scores.FEMALE_PENALTY
+            t_score += hierarchy.FEMALE_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_female)
 
         elif MapObjects.pedestrian_male in end_cell.objects:
-            t_score += Scores.MALE_PENALTY
+            t_score += hierarchy.MALE_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_male)
 
 
@@ -536,29 +544,26 @@ class Grid:
                 + end_cell.objects.count(MapObjects.injured_male) > 1:
 
             if MapObjects.injured == end_cell.objects[0]:
-                t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.VIC_PENALTY  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured)
             elif MapObjects.injured_rich == end_cell.objects[0]:
-                t_score += Scores.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_rich)
             elif MapObjects.injured_poor == end_cell.objects[0]:
-                t_score += Scores.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_poor)
             elif MapObjects.injured_young == end_cell.objects[0]:
-                t_score += Scores.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_young)
             elif MapObjects.injured_old == end_cell.objects[0]:
-                t_score += Scores.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_old)
             elif MapObjects.injured_female == end_cell.objects[0]:
-                t_score += Scores.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_female)
             elif MapObjects.injured_male == end_cell.objects[0]:
-                t_score += Scores.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                t_score += hierarchy.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_male)
-
-
-
 
         # Add a penalty for going into fire
         if end_cell.terrain == Terrains.fire:
@@ -570,6 +575,10 @@ class Grid:
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
+
+
+
+
 
     def _get_energy_of_action(self):
         # Default energy scheme
@@ -802,7 +811,7 @@ class Grid:
     def human_render(self, turns_executed, action_taken, energy_remaining, game_score, cell_size=30):
         # Print out the human encoding to standard out
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3} | Full State: {4}'.format(turns_executed, action_taken,
+              'Score: {3} | Full State: {4} | Structure: {5}'.format(turns_executed, action_taken,
                                                     energy_remaining, game_score,
                                                     self.human_encode(turns_executed, action_taken,
                                                                       energy_remaining, game_score)))

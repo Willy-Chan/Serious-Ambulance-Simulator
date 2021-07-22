@@ -14,6 +14,7 @@ from tensorflow.keras.models import load_model
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
+from gym_sgw.envs.model.Grid import Grid
 import numpy as np
 
 
@@ -70,6 +71,7 @@ class SGW:
         self.env.reset()
         # Report success
         print('Created new environment {0} with GameID: {1}'.format(self.env_name, self.game_id))
+        print("The reward structure is {0}".format(Grid.tag))
 
     def done(self):
         print('Training finished!')

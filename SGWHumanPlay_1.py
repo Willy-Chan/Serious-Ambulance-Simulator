@@ -3,7 +3,9 @@ import uuid
 import gym
 import gym_sgw  # Required, don't remove!
 import pygame as pg
-from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors
+from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors, \
+    wealth_structure_1, wealth_structure_2, age_structure_1, age_structure_2, gender_structure_1, gender_structure_2
+from gym_sgw.envs.model.Grid import Grid
 import random
 ####
 
@@ -275,41 +277,13 @@ class SGW:
                     elif dice8 == 4:
                         att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'IF':
-                    if dice9 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_female_injured.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'PF':
-                    if dice10 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'IM':
-                    if dice11 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'PM':
-                    if dice12 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
 
 
                 #Render player with injured person graphics
@@ -358,7 +332,7 @@ class SGW:
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
-        pg.display.set_caption('SGW Caption Test')
+        pg.display.set_caption('SGW {}'.format(Grid.tag))
         icon = pg.image.load('Images/icon.jpg')
         pg.display.set_icon(icon)
 
