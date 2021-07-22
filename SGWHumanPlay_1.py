@@ -3,7 +3,9 @@ import uuid
 import gym
 import gym_sgw  # Required, don't remove!
 import pygame as pg
-from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors
+from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors, \
+    wealth_structure_1, wealth_structure_2, age_structure_1, age_structure_2, gender_structure_1, gender_structure_2
+from gym_sgw.envs.model.Grid import Grid
 import random
 ####
 
@@ -34,7 +36,8 @@ class SGW:
         self.cell_size = 30
         self.game_screen = None
         self.play_area = None
-
+        self.reward = "0"
+        self.myfont = None
 
         # Always do these actions upon start
         self._setup()
@@ -50,6 +53,7 @@ class SGW:
         self.env.num_rows = self.num_rows
         self.env.num_cols = self.num_cols
         self.env.reset()
+
         # Report success
         print('Created new environment {0} with GameID: {1}'.format(self.ENV_NAME, self.GAME_ID))
 
@@ -158,6 +162,7 @@ class SGW:
                 pg.font.init()
                 cell_font = pg.font.SysFont(pg.font.get_default_font(), 20)
                 cell_val = self.env.grid.get_human_cell_value(r_, c_)
+                self.myfont = pg.font.SysFont('Comic Sans MS', 30)
                 # cell_val = '{},{}'.format(r_, c_)
 
                 player = None
@@ -275,41 +280,13 @@ class SGW:
                     elif dice8 == 4:
                         att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'IF':
-                    if dice9 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice9 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_female_injured.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'PF':
-                    if dice10 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice10 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_female_pedestrian.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'IM':
-                    if dice11 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_old_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_old_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
-                    elif dice11 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/injured/Poor_young_male_injured.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(), (alpha, beta))
                 elif cell_val == 'PM':
-                    if dice12 == 1:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 2:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_old_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 3:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
-                    elif dice12 == 4:
-                        att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Poor_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
+                    att = pg.transform.scale(pg.image.load('Images/agents/pedestrian/Rich_young_male_pedestrian.png').convert_alpha(), (alpha, beta))
 
 
                 #Render player with injured person graphics
@@ -343,6 +320,8 @@ class SGW:
                 elif att is not None:
                     self.game_screen.blit(att, (730 + r_ * 51 - c_ * 51, 50 + r_ * 24 + c_ * 24))
 
+                textsurface = self.myfont.render(self.reward, False, (255, 255, 255))
+                self.game_screen.blit(textsurface, (600, 600))
 
         pg.display.update()
 
@@ -358,7 +337,7 @@ class SGW:
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
-        pg.display.set_caption('SGW Caption Test')
+        pg.display.set_caption('SGW {}'.format(Grid.tag))
         icon = pg.image.load('Images/icon.jpg')
         pg.display.set_icon(icon)
 
@@ -418,7 +397,7 @@ class SGW:
                             ######## this hasn't taken batteries into account ^^
                             battery = None
                             energyvar -= 1
-
+                            self.game_screen.fill((0, 0, 0))
                             if energyvar<=self.env.max_energy and energyvar>(self.env.max_energy*0.9):
 
                                 battery = pg.transform.scale(pg.image.load('Images/UI/100per.png').convert_alpha(), (200,100))
@@ -463,11 +442,14 @@ class SGW:
                                 battery = pg.transform.scale(pg.image.load('Images/UI/0per.png').convert_alpha(), (200,100))
                                 self.game_screen.blit(battery, (1200, 10))
 
+
                             if battery is not None:
                                 self.game_screen.blit(battery, (1200, 10))
                             observation, reward, done, info = self.env.step(encoded_action)
                             self.env.pp_info()
                             self.is_game_over = done
+
+                            self.reward = str(reward)
 
                             # Write action and stuff out to disk. Writes data to a dictionary. DATA LOGGING:
                             data_to_log = {

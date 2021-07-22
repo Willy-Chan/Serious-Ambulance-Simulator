@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     #map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
     map_file = "gym_sgw/envs/maps/precursor/tester.xls"
-    max_energy = 50
+    max_energy = 100
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 10
     num_cols = 10                       #set map size
