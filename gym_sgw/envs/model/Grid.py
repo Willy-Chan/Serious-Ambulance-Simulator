@@ -20,7 +20,7 @@ class Grid:
         self.player_orientation = None
         self.player_location = None
         if map_file == "im so cool, im using custom maps":
-            self.map_file = "gym_sgw/envs/maps/custom/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
+            self.map_file = "gym_sgw/envs/maps/custom/training_maps/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/training_maps/"))
             self.grid = self.read_in_map()
         elif map_file is not None:
             self.grid = self.read_in_map()
@@ -200,8 +200,8 @@ class Grid:
 
         # Define map element's cumulative probability table based on the mode (magic numbers tuned by instructors)
         mode = self.random_profile
-        print("mode")
-        print(mode)
+        # print("mode")
+        # print(mode)
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69

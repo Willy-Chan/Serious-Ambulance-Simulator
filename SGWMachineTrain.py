@@ -8,7 +8,7 @@ import pandas as pd
 from gym_sgw.envs.enums.Enums import MapProfiles, PlayTypes
 import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.layers import Dense, Activation, Flatten, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import load_model
 from rl.agents.dqn import DQNAgent
@@ -89,7 +89,12 @@ class SGW:
         # Build the model
         model = ts.keras.models.Sequential()
         model.add(Flatten(input_shape=(1,) + state_shape))  # take state and flatten so each example is a 1d array
-        model.add(Dense(500))  # More or less nodes or layers?
+        model.add(BatchNormalization(
+            axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True,
+            beta_initializer='zeros', gamma_initializer='ones',
+            moving_mean_initializer='zeros',
+            moving_variance_initializer='ones', beta_regularizer=None,
+            gamma_regularizer=None, beta_constraint=None, gamma_constraint=None))  # More or less nodes or layers?
         model.add(Activation('relu'))  # why this?
         model.add(Dense(500))  # why not sparse?
         model.add(Activation('relu'))  # try sigmoid or others?
@@ -102,11 +107,12 @@ class SGW:
 
 
 ###########################     Set Load Weights
+        '''
         if load_weights is not None:
             model.load_weights(load_weights)
         elif load_weights is None:
             model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
-
+        '''
 ###########################
         # model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
 

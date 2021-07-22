@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
 
     testing_path = 'gym_sgw/envs/maps/precursor/corridor.xls'
-
+    testing_path = "im so cool, im using custom maps"
 
     # Create and run game with those params
     #WILL PLAY GAMES WITH THESE PARAMETERS:
