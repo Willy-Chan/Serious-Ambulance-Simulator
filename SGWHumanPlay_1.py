@@ -332,12 +332,12 @@ class SGW:
         self.env.reset()
         self.env.render_mode = PlayTypes.machine  # We'll draw the screen manually and not render each turn
         pg.init()
-        #self.game_screen = pg.display.set_mode((1000, 800))
+        # self.game_screen = pg.display.set_mode((1000, 800))
 
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
-        pg.display.set_caption('SGW {}'.format(Grid.tag))
+        # pg.display.set_caption('SGW {}'.format(Grid.tag))
         icon = pg.image.load('Images/icon.jpg')
         pg.display.set_icon(icon)
 
