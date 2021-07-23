@@ -467,7 +467,7 @@ class Grid:
     # Set the Reward Structure
     global hierarchy
     hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
-    tag = hierarchy.tag
+
     def _get_score_of_action(self, subscore):
 
         t_score = subscore  # scores received from moving forward
@@ -587,7 +587,7 @@ class Grid:
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
-
+    tag = hierarchy.tag
 
 
 
@@ -892,7 +892,7 @@ class Grid:
     @staticmethod
     def pp_info(turns_executed, action_taken, energy_remaining, game_score):
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3}'.format(turns_executed, action_taken, energy_remaining, game_score))
+              'Score: {3} | Reward: {4}'.format(turns_executed, action_taken, energy_remaining, game_score, Grid.tag))
     def energy_info(turns_executed, action_taken, energy_remaining, game_score):
         print("ENERGY left: {0}".format(energy_remaining))
 
