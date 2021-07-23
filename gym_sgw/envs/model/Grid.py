@@ -6,7 +6,8 @@ import numpy as np
 import pygame as pg
 from pygame import mixer
 from gym_sgw.envs.model.Cell import Cell
-from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
+from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores, \
+    wealth_structure_1
 import os
 
 
@@ -377,13 +378,10 @@ class Grid:
         else:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
-<<<<<<< HEAD
     # Set the Reward Structure
     global hierarchy
     hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
 
-=======
->>>>>>> 11130ed2f04b5830e03067bf26ebb1de8facbf87
     def _get_score_of_action(self, subscore):
         t_score = subscore  # scores received from moving forward
 
@@ -403,7 +401,6 @@ class Grid:
             end_cell.remove_map_object(MapObjects.pedestrian)
 
         # Add a penalty if you squish an injured person
-<<<<<<< HEAD
         if end_cell.objects.count(MapObjects.injured) + end_cell.objects.count(MapObjects.injured_rich) \
                 + end_cell.objects.count(MapObjects.injured_poor) + end_cell.objects.count(MapObjects.injured_young) \
                 + end_cell.objects.count(MapObjects.injured_old) + end_cell.objects.count(MapObjects.injured_female) \
@@ -430,12 +427,6 @@ class Grid:
             elif MapObjects.injured_male == end_cell.objects[0]:
                 t_score += hierarchy.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_male)
-=======
-        if end_cell.objects.count(MapObjects.injured) > 1:
-            hit_human.play()
-            t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured)
->>>>>>> 11130ed2f04b5830e03067bf26ebb1de8facbf87
 
         # Add a penalty for going into fire
         if end_cell.terrain == Terrains.fire:
@@ -448,13 +439,8 @@ class Grid:
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
-<<<<<<< HEAD
     tag = hierarchy.tag
 
-
-
-=======
->>>>>>> 11130ed2f04b5830e03067bf26ebb1de8facbf87
 
     def _get_energy_of_action(self):
         # Default energy scheme
