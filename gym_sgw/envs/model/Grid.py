@@ -4,9 +4,20 @@ import xlrd
 from typing import List
 import numpy as np
 import pygame as pg
+from pygame import mixer
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
 import os
+
+
+#load the sound effects
+#This is only for hitting a pedestrian/injured person and for hitting a zombie
+#If we are also adding fire and batteries, I can get files for those as well
+hit_human = mixer.Sound("hit_person.wav")
+hit_zombie = mixer.Sound("hit_zombie.wav")
+
+
+
 
 class Grid:
 
@@ -377,11 +388,13 @@ class Grid:
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
+            hit_human.play()
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
 
         # Add a penalty if you squish an injured person
         if end_cell.objects.count(MapObjects.injured) > 1:
+            hit_human.play()
             t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
             end_cell.remove_map_object(MapObjects.injured)
 
@@ -391,6 +404,7 @@ class Grid:
 
         # Add reward for squishing a zombie
         if MapObjects.zombie in end_cell.objects:
+            hit_zombie.play()
             t_score += Scores.ZOMBIE_REWARD  # RUN IT OVER!
             end_cell.remove_map_object(MapObjects.zombie)
 
