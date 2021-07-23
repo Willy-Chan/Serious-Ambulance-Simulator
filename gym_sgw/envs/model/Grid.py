@@ -1,31 +1,23 @@
 import random
+import os
 import json
 import xlrd
 from typing import List
 import numpy as np
 import pygame as pg
-from pygame import mixer
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores, \
-    wealth_structure_1
+    wealth_structure_1, wealth_structure_2, age_structure_1, age_structure_2, gender_structure_1, gender_structure_2
+
+
+
 import os
-
-
-#load the sound effects
-#This is only for hitting a pedestrian/injured person and for hitting a zombie
-#If we are also adding fire and batteries, I can get files for those as well
-pg.init()
-pg.mixer.init()
-
-hit_human = mixer.Sound("gym_sgw/envs/model/hit_person.wav.wav")
-hit_zombie = mixer.Sound("gym_sgw/envs/model/hit_zombie.wav.wav")
-
-
 
 
 class Grid:
 
     def __init__(self, map_file: str = None, rows=25, cols=25, random_profile: MapProfiles = MapProfiles.uniform):
+        self.tag = None
         self.map_file = map_file
         self.rows = rows
         self.cols = cols
@@ -49,14 +41,27 @@ class Grid:
         SYMBOL_ZOMBIE = 'Z'
         SYMBOL_BATTERY = 'B'
         SYMBOL_PEDESTRIAN = '@'
+        SYMBOL_INJURED_RICH = 'IR'
+        SYMBOL_PEDESTRIAN_RICH = 'PR'
+        SYMBOL_INJURED_POOR = 'IP'
+        SYMBOL_PEDESTRIAN_POOR = 'PP'
+        SYMBOL_INJURED_YOUNG = 'IY'
+        SYMBOL_PEDESTRIAN_YOUNG = 'PY'
+        SYMBOL_INJURED_OLD = 'IO'
+        SYMBOL_PEDESTRIAN_OLD = 'PO'
+        SYMBOL_INJURED_FEMALE = 'IF'
+        SYMBOL_PEDESTRIAN_FEMALE = 'PF'
+        SYMBOL_INJURED_MALE = 'IM'
+        SYMBOL_PEDESTRIAN_MALE = 'PM'
         SHEET_INDEX = 0
 
         # Open Excel file
         book = xlrd.open_workbook(self.map_file, formatting_info=True)
 
+
         # Each sheet (tabs at the bottom) contains 1 map
         sheet = book.sheet_by_index(SHEET_INDEX)
-        print('Loading Map: {}'.format(sheet.name))
+        # print('Loading Map: {}'.format(sheet.name))
 
         # Get constants defined in spreadsheet -- cells are 0 indexed (hardcoded references for now)
         max_width = int(sheet.cell(19, 3).value)
@@ -138,6 +143,31 @@ class Grid:
                     grid_cell.add_map_object(MapObjects(4))
                 elif sheet_cell.value == SYMBOL_PEDESTRIAN:
                     grid_cell.add_map_object(MapObjects(2))
+                elif sheet_cell.value == SYMBOL_INJURED_RICH:
+                    grid_cell.add_map_object(MapObjects(6))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_RICH:
+                    grid_cell.add_map_object(MapObjects(7))
+                elif sheet_cell.value == SYMBOL_INJURED_POOR:
+                    grid_cell.add_map_object(MapObjects(8))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_POOR:
+                    grid_cell.add_map_object(MapObjects(9))
+                elif sheet_cell.value == SYMBOL_INJURED_YOUNG:
+                    grid_cell.add_map_object(MapObjects(10))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_YOUNG:
+                    grid_cell.add_map_object(MapObjects(11))
+                elif sheet_cell.value == SYMBOL_INJURED_OLD:
+                    grid_cell.add_map_object(MapObjects(12))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_OLD:
+                    grid_cell.add_map_object(MapObjects(13))
+                elif sheet_cell.value == SYMBOL_INJURED_FEMALE:
+                    grid_cell.add_map_object(MapObjects(14))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_FEMALE:
+                    grid_cell.add_map_object(MapObjects(15))
+                elif sheet_cell.value == SYMBOL_INJURED_MALE:
+                    grid_cell.add_map_object(MapObjects(16))
+                elif sheet_cell.value == SYMBOL_PEDESTRIAN_MALE:
+                    grid_cell.add_map_object(MapObjects(17))
+
 
                 # Add cell to grid[][]
                 grid_row.append(grid_cell)
@@ -175,16 +205,16 @@ class Grid:
 
         # Define map element's cumulative probability table based on the mode (magic numbers tuned by instructors)
         mode = self.random_profile
-        print("mode")
-        print(mode)
+        # print("mode")
+        # print(mode)
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
-            p_hospital = 80
-            p_fire = 81
-            p_mud = 82
-            p_injured = 89
-            p_pedestrian = 93
+            p_injured_poor = 82
+            p_hospital = 86
+            p_fire = 87
+            p_mud = 88
+            p_pedestrian_rich = 94
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.sparse:
@@ -192,9 +222,9 @@ class Grid:
             p_floor = 79
             p_hospital = 80
             p_fire = 83
-            p_mud = 86
-            p_injured = 89
-            p_pedestrian = 94
+            p_mud = 85
+            p_injured_rich = 88
+            p_pedestrian_poor = 95
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.pacman:
@@ -203,8 +233,8 @@ class Grid:
             p_hospital = 65
             p_fire = 65
             p_mud = 65
-            p_injured = 65
-            p_pedestrian = 75
+            p_injured_old = 70
+            p_pedestrian_young = 85
             p_zombie = 95
             p_battery = 100
         elif mode == MapProfiles.spoiled:
@@ -213,8 +243,8 @@ class Grid:
             p_hospital = 69
             p_fire = 72
             p_mud = 75
-            p_injured = 95
-            p_pedestrian = 100
+            p_injured_young = 95
+            p_pedestrian_old = 98
             p_zombie = 100
             p_battery = 100
         elif mode == MapProfiles.twisty:
@@ -223,8 +253,8 @@ class Grid:
             p_hospital = 89
             p_fire = 90
             p_mud = 91
-            p_injured = 96
-            p_pedestrian = 96
+            p_injured_male = 96
+            p_pedestrian_female = 96
             p_zombie = 96
             p_battery = 100
         elif mode == MapProfiles.volcano:
@@ -233,8 +263,8 @@ class Grid:
             p_hospital = 54
             p_fire = 79
             p_mud = 91
-            p_injured = 96
-            p_pedestrian = 96
+            p_injured_female = 96
+            p_pedestrian_male = 96
             p_zombie = 96
             p_battery = 100
         else:  # Default to the uniform case
@@ -243,7 +273,19 @@ class Grid:
             p_hospital = 34
             p_fire = 45
             p_mud = 56
+            p_injured_female = 67
+            p_pedestrian_female = 67
             p_injured = 67
+            p_pedestrian_poor = 70
+            p_injured_poor = 70
+            p_pedestrian_young = 70
+            p_injured_young = 70
+            p_pedestrian_rich = 78
+            p_injured_rich = 78
+            p_pedestrian_old = 78
+            p_injured_old = 78
+            p_pedestrian_male = 78
+            p_injured_male = 78
             p_pedestrian = 78
             p_zombie = 89
             p_battery = 100
@@ -283,6 +325,30 @@ class Grid:
                     grid[r_][c_].add_map_object(MapObjects.zombie)
                 elif cell_roll <= p_battery:
                     grid[r_][c_].add_map_object(MapObjects.battery)
+                elif cell_roll <= p_injured_rich:
+                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
+                elif cell_roll <= p_pedestrian_rich:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
+                elif cell_roll <= p_injured_poor:
+                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
+                elif cell_roll <= p_pedestrian_poor:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
+                elif cell_roll <= p_injured_old:
+                    grid[r_][c_].add_map_object(MapObjects.injured_old)
+                elif cell_roll <= p_pedestrian_old:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
+                elif cell_roll <= p_injured_young:
+                    grid[r_][c_].add_map_object(MapObjects.injured_young)
+                elif cell_roll <= p_pedestrian_young:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
+                elif cell_roll <= p_injured_female:
+                    grid[r_][c_].add_map_object(MapObjects.injured_female)
+                elif cell_roll <= p_pedestrian_female:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
+                elif cell_roll <= p_injured_male:
+                    grid[r_][c_].add_map_object(MapObjects.injured_male)
+                elif cell_roll <= p_pedestrian_male:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
                 else:
                     raise RuntimeError('Random cell value out of range?')
 
@@ -351,6 +417,26 @@ class Grid:
         if MapObjects.injured in curr_cell.objects:
             curr_cell.remove_map_object(MapObjects.injured)
             next_cell.add_map_object(MapObjects.injured)
+        if MapObjects.injured_rich in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_rich)
+            next_cell.add_map_object(MapObjects.injured_rich)
+        if MapObjects.injured_poor in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_poor)
+            next_cell.add_map_object(MapObjects.injured_poor)
+        if MapObjects.injured_young in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_young)
+            next_cell.add_map_object(MapObjects.injured_young)
+        if MapObjects.injured_old in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_old)
+            next_cell.add_map_object(MapObjects.injured_old)
+        if MapObjects.injured_female in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_female)
+            next_cell.add_map_object(MapObjects.injured_female)
+        if MapObjects.injured_male in curr_cell.objects:
+            curr_cell.remove_map_object(MapObjects.injured_male)
+            next_cell.add_map_object(MapObjects.injured_male)
+
+
 
         return subscore
 
@@ -381,8 +467,9 @@ class Grid:
     # Set the Reward Structure
     global hierarchy
     hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
-
+    tag = hierarchy.tag
     def _get_score_of_action(self, subscore):
+
         t_score = subscore  # scores received from moving forward
 
         # Grab the cell where the player is (after the move)
@@ -393,12 +480,74 @@ class Grid:
             if MapObjects.injured in end_cell.objects:
                 t_score += Scores.RESCUE_REWARD  # Deliver the injured
                 end_cell.remove_map_object(MapObjects.injured)  # Remove them from the board
+            if MapObjects.injured_rich in end_cell.objects:
+                t_score += hierarchy.RESCUE_RICH  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_rich)  # Remove them from the board
+            if MapObjects.injured_poor in end_cell.objects:
+                t_score += hierarchy.RESCUE_POOR  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_poor)  # Remove them from the board
+            if MapObjects.injured_young in end_cell.objects:
+                t_score += hierarchy.RESCUE_YOUNG  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_young)  # Remove them from the board
+            if MapObjects.injured_old in end_cell.objects:
+                t_score += hierarchy.RESCUE_OLD  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_old)  # Remove them from the board
+            if MapObjects.injured_female in end_cell.objects:
+                t_score += hierarchy.RESCUE_FEMALE  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_female)  # Remove them from the board
+            if MapObjects.injured_male in end_cell.objects:
+                t_score += hierarchy.RESCUE_MALE  # Deliver the injured
+                end_cell.remove_map_object(MapObjects.injured_male)  # Remove them from the board
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
-            hit_human.play()
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
+        if MapObjects.pedestrian_rich in end_cell.objects:
+            t_score += hierarchy.RICH_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_rich)
+        if MapObjects.pedestrian_poor in end_cell.objects:
+            t_score += hierarchy.POOR_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_poor)
+        if MapObjects.pedestrian_young in end_cell.objects:
+            t_score += hierarchy.YOUNG_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_young)
+        if MapObjects.pedestrian_old in end_cell.objects:
+            t_score += hierarchy.OLD_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_old)
+        if MapObjects.pedestrian_female in end_cell.objects:
+            t_score += hierarchy.FEMALE_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_female)
+        if MapObjects.pedestrian_male in end_cell.objects:
+            t_score += hierarchy.MALE_PENALTY  # Oh no, watch out!
+            end_cell.remove_map_object(MapObjects.pedestrian_male)
+
+
+        elif MapObjects.pedestrian_rich in end_cell.objects:
+            t_score += hierarchy.RICH_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_rich)
+
+        elif MapObjects.pedestrian_poor in end_cell.objects:
+            t_score += hierarchy.POOR_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_poor)
+
+        elif MapObjects.pedestrian_old in end_cell.objects:
+            t_score += hierarchy.OLD_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_old)
+
+        elif MapObjects.pedestrian_young in end_cell.objects:
+            t_score += hierarchy.YOUNG_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_young)
+
+        elif MapObjects.pedestrian_female in end_cell.objects:
+            t_score += hierarchy.FEMALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_female)
+
+        elif MapObjects.pedestrian_male in end_cell.objects:
+            t_score += hierarchy.MALE_PENALTY
+            end_cell.remove_map_object(MapObjects.pedestrian_male)
+
+
 
         # Add a penalty if you squish an injured person
         if end_cell.objects.count(MapObjects.injured) + end_cell.objects.count(MapObjects.injured_rich) \
@@ -434,12 +583,13 @@ class Grid:
 
         # Add reward for squishing a zombie
         if MapObjects.zombie in end_cell.objects:
-            hit_zombie.play()
             t_score += Scores.ZOMBIE_REWARD  # RUN IT OVER!
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
-    tag = hierarchy.tag
+
+
+
 
 
     def _get_energy_of_action(self):
@@ -463,7 +613,7 @@ class Grid:
 
         # Add in base energy
         t_energy += BASE_ENERGY
-
+        #print(t_energy)
         return t_energy
 
     def _is_valid_move(self, pos) -> bool:
@@ -497,13 +647,37 @@ class Grid:
             cell_val += 'P'
         if MapObjects.zombie in cell.objects:
             cell_val += 'Z'
+        if MapObjects.injured_rich in cell.objects:
+            cell_val += 'IR'
+        if MapObjects.pedestrian_rich in cell.objects:
+            cell_val += 'PR'
+        if MapObjects.injured_poor in cell.objects:
+            cell_val += 'IP'
+        if MapObjects.pedestrian_poor in cell.objects:
+            cell_val += 'PP'
+        if MapObjects.injured_young in cell.objects:
+            cell_val += 'IY'
+        if MapObjects.pedestrian_young in cell.objects:
+            cell_val += 'PY'
+        if MapObjects.injured_old in cell.objects:
+            cell_val += 'IO'
+        if MapObjects.pedestrian_old in cell.objects:
+            cell_val += 'PO'
+        if MapObjects.injured_female in cell.objects:
+            cell_val += 'IF'
+        if MapObjects.pedestrian_female in cell.objects:
+            cell_val += 'PF'
+        if MapObjects.injured_male in cell.objects:
+            cell_val += 'IM'
+        if MapObjects.pedestrian_male in cell.objects:
+            cell_val += 'PM'
 
         return cell_val
 
     def _get_machine_cell_value(self, row, col):
 
-        # Encode each cell value with an integer between 0 and 70
-        # The ten's place is a map of the terrains as follows:
+        # Encode each cell value with an integer between 0 and 700
+        # The hundred's place is a map of the terrains as follows:
         #     none = 00's
         #     out_of_bounds = 10's
         #     wall = 20's
@@ -511,7 +685,7 @@ class Grid:
         #     mud = 40's
         #     fire = 50's
         #     hospital = 60's
-        # The one's place is a map of the map object as follows:
+        # The one's/ten's place is a map of the map object as follows:
         #     none = 0
         #     injured = 1
         #     pedestrian = 2
@@ -521,6 +695,18 @@ class Grid:
         #     player_down = 6
         #     player_left = 7
         #     player_right = 8
+        #     injured_rich = 9
+        #     pedestrian_rich = 10
+        #     injured_poor = 11
+        #     pedestrian_poor = 12
+        #     injured_old = 13
+        #     pedestrian_old = 14
+        #     injured_young = 15
+        #     pedestrian_young = 16
+        #     injured_female = 17
+        #     pedestrian_female = 18
+        #     injured_male = 19
+        #     pedestrian_male = 20
 
         cell = self.grid[row][col]
         cell_val = 0
@@ -529,17 +715,17 @@ class Grid:
         if cell.terrain == Terrains.none:
             cell_val += 0
         elif cell.terrain == Terrains.out_of_bounds:
-            cell_val += 10
+            cell_val += 100
         elif cell.terrain == Terrains.wall:
-            cell_val += 20
+            cell_val += 200
         elif cell.terrain == Terrains.floor:
-            cell_val += 30
+            cell_val += 300
         elif cell.terrain == Terrains.mud:
-            cell_val += 40
+            cell_val += 400
         elif cell.terrain == Terrains.fire:
-            cell_val += 50
+            cell_val += 500
         elif cell.terrain == Terrains.hospital:
-            cell_val += 60
+            cell_val += 600
         else:
             raise ValueError('Invalid cell terrain while retrieving cell value for encoding/decoding.')
 
@@ -563,6 +749,30 @@ class Grid:
             cell_val += 4
         elif MapObjects.zombie in cell.objects:
             cell_val += 3
+        elif MapObjects.injured_rich in cell.objects:
+            cell_val += 9
+        elif MapObjects.pedestrian_rich in cell.objects:
+            cell_val += 10
+        elif MapObjects.injured_poor in cell.objects:
+            cell_val += 11
+        elif MapObjects.pedestrian_poor in cell.objects:
+            cell_val += 12
+        elif MapObjects.injured_old in cell.objects:
+            cell_val += 13
+        elif MapObjects.pedestrian_old in cell.objects:
+            cell_val += 14
+        elif MapObjects.injured_young in cell.objects:
+            cell_val += 15
+        elif MapObjects.pedestrian_young in cell.objects:
+            cell_val += 16
+        elif MapObjects.injured_female in cell.objects:
+            cell_val += 17
+        elif MapObjects.pedestrian_female in cell.objects:
+            cell_val += 18
+        elif MapObjects.injured_male in cell.objects:
+            cell_val += 19
+        elif MapObjects.pedestrian_male in cell.objects:
+            cell_val += 20
         elif MapObjects.none in cell.objects:
             cell_val += 0
         else:
@@ -583,6 +793,13 @@ class Grid:
             'energy_remaining': energy_remaining,
             'game_score': game_score
         }
+        #if energy_remaining == 50:
+         #   battery = pg.transform.scale(pg.image.load('Images/UI/fullbattery.png').convert_alpha(), (200,100))
+          #  self.game_screen.blit(battery, (1200, 10))
+        #if energy_remaining == 45:
+         #   battery = pg.transform.scale(pg.image.load('Images/UI/90per.png').convert_alpha(), (200,100))
+          #  self.game_screen.blit(battery, (1200, 10))
+        #print(energy_remaining)
         return json.dumps(grid_data)
 
     def machine_encode(self, turns_executed, action_taken, energy_remaining, game_score):
@@ -606,7 +823,7 @@ class Grid:
     def human_render(self, turns_executed, action_taken, energy_remaining, game_score, cell_size=30):
         # Print out the human encoding to standard out
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3} | Full State: {4}'.format(turns_executed, action_taken,
+              'Score: {3} | Full State: {4} | Structure: {5}'.format(turns_executed, action_taken,
                                                     energy_remaining, game_score,
                                                     self.human_encode(turns_executed, action_taken,
                                                                       energy_remaining, game_score)))
@@ -675,7 +892,9 @@ class Grid:
     @staticmethod
     def pp_info(turns_executed, action_taken, energy_remaining, game_score):
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3} | Reward: {4}'.format(turns_executed, action_taken, energy_remaining, game_score, Grid.tag))
+              'Score: {3}'.format(turns_executed, action_taken, energy_remaining, game_score))
+    def energy_info(turns_executed, action_taken, energy_remaining, game_score):
+        print("ENERGY left: {0}".format(energy_remaining))
 
 
 if __name__ == '__main__':
