@@ -13,8 +13,12 @@ import os
 #load the sound effects
 #This is only for hitting a pedestrian/injured person and for hitting a zombie
 #If we are also adding fire and batteries, I can get files for those as well
-hit_human = mixer.Sound("hit_person.wav")
-hit_zombie = mixer.Sound("hit_zombie.wav")
+pg.init()
+pg.mixer.init()
+
+os.chdir("C:/Users/srika/Desktop/SGAI/SGW_CW1/gym_sgw/envs/model")
+hit_human = mixer.Sound("hit_person.wav.wav")
+hit_zombie = mixer.Sound("hit_zombie.wav.wav")
 
 
 
@@ -29,7 +33,9 @@ class Grid:
         self.player_orientation = None
         self.player_location = None
         if map_file == "im so cool, im using custom maps":
-            self.map_file = "gym_sgw/envs/maps/custom/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"))
+            #I had to hard code This : Do you guys know how to change this
+            os.chdir("C:/Users/srika/Desktop/SGAI/SGW_CW1/")
+            self.map_file = "gym_sgw/envs/maps/custom/training_maps/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/training_maps/"))
             self.grid = self.read_in_map()
         elif map_file is not None:
             self.grid = self.read_in_map()
