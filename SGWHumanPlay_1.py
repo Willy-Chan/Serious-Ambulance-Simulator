@@ -385,12 +385,10 @@ class SGW:
                             action = Actions.turn_right
                             # action = Actions.turn_left  # changed to accomadate isometric
                         if event.key in [pg.K_s, pg.K_DOWN, pg.K_0]:
-                            action = Actions.none
-
-
+                            action = Actions.step_backward
 
                     if action is not None:
-                        if action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.none]:
+                        if action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.step_backward, Actions.none]:
                             # We have a valid action, so let's process it and update the screen
                             encoded_action = self.env.encode_raw_action(action)  # Ensures clean action
                             action_decoded = self.env.decode_raw_action(encoded_action)

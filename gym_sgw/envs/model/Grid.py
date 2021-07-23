@@ -365,12 +365,16 @@ class Grid:
         subscore = 0
         # Update player position based on current location and orientation
         if action == Actions.step_forward:
-            subscore += self._execute_step_forward()
+            subscore += self._execute_step("forward")
         # Update player orientation
         elif action == Actions.turn_left:
-            self._execute_turn_left()
+            # self._execute_turn_left()
+            subscore += self._execute_step("left")
         elif action == Actions.turn_right:
-            self._execute_turn_right()
+            # self._execute_turn_right()
+            subscore += self._execute_step("right")
+        elif action == Actions.step_backward:
+            subscore += self._execute_step("backward")
         # Didn't find a valid action so defaulting to none
         elif action == Actions.none:
             pass
@@ -385,21 +389,54 @@ class Grid:
 
         return turn_score, energy_action, done
 
-    def _execute_step_forward(self):
+    def _execute_step(self, direction):
         subscore = 0
         # Get the next position based on orientation
         curr_pos = self.player_location
-        if self.player_orientation == Orientations.right:
-            next_pos = [curr_pos[0], curr_pos[1] + 1]
-        elif self.player_orientation == Orientations.left:
-            next_pos = [curr_pos[0], curr_pos[1] - 1]
-        elif self.player_orientation == Orientations.up:
-            next_pos = [curr_pos[0] - 1, curr_pos[1]]
-        elif self.player_orientation == Orientations.down:
-            next_pos = [curr_pos[0] + 1, curr_pos[1]]
-        else:
-            raise RuntimeError('Invalid orientation when trying to move forward')
-
+        if direction == "forward":
+            if self.player_orientation == Orientations.right:
+                next_pos = [curr_pos[0], curr_pos[1] + 1]
+            elif self.player_orientation == Orientations.left:
+                next_pos = [curr_pos[0], curr_pos[1] - 1]
+            elif self.player_orientation == Orientations.up:
+                next_pos = [curr_pos[0] - 1, curr_pos[1]]
+            elif self.player_orientation == Orientations.down:
+                next_pos = [curr_pos[0] + 1, curr_pos[1]]
+            else:
+                raise RuntimeError('Invalid orientation when trying to move forward')
+        elif direction == "right":
+            if self.player_orientation == Orientations.down:
+                next_pos = [curr_pos[0], curr_pos[1] + 1]
+            elif self.player_orientation == Orientations.up:
+                next_pos = [curr_pos[0], curr_pos[1] - 1]
+            elif self.player_orientation == Orientations.right:
+                next_pos = [curr_pos[0] - 1, curr_pos[1]]
+            elif self.player_orientation == Orientations.left:
+                next_pos = [curr_pos[0] + 1, curr_pos[1]]
+            else:
+                raise RuntimeError('Invalid orientation when trying to move right')
+        elif direction == "left":
+            if self.player_orientation == Orientations.up:
+                next_pos = [curr_pos[0], curr_pos[1] + 1]
+            elif self.player_orientation == Orientations.down:
+                next_pos = [curr_pos[0], curr_pos[1] - 1]
+            elif self.player_orientation == Orientations.left:
+                next_pos = [curr_pos[0] - 1, curr_pos[1]]
+            elif self.player_orientation == Orientations.right:
+                next_pos = [curr_pos[0] + 1, curr_pos[1]]
+            else:
+                raise RuntimeError('Invalid orientation when trying to move left')
+        elif direction == "backward":
+            if self.player_orientation == Orientations.left:
+                next_pos = [curr_pos[0], curr_pos[1] + 1]
+            elif self.player_orientation == Orientations.right:
+                next_pos = [curr_pos[0], curr_pos[1] - 1]
+            elif self.player_orientation == Orientations.down:
+                next_pos = [curr_pos[0] - 1, curr_pos[1]]
+            elif self.player_orientation == Orientations.up:
+                next_pos = [curr_pos[0] + 1, curr_pos[1]]
+            else:
+                raise RuntimeError('Invalid orientation when trying to move back')
         # Check validity of move
         if not self._is_valid_move(next_pos):
             next_pos = curr_pos
@@ -442,9 +479,6 @@ class Grid:
         if MapObjects.injured_male in curr_cell.objects:
             curr_cell.remove_map_object(MapObjects.injured_male)
             next_cell.add_map_object(MapObjects.injured_male)
-
-
-
         return subscore
 
     def _execute_turn_left(self):
