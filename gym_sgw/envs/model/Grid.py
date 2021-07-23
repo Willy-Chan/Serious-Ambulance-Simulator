@@ -260,9 +260,9 @@ class Grid:
             p_hospital = 89
             p_fire = 90
             p_mud = 91
-            p_injured_male = 96
-            p_pedestrian_female = 96
-            p_zombie = 96
+            p_injured_male = 93
+            p_pedestrian_female = 95
+            p_zombie = 97
             p_battery = 100
         elif mode == MapProfiles.volcano:
             p_wall = 2
@@ -270,9 +270,9 @@ class Grid:
             p_hospital = 54
             p_fire = 79
             p_mud = 91
-            p_injured_female = 96
-            p_pedestrian_male = 96
-            p_zombie = 96
+            p_injured_female = 93
+            p_pedestrian_male = 95
+            p_zombie = 97
             p_battery = 100
         else:  # Default to the uniform case
             p_wall = 11
