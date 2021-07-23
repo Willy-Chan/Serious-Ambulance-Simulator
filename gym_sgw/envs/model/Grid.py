@@ -16,9 +16,8 @@ import os
 pg.init()
 pg.mixer.init()
 
-os.chdir("C:/Users/srika/Desktop/SGAI/SGW_CW1/gym_sgw/envs/model")
-hit_human = mixer.Sound("hit_person.wav.wav")
-hit_zombie = mixer.Sound("hit_zombie.wav.wav")
+hit_human = mixer.Sound("gym_sgw/envs/model/hit_person.wav.wav")
+hit_zombie = mixer.Sound("gym_sgw/envs/model/hit_zombie.wav.wav")
 
 
 
@@ -33,8 +32,6 @@ class Grid:
         self.player_orientation = None
         self.player_location = None
         if map_file == "im so cool, im using custom maps":
-            #I had to hard code This : Do you guys know how to change this
-            os.chdir("C:/Users/srika/Desktop/SGAI/SGW_CW1/")
             self.map_file = "gym_sgw/envs/maps/custom/training_maps/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/training_maps/"))
             self.grid = self.read_in_map()
         elif map_file is not None:
