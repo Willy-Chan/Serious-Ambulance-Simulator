@@ -7,7 +7,7 @@ from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, 
 from gym_sgw.envs.model.Grid import Grid
 import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.layers import Dense, Activation, Flatten, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
@@ -69,14 +69,15 @@ class SGW:
         # Build the model
         model = ts.keras.models.Sequential()
         model.add(Flatten(input_shape=(1,) + state_shape))  # take state and flatten so each example is a 1d array
-        model.add(Dense(500))  # More or less nodes or layers?
+        model.add(Dense(25))
+        model.add(BatchNormalization())  # More or less nodes or layers?
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(500))  # why not sparse?
-        model.add(Activation('relu'))  # try sigmoid or others?
-        model.add(Dense(500))  # why not sparse?
-        model.add(Activation('sigmoid'))  # try sigmoid or others?
+        model.add(Dense(15))
+        model.add(Activation('relu'))  # why this?
+        model.add(Dense(5))
+        model.add(Activation('relu'))  # why this?
         model.add(Dense(action_size))  # force the output to be the same size as our action space
-        model.add(Activation('linear'))  # try softsign or others?
+        model.add(Activation('softsign'))  # try softsign or others?
 
         # Create agent and test
         memory = SequentialMemory(limit=10000, window_length=1)

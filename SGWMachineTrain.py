@@ -91,22 +91,16 @@ class SGW:
         # Build the model
         model = ts.keras.models.Sequential()
         model.add(Flatten(input_shape=(1,) + state_shape))  # take state and flatten so each example is a 1d array
-        model.add(BatchNormalization(
-            axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True,
-            beta_initializer='zeros', gamma_initializer='ones',
-            moving_mean_initializer='zeros',
-            moving_variance_initializer='ones', beta_regularizer=None,
-            gamma_regularizer=None, beta_constraint=None, gamma_constraint=None))  # More or less nodes or layers?
+        model.add(Dense(25))
+        model.add(BatchNormalization())  # More or less nodes or layers?
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(500))  # why not sparse?
-        model.add(Activation('relu'))  # try sigmoid or others?
-        model.add(Dense(500))  # why not sparse?
-        model.add(Activation('sigmoid'))  # try sigmoid or others?
+        model.add(Dense(15))
+        model.add(Activation('relu'))  # why this?
+        model.add(Dense(5))
+        model.add(Activation('relu'))  # why this?
         model.add(Dense(action_size))  # force the output to be the same size as our action space
-        model.add(Activation('linear'))  # try softsign or others?
+        model.add(Activation('softsign'))  # try softsign or others?
         print(model.summary())  # give it a nice look :)
-
-
 
 ###########################     Set Load Weights
         '''

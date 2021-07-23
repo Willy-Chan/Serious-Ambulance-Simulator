@@ -380,8 +380,10 @@ class SGW:
                             action = Actions.step_forward
                         if event.key in [pg.K_a, pg.K_LEFT, pg.K_1]:
                             action = Actions.turn_left
+                            # action = Actions.turn_right  # changed to accomadate isometric
                         if event.key in [pg.K_d, pg.K_RIGHT, pg.K_2]:
                             action = Actions.turn_right
+                            # action = Actions.turn_left  # changed to accomadate isometric
                         if event.key in [pg.K_s, pg.K_DOWN, pg.K_0]:
                             action = Actions.none
 
