@@ -6,7 +6,8 @@ import numpy as np
 import pygame as pg
 from pygame import mixer
 from gym_sgw.envs.model.Cell import Cell
-from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores
+from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores, \
+    wealth_structure_1
 import os
 
 
@@ -377,6 +378,10 @@ class Grid:
         else:
             raise RuntimeError('Invalid orientation when trying to change orientation right')
 
+    # Set the Reward Structure
+    global hierarchy
+    hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
+
     def _get_score_of_action(self, subscore):
         t_score = subscore  # scores received from moving forward
 
@@ -396,10 +401,32 @@ class Grid:
             end_cell.remove_map_object(MapObjects.pedestrian)
 
         # Add a penalty if you squish an injured person
-        if end_cell.objects.count(MapObjects.injured) > 1:
-            hit_human.play()
-            t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
-            end_cell.remove_map_object(MapObjects.injured)
+        if end_cell.objects.count(MapObjects.injured) + end_cell.objects.count(MapObjects.injured_rich) \
+                + end_cell.objects.count(MapObjects.injured_poor) + end_cell.objects.count(MapObjects.injured_young) \
+                + end_cell.objects.count(MapObjects.injured_old) + end_cell.objects.count(MapObjects.injured_female) \
+                + end_cell.objects.count(MapObjects.injured_male) > 1:
+
+            if MapObjects.injured == end_cell.objects[0]:
+                t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured)
+            elif MapObjects.injured_rich == end_cell.objects[0]:
+                t_score += hierarchy.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_rich)
+            elif MapObjects.injured_poor == end_cell.objects[0]:
+                t_score += hierarchy.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_poor)
+            elif MapObjects.injured_young == end_cell.objects[0]:
+                t_score += hierarchy.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_young)
+            elif MapObjects.injured_old == end_cell.objects[0]:
+                t_score += hierarchy.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_old)
+            elif MapObjects.injured_female == end_cell.objects[0]:
+                t_score += hierarchy.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_female)
+            elif MapObjects.injured_male == end_cell.objects[0]:
+                t_score += hierarchy.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
+                end_cell.remove_map_object(MapObjects.injured_male)
 
         # Add a penalty for going into fire
         if end_cell.terrain == Terrains.fire:
@@ -412,6 +439,8 @@ class Grid:
             end_cell.remove_map_object(MapObjects.zombie)
 
         return t_score
+    tag = hierarchy.tag
+
 
     def _get_energy_of_action(self):
         # Default energy scheme
@@ -646,7 +675,7 @@ class Grid:
     @staticmethod
     def pp_info(turns_executed, action_taken, energy_remaining, game_score):
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3}'.format(turns_executed, action_taken, energy_remaining, game_score))
+              'Score: {3} | Reward: {4}'.format(turns_executed, action_taken, energy_remaining, game_score, Grid.tag))
 
 
 if __name__ == '__main__':

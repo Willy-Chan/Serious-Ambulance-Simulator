@@ -4,6 +4,7 @@ import gym
 import gym_sgw  # Required, don't remove!
 import pygame as pg
 from gym_sgw.envs.enums.Enums import Actions, Terrains, PlayTypes, MapProfiles, MapColors
+from gym_sgw.envs.model.Grid import Grid
 import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, BatchNormalization
@@ -198,6 +199,7 @@ class SGW:
                         # Write action and stuff out to disk.
                         data_to_log = {
                             'game_id': str(self.GAME_ID),
+                            'map_type' : str(Grid.tag),
                             'turn': int(self.turn),
                             'raw_action': str(selected_action),
                             'action': action_decoded,

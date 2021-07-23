@@ -9,7 +9,7 @@ from gym_sgw.envs.enums.Enums import MapProfiles, PlayTypes
 import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, BatchNormalization
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam, RMSprop
 from tensorflow.keras.models import load_model
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
@@ -126,9 +126,9 @@ class SGW:
                            enable_dueling_network=True,
                            # dueling_type='avg'  # what other options are there?
                            )
-        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mae'])             #Learns off of the "Mean Average Error"
+        sgw_dqn.compile(RMSprop(lr=1e-3), metrics=['mae'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
 
-        # Training - yes that's all there is to it.
+        # Training - yes that's all there is to it. Learns off of the "Mean Average Error"
         history_callback = sgw_dqn.fit(self.env,
                                        nb_steps=self.training_steps,
                                        verbose=self._verbosity,

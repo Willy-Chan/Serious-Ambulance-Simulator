@@ -456,6 +456,7 @@ class SGW:
                             # Write action and stuff out to disk. Writes data to a dictionary. DATA LOGGING:
                             data_to_log = {
                                 'game_id': str(self.GAME_ID),
+                                'map_type': str(Grid.tag),
                                 'turn': self.turn,
                                 'raw_action': action,
                                 'action': action_decoded,
