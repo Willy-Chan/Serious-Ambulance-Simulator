@@ -5,9 +5,16 @@ import xlrd
 from typing import List
 import numpy as np
 import pygame as pg
+from pygame import mixer
 from gym_sgw.envs.model.Cell import Cell
 from gym_sgw.envs.enums.Enums import MapObjects, Terrains, Actions, Orientations, MapProfiles, MapColors, Scores, \
     wealth_structure_1, wealth_structure_2, age_structure_1, age_structure_2, gender_structure_1, gender_structure_2
+
+#Load the Sound Effects
+pg.init()
+pg.mixer.init()
+hit_human = mixer.Sound("gym_sgw/envs/model/hit_person.wav.wav")
+hit_zombie = mixer.Sound("gym_sgw/envs/model/hit_zombie.wav.wav")
 
 
 
@@ -501,49 +508,62 @@ class Grid:
 
         # Add a penalty if you squished a pedestrian
         if MapObjects.pedestrian in end_cell.objects:
+            hit_human.play()
             t_score += Scores.PED_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian)
         if MapObjects.pedestrian_rich in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.RICH_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_rich)
         if MapObjects.pedestrian_poor in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.POOR_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_poor)
         if MapObjects.pedestrian_young in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.YOUNG_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_young)
         if MapObjects.pedestrian_old in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.OLD_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_old)
         if MapObjects.pedestrian_female in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.FEMALE_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_female)
         if MapObjects.pedestrian_male in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.MALE_PENALTY  # Oh no, watch out!
             end_cell.remove_map_object(MapObjects.pedestrian_male)
 
 
         elif MapObjects.pedestrian_rich in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.RICH_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_rich)
 
         elif MapObjects.pedestrian_poor in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.POOR_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_poor)
 
         elif MapObjects.pedestrian_old in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.OLD_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_old)
 
         elif MapObjects.pedestrian_young in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.YOUNG_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_young)
 
         elif MapObjects.pedestrian_female in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.FEMALE_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_female)
 
         elif MapObjects.pedestrian_male in end_cell.objects:
+            hit_human.play()
             t_score += hierarchy.MALE_PENALTY
             end_cell.remove_map_object(MapObjects.pedestrian_male)
 
@@ -556,24 +576,31 @@ class Grid:
                 + end_cell.objects.count(MapObjects.injured_male) > 1:
 
             if MapObjects.injured == end_cell.objects[0]:
+                hit_human.play()
                 t_score += Scores.VIC_PENALTY  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured)
             elif MapObjects.injured_rich == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.RICH_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_rich)
             elif MapObjects.injured_poor == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.POOR_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_poor)
             elif MapObjects.injured_young == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.YOUNG_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_young)
             elif MapObjects.injured_old == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.OLD_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_old)
             elif MapObjects.injured_female == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.FEMALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_female)
             elif MapObjects.injured_male == end_cell.objects[0]:
+                hit_human.play()
                 t_score += hierarchy.MALE_PENALTY_VI  # Can only carry one so if there's more than one, squish
                 end_cell.remove_map_object(MapObjects.injured_male)
 
@@ -583,6 +610,7 @@ class Grid:
 
         # Add reward for squishing a zombie
         if MapObjects.zombie in end_cell.objects:
+            hit_zombie.play()
             t_score += Scores.ZOMBIE_REWARD  # RUN IT OVER!
             end_cell.remove_map_object(MapObjects.zombie)
 
