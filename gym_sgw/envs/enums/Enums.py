@@ -66,12 +66,12 @@ class MapProfiles(IntEnum):
 
 class Scores(IntEnum):
     # Default Reward Scheme
-    RESCUE_REWARD = 1500000  # +15 per rescued victim (picked up one by one and delivered to hospital)
+    RESCUE_REWARD = 15  # +15 per rescued victim (picked up one by one and delivered to hospital)
     PED_PENALTY = -5  # -10 per squished pedestrian (or mobile pedestrian)
     VIC_PENALTY = -1  # -1 per squished victim (if you already have one onboard and enter it’s space, SQUISH)
     FIRE_PENALTY = -1  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
     ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
-    PICKUP_REWARD = 100  # picked up person FINALLY
+    PICKUP_REWARD = 10  # picked up person FINALLY
     MOVING_FORWARD = 1  # wow they didn't just spin
 
 class wealth_structure_1():
