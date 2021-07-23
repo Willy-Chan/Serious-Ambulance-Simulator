@@ -826,7 +826,7 @@ class Grid:
               'Score: {3} | Full State: {4} | Structure: {5}'.format(turns_executed, action_taken,
                                                     energy_remaining, game_score,
                                                     self.human_encode(turns_executed, action_taken,
-                                                                      energy_remaining, game_score)))
+                                                                      energy_remaining, game_score), Grid.tag))
 
         # Show a nicer display
         pg.init()
@@ -884,15 +884,15 @@ class Grid:
         # Render briefly for the machine (not likely to be seen, mainly for debugging)
         # Print the raw machine encoding for debugging only
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3} | Full State: {4}'.format(turns_executed, action_taken,
+              'Score: {3} | Full State: {4} | Reward Type: {5}'.format(turns_executed, action_taken,
                                                     energy_remaining, game_score,
                                                     self.machine_encode(turns_executed, action_taken,
-                                                                        energy_remaining, game_score)))
+                                                                        energy_remaining, game_score), Grid.tag))
 
     @staticmethod
     def pp_info(turns_executed, action_taken, energy_remaining, game_score):
         print('Turns Executed: {0} | Action: {1} | Energy Remaining: {2} | '
-              'Score: {3}'.format(turns_executed, action_taken, energy_remaining, game_score))
+              'Score: {3} | Reward Type: {4}'.format(turns_executed, action_taken, energy_remaining, game_score, Grid.tag))
     def energy_info(turns_executed, action_taken, energy_remaining, game_score):
         print("ENERGY left: {0}".format(energy_remaining))
 
