@@ -124,7 +124,7 @@ class SGW:
                            enable_dueling_network=True,
                            # dueling_type='avg'  # what other options are there?
                            )
-        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mape'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
+        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mse'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
 
         # Training - yes that's all there is to it. Learns off of the "Mean Average Error"
         history_callback = sgw_dqn.fit(self.env,
