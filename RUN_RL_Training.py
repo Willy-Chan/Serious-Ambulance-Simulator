@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description='CLI Argument Parser for RL Trainin
 parser.add_argument('--modelfilename', help='Output file name for learned model.', default='rl-agent-test')
 parser.add_argument('--logpath', help='Data logging file path.', default='./logs')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
-parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=10000000)  #NUMBER OF TRAINING STEPS, should probably be more steps
+parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=1500000)  #NUMBER OF TRAINING STEPS, should probably be more steps
 
 
 def validate_data(out_dirs, allow_creation=False):
@@ -39,20 +39,22 @@ if __name__ == '__main__':
     num_cols = 10
 
 
-    testing_path = 'gym_sgw/envs/maps/precursor/corridor.xls'
-    testing_path = "im so cool, im using custom maps"
+    map_file = 'gym_sgw/envs/maps/precursor/corridor.xls'
+    map_file = "training_maps"
+    map_file = "custom_maps"
 
     # Create and run game with those params
     #WILL PLAY GAMES WITH THESE PARAMETERS:
     sgw_env = SGW(
         model_filename=model_filename,
         data_log_path=data_log_path,
-        map_file=testing_path,
+        map_file=map_file,
         training_steps=training_steps,
         max_turns=150,
         max_energy=50,
         rand_prof=MapProfiles.trolley,
         num_rows=11,
         num_cols=11,
+        continueTraining=False
     )
     sgw_env.run()

@@ -24,7 +24,7 @@ class SGW(gym.Env):
         self.total_score = 0
         self.energy_used = 0
         self.is_game_over = False
-        self.latest_action = self.decode_raw_action(Actions.none)
+        self.latest_action = self.decode_raw_action(Actions.step_forward)
         self.turns_executed = 0
         # Defining spaces
         self._num_actions = len(Actions)
@@ -39,7 +39,7 @@ class SGW(gym.Env):
         self.energy_used = 0
         self.max_energy = self.grid.map_max_energy if self.grid.map_max_energy is not None else self.max_energy
         self.is_game_over = False
-        self.latest_action = self.decode_raw_action(Actions.none)
+        self.latest_action = self.decode_raw_action(Actions.step_forward)
         self.turns_executed = 0
         self._num_actions = len(Actions)
         self.action_space = spaces.Discrete(self._num_actions)
@@ -115,8 +115,6 @@ class SGW(gym.Env):
     def encode_raw_action(input_str: Union[str, Actions]) -> Actions:
         # Takes in some input string and tries to parse it to a valid action, encoding it in our enum
         # Use this if you want to go from a string or key press to an Actions Enum!
-        if input_str in ['none', '', 'r_key', 0, '0', Actions.none]:
-            return Actions.none
         if input_str in ['turn_left', 'left', 'left_arrow_key', 'a_key', 1, '1', Actions.turn_left]:
             return Actions.turn_left
         if input_str in ['turn_right', 'right', 'right_arrow_key', 'd_key', 2, '2', Actions.turn_right]:
@@ -126,7 +124,7 @@ class SGW(gym.Env):
         if input_str in ['step_backward', 'backward', 4, '4', Actions.step_backward]:
             return Actions.step_backward
         print('WARNING: no valid action found while encoding action: {}'.format(input_str))
-        return Actions.none
+        raise ValueError("idek anymore")
 
     @staticmethod
     def decode_raw_action(action: Actions) -> (str, int):

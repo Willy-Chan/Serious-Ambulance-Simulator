@@ -36,11 +36,10 @@ class MapObjects(IntEnum):
 
 
 class Actions(IntEnum):
-    none = 0
+    step_backward = 0
     turn_left = 1
     turn_right = 2
     step_forward = 3
-    step_backward = 4
 
 
 class Orientations(IntEnum):

@@ -7,7 +7,7 @@ from SGWMachinePlay import SGW
 from gym_sgw.envs.enums.Enums import MapProfiles
 
 parser = argparse.ArgumentParser(description='CLI Argument Parser for Human Play.')
-parser.add_argument('--agentfile', help='Agent file path and file name.', default='sgw_dqn_{preprocessor}_weights.h5f')  #DEFAULTS to this weights value
+parser.add_argument('--agentfile', help='Agent file path and file name.', default='sgw_dqn_{real}_weights.h5f')  #DEFAULTS to this weights value
 parser.add_argument('--outfile', help='Data logging file name.', default='data_log.json')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
 # add new arguments
@@ -33,7 +33,8 @@ if __name__ == '__main__':
     # map_file = None  # 'gym_sgw/envs/maps/_SampleMap.xls'  # None will generate a random map, map files have top priority
     # map_file = 'gym_sgw/envs/maps/precursor/corridor.xls'
     # map_file = None  # 'gym_sgw/envs/maps/_SampleMap.xls'  # None will generate a random map, map files have top priority
-    map_file = "im so cool, im using custom maps"
+    map_file = "training_maps"
+    map_file = "custom_maps"
     max_energy = 50
     rand_prof = MapProfiles.trolley
     num_rows = 11

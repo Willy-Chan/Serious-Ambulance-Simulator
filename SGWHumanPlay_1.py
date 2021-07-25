@@ -24,7 +24,7 @@ class SGW:
         self.DATA_LOG_FILE_NAME = data_log_file
         self.GAME_ID = uuid.uuid4()
         self.env = None
-        self.current_action = Actions.none
+        self.current_action = Actions.step_forward
         self.max_energy = max_energy
         self.map_file = map_file
         self.rand_prof = rand_prof  # generates a RANDOM of this type, IF no map-file specified
@@ -388,7 +388,7 @@ class SGW:
                             action = Actions.step_backward
 
                     if action is not None:
-                        if action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.step_backward, Actions.none]:
+                        if action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.step_backward]:
                             # We have a valid action, so let's process it and update the screen
                             encoded_action = self.env.encode_raw_action(action)  # Ensures clean action
                             action_decoded = self.env.decode_raw_action(encoded_action)

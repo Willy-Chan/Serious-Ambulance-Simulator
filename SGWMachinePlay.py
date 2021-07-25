@@ -27,7 +27,7 @@ class SGW:
         self.DATA_LOG_FILE_NAME = data_log_file
         self.GAME_ID = uuid.uuid4()
         self.env = None
-        self.current_action = Actions.none
+        self.current_action = Actions.step_forward
         self.max_energy = max_energy
         self.map_file = map_file
         self.rand_prof = rand_prof
@@ -69,12 +69,14 @@ class SGW:
         # Build the model
         model = ts.keras.models.Sequential()
         model.add(Flatten(input_shape=(1,) + state_shape))  # take state and flatten so each example is a 1d array
-        model.add(Dense(25))
+        model.add(Dense(100))
         model.add(BatchNormalization())  # More or less nodes or layers?
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(15))
+        model.add(Dense(50))
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(5))
+        model.add(Dense(25))
+        model.add(Activation('relu'))  # why this?
+        model.add(Dense(10))
         model.add(Activation('relu'))  # why this?
         model.add(Dense(action_size))  # force the output to be the same size as our action space
         model.add(Activation('softsign'))  # try softsign or others?
@@ -185,7 +187,7 @@ class SGW:
                         selected_action = self.agent.forward(observation=self.latest_obs)
 
                     # Keep looping unless we have a valid action back from the agent
-                    if selected_action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.none]:
+                    if selected_action in [Actions.step_forward, Actions.turn_right, Actions.turn_left, Actions.step_backward]:
                         # We have a valid action, so let's process it and update the screen
                         encoded_action = self.env.encode_raw_action(selected_action)  # Ensures clean action
                         action_decoded = self.env.decode_raw_action(encoded_action)

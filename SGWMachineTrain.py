@@ -9,20 +9,13 @@ from gym_sgw.envs.enums.Enums import MapProfiles, PlayTypes
 import tensorflow as ts  # Required, leave in
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, BatchNormalization
-from tensorflow.keras.optimizers import Adam, RMSprop
+from tensorflow.keras.optimizers import Adam, RMSprop, Adamax
 from tensorflow.keras.models import load_model
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 from gym_sgw.envs.model.Grid import Grid
 import numpy as np
-
-
-
-#load weights of model, set to None for default file
-load_weights = 'sgw_dqn_{preprocessor}_weights.h5f'
-
-
 
 class SGW:
     """
@@ -34,7 +27,7 @@ class SGW:
     """
     def __init__(self, model_filename='rl-agent-trolley', data_log_path='./logs', map_file=None,
                  max_turns=500, training_steps=10000,
-                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10):
+                 max_energy=50, rand_prof=MapProfiles.trolley, num_rows=10, num_cols=10,continueTraining=False):
         # General
         self.env_name = 'SGW-v0'
         self.game_id = uuid.uuid4()
@@ -56,6 +49,7 @@ class SGW:
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.map_file = map_file
+        self.continueTraining = continueTraining
         self._setup()
 
     def _setup(self):
@@ -91,12 +85,14 @@ class SGW:
         # Build the model
         model = ts.keras.models.Sequential()
         model.add(Flatten(input_shape=(1,) + state_shape))  # take state and flatten so each example is a 1d array
-        model.add(Dense(25))
+        model.add(Dense(100))
         model.add(BatchNormalization())  # More or less nodes or layers?
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(15))
+        model.add(Dense(50))
         model.add(Activation('relu'))  # why this?
-        model.add(Dense(5))
+        model.add(Dense(25))
+        model.add(Activation('relu'))  # why this?
+        model.add(Dense(10))
         model.add(Activation('relu'))  # why this?
         model.add(Dense(action_size))  # force the output to be the same size as our action space
         model.add(Activation('softsign'))  # try softsign or others?
@@ -110,7 +106,9 @@ class SGW:
             model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
         '''
 ###########################
-        # model.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))        #load weights of model
+        if self.continueTraining:
+            model.load_weights('sgw_dqn_{real}_weights.h5f')        #load weights of model
+            print('continuing training')
 
 
         # Create agent and test
@@ -126,7 +124,7 @@ class SGW:
                            enable_dueling_network=True,
                            # dueling_type='avg'  # what other options are there?
                            )
-        sgw_dqn.compile(RMSprop(lr=1e-3), metrics=['mae'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
+        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mape'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
 
         # Training - yes that's all there is to it. Learns off of the "Mean Average Error"
         history_callback = sgw_dqn.fit(self.env,
@@ -162,12 +160,12 @@ class SGW:
         print(pretty_action)
 
         # Save model
-        if load_weights is None:
-            sgw_dqn.save_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename), overwrite=self.allow_overwrite)
-            sgw_dqn.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))
-        elif load_weights is not None:
-            sgw_dqn.save_weights('sgw_dqn_{preprocessor}_weights.h5f', overwrite=self.allow_overwrite)
-            sgw_dqn.load_weights('sgw_dqn_{preprocessor}_weights.h5f')
+        # if load_weights is None:
+        #    sgw_dqn.save_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename), overwrite=self.allow_overwrite)
+        #    sgw_dqn.load_weights('sgw_dqn_{}_weights.h5f'.format(self.model_filename))
+        #elif load_weights is not None:
+        sgw_dqn.save_weights('sgw_dqn_{real}_weights.h5f', overwrite=self.allow_overwrite)
+        sgw_dqn.load_weights('sgw_dqn_{real}_weights.h5f')
 
 
         self.done()
