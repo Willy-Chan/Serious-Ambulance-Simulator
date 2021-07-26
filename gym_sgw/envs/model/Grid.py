@@ -213,6 +213,7 @@ class Grid:
             grid.append(row_data)
         return grid
 
+   
     def _random_fill_setup(self, grid):
         # This replicates the excel workbook that generates random maps. Directly implemented for ease of use.
         # The only difference is that this implementation also adds the player with a valid orientation.
@@ -224,157 +225,157 @@ class Grid:
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 82
+            p_pedestrian_young = 0
+            p_injured_young = 0
             p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 93
+            p_mud = 94
+            p_zombie = 99
+            p_battery = 100
         elif mode == MapProfiles.sparse:
-            p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_wall = 20
+            p_floor = 79
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 86
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 90
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 94
+            p_mud = 95
+            p_zombie = 99
+            p_battery = 100
         elif mode == MapProfiles.pacman:
-            p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_wall = 35
+            p_floor = 65
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 78
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 85
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 90
+            p_fire = 90
+            p_mud = 90
+            p_zombie = 95
+            p_battery = 100
         elif mode == MapProfiles.spoiled:
             p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_floor = 64
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 79
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 86
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 91
+            p_fire = 94
+            p_mud = 97
+            p_zombie = 100
+            p_battery = 100
         elif mode == MapProfiles.twisty:
-            p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_wall = 37
+            p_floor = 80
+            p_injured_female = 0
+            p_pedestrian_female = 84
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 88
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 93
+            p_mud = 94
+            p_zombie = 97
+            p_battery = 100
         elif mode == MapProfiles.volcano:
-            p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_wall = 2
+            p_floor = 53
+            p_injured_female = 57
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 61
+            p_pedestrian = 0
+            p_hospital = 65
+            p_fire = 79
+            p_mud = 91
+            p_zombie = 97
+            p_battery = 100
         else:  # Default to the uniform case
-            p_wall = 10
-            p_floor = 69
-            p_hospital = 72
-            p_fire = 73
-            p_mud = 74
-            p_injured = 74
-            p_pedestrian = 80
-            p_zombie = 83
-            p_battery = 83
-            p_injured_rich = 85
-            p_pedestrian_rich = 87
-            p_injured_poor = 94
-            p_pedestrian_poor = 100
-            p_injured_old = 100
-            p_pedestrian_old = 100
-            p_injured_young = 100
-            p_pedestrian_young = 100
-            p_injured_female = 100
-            p_pedestrian_female = 100
-            p_injured_male = 100
-            p_pedestrian_male = 100
+            p_wall = 11
+            p_floor = 23
+            p_injured_female = 34
+            p_pedestrian_female = 34
+            p_injured = 34
+            p_pedestrian_poor = 38
+            p_injured_poor = 38
+            p_pedestrian_young = 38
+            p_injured_young = 38
+            p_pedestrian_rich = 45
+            p_injured_rich = 45
+            p_pedestrian_old = 45
+            p_injured_old = 45
+            p_pedestrian_male = 45
+            p_injured_male = 45
+            p_pedestrian = 45
+            p_hospital = 56
+            p_fire = 67
+            p_mud = 78
+            p_zombie = 89
+            p_battery = 100
 
         # for each cell in the grid
         for r_ in range(len(grid)):
@@ -397,44 +398,44 @@ class Grid:
                     grid[r_][c_].terrain = Terrains.wall
                 elif cell_roll < p_floor:
                     grid[r_][c_].terrain = Terrains.floor
+                elif cell_roll <= p_injured_female:
+                    grid[r_][c_].add_map_object(MapObjects.injured_female)
+                elif cell_roll <= p_pedestrian_female:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
+                elif cell_roll < p_injured:
+                    grid[r_][c_].add_map_object(MapObjects.injured)
+                elif cell_roll <= p_pedestrian_poor:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
+                elif cell_roll <= p_injured_poor:
+                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
+                elif cell_roll <= p_pedestrian_young:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
+                elif cell_roll <= p_injured_young:
+                    grid[r_][c_].add_map_object(MapObjects.injured_young)
+                elif cell_roll <= p_pedestrian_rich:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
+                elif cell_roll <= p_injured_rich:
+                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
+                elif cell_roll <= p_pedestrian_old:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
+                elif cell_roll <= p_injured_old:
+                    grid[r_][c_].add_map_object(MapObjects.injured_old)
+                elif cell_roll <= p_pedestrian_male:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
+                elif cell_roll <= p_injured_male:
+                    grid[r_][c_].add_map_object(MapObjects.injured_male)
+                elif cell_roll < p_pedestrian:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian)
                 elif cell_roll < p_hospital:
                     grid[r_][c_].terrain = Terrains.hospital
                 elif cell_roll < p_fire:
                     grid[r_][c_].terrain = Terrains.fire
                 elif cell_roll < p_mud:
                     grid[r_][c_].terrain = Terrains.mud
-                elif cell_roll < p_injured:
-                    grid[r_][c_].add_map_object(MapObjects.injured)
-                elif cell_roll < p_pedestrian:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian)
                 elif cell_roll < p_zombie:
                     grid[r_][c_].add_map_object(MapObjects.zombie)
                 elif cell_roll <= p_battery:
                     grid[r_][c_].add_map_object(MapObjects.battery)
-                elif cell_roll <= p_injured_rich:
-                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
-                elif cell_roll <= p_pedestrian_rich:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
-                elif cell_roll <= p_injured_poor:
-                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
-                elif cell_roll <= p_pedestrian_poor:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
-                elif cell_roll <= p_injured_old:
-                    grid[r_][c_].add_map_object(MapObjects.injured_old)
-                elif cell_roll <= p_pedestrian_old:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
-                elif cell_roll <= p_injured_young:
-                    grid[r_][c_].add_map_object(MapObjects.injured_young)
-                elif cell_roll <= p_pedestrian_young:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
-                elif cell_roll <= p_injured_female:
-                    grid[r_][c_].add_map_object(MapObjects.injured_female)
-                elif cell_roll <= p_pedestrian_female:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
-                elif cell_roll <= p_injured_male:
-                    grid[r_][c_].add_map_object(MapObjects.injured_male)
-                elif cell_roll <= p_pedestrian_male:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
                 else:
                     raise RuntimeError('Random cell value out of range?')
 
