@@ -213,6 +213,7 @@ class Grid:
             grid.append(row_data)
         return grid
 
+   
     def _random_fill_setup(self, grid):
         # This replicates the excel workbook that generates random maps. Directly implemented for ease of use.
         # The only difference is that this implementation also adds the player with a valid orientation.
@@ -224,83 +225,155 @@ class Grid:
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
             p_injured_poor = 82
-            p_hospital = 86
-            p_fire = 87
-            p_mud = 88
-            p_pedestrian_rich = 94
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 87
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 93
+            p_mud = 94
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.sparse:
             p_wall = 20
             p_floor = 79
-            p_hospital = 80
-            p_fire = 83
-            p_mud = 85
-            p_injured_rich = 88
-            p_pedestrian_poor = 95
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 86
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 90
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 94
+            p_mud = 95
             p_zombie = 99
             p_battery = 100
         elif mode == MapProfiles.pacman:
             p_wall = 35
             p_floor = 65
-            p_hospital = 65
-            p_fire = 65
-            p_mud = 65
-            p_injured_old = 70
-            p_pedestrian_young = 85
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 78
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 85
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 90
+            p_fire = 90
+            p_mud = 90
             p_zombie = 95
             p_battery = 100
         elif mode == MapProfiles.spoiled:
             p_wall = 10
             p_floor = 64
-            p_hospital = 69
-            p_fire = 72
-            p_mud = 75
-            p_injured_young = 95
-            p_pedestrian_old = 98
+            p_injured_female = 0
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 79
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 86
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 91
+            p_fire = 94
+            p_mud = 97
             p_zombie = 100
             p_battery = 100
         elif mode == MapProfiles.twisty:
             p_wall = 37
-            p_floor = 88
-            p_hospital = 89
-            p_fire = 90
-            p_mud = 91
-            p_injured_male = 93
-            p_pedestrian_female = 95
+            p_floor = 80
+            p_injured_female = 0
+            p_pedestrian_female = 84
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 88
+            p_injured_male = 0
+            p_pedestrian = 0
+            p_hospital = 92
+            p_fire = 93
+            p_mud = 94
             p_zombie = 97
             p_battery = 100
         elif mode == MapProfiles.volcano:
             p_wall = 2
             p_floor = 53
-            p_hospital = 54
+            p_injured_female = 57
+            p_pedestrian_female = 0
+            p_injured = 0
+            p_pedestrian_poor = 0
+            p_injured_poor = 0
+            p_pedestrian_young = 0
+            p_injured_young = 0
+            p_pedestrian_rich = 0
+            p_injured_rich = 0
+            p_pedestrian_old = 0
+            p_injured_old = 0
+            p_pedestrian_male = 0
+            p_injured_male = 61
+            p_pedestrian = 0
+            p_hospital = 65
             p_fire = 79
             p_mud = 91
-            p_injured_female = 93
-            p_pedestrian_male = 95
             p_zombie = 97
             p_battery = 100
         else:  # Default to the uniform case
             p_wall = 11
             p_floor = 23
-            p_hospital = 34
-            p_fire = 45
-            p_mud = 56
-            p_injured_female = 67
-            p_pedestrian_female = 67
-            p_injured = 67
-            p_pedestrian_poor = 70
-            p_injured_poor = 70
-            p_pedestrian_young = 70
-            p_injured_young = 70
-            p_pedestrian_rich = 78
-            p_injured_rich = 78
-            p_pedestrian_old = 78
-            p_injured_old = 78
-            p_pedestrian_male = 78
-            p_injured_male = 78
-            p_pedestrian = 78
+            p_injured_female = 34
+            p_pedestrian_female = 34
+            p_injured = 34
+            p_pedestrian_poor = 38
+            p_injured_poor = 38
+            p_pedestrian_young = 38
+            p_injured_young = 38
+            p_pedestrian_rich = 45
+            p_injured_rich = 45
+            p_pedestrian_old = 45
+            p_injured_old = 45
+            p_pedestrian_male = 45
+            p_injured_male = 45
+            p_pedestrian = 45
+            p_hospital = 56
+            p_fire = 67
+            p_mud = 78
             p_zombie = 89
             p_battery = 100
 
@@ -325,44 +398,44 @@ class Grid:
                     grid[r_][c_].terrain = Terrains.wall
                 elif cell_roll < p_floor:
                     grid[r_][c_].terrain = Terrains.floor
+                elif cell_roll <= p_injured_female:
+                    grid[r_][c_].add_map_object(MapObjects.injured_female)
+                elif cell_roll <= p_pedestrian_female:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
+                elif cell_roll < p_injured:
+                    grid[r_][c_].add_map_object(MapObjects.injured)
+                elif cell_roll <= p_pedestrian_poor:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
+                elif cell_roll <= p_injured_poor:
+                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
+                elif cell_roll <= p_pedestrian_young:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
+                elif cell_roll <= p_injured_young:
+                    grid[r_][c_].add_map_object(MapObjects.injured_young)
+                elif cell_roll <= p_pedestrian_rich:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
+                elif cell_roll <= p_injured_rich:
+                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
+                elif cell_roll <= p_pedestrian_old:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
+                elif cell_roll <= p_injured_old:
+                    grid[r_][c_].add_map_object(MapObjects.injured_old)
+                elif cell_roll <= p_pedestrian_male:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
+                elif cell_roll <= p_injured_male:
+                    grid[r_][c_].add_map_object(MapObjects.injured_male)
+                elif cell_roll < p_pedestrian:
+                    grid[r_][c_].add_map_object(MapObjects.pedestrian)
                 elif cell_roll < p_hospital:
                     grid[r_][c_].terrain = Terrains.hospital
                 elif cell_roll < p_fire:
                     grid[r_][c_].terrain = Terrains.fire
                 elif cell_roll < p_mud:
                     grid[r_][c_].terrain = Terrains.mud
-                elif cell_roll < p_injured:
-                    grid[r_][c_].add_map_object(MapObjects.injured)
-                elif cell_roll < p_pedestrian:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian)
                 elif cell_roll < p_zombie:
                     grid[r_][c_].add_map_object(MapObjects.zombie)
                 elif cell_roll <= p_battery:
                     grid[r_][c_].add_map_object(MapObjects.battery)
-                elif cell_roll <= p_injured_rich:
-                    grid[r_][c_].add_map_object(MapObjects.injured_rich)
-                elif cell_roll <= p_pedestrian_rich:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_rich)
-                elif cell_roll <= p_injured_poor:
-                    grid[r_][c_].add_map_object(MapObjects.injured_poor)
-                elif cell_roll <= p_pedestrian_poor:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_poor)
-                elif cell_roll <= p_injured_old:
-                    grid[r_][c_].add_map_object(MapObjects.injured_old)
-                elif cell_roll <= p_pedestrian_old:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_old)
-                elif cell_roll <= p_injured_young:
-                    grid[r_][c_].add_map_object(MapObjects.injured_young)
-                elif cell_roll <= p_pedestrian_young:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_young)
-                elif cell_roll <= p_injured_female:
-                    grid[r_][c_].add_map_object(MapObjects.injured_female)
-                elif cell_roll <= p_pedestrian_female:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_female)
-                elif cell_roll <= p_injured_male:
-                    grid[r_][c_].add_map_object(MapObjects.injured_male)
-                elif cell_roll <= p_pedestrian_male:
-                    grid[r_][c_].add_map_object(MapObjects.pedestrian_male)
                 else:
                     raise RuntimeError('Random cell value out of range?')
 
@@ -399,58 +472,58 @@ class Grid:
         subscore = 0
         # Get the next position based on orientation
         curr_pos = self.player_location
-        if direction == "forward":
+        if direction == "left":
             if self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "up"
+                self.mover = "right"
             else:
                 raise RuntimeError('Invalid orientation when trying to move forward')
-        elif direction == "right":  #RD, LU, UR, DL
+        elif direction == "forward":  #RD, LU, UR, DL
             if self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "left"
+                self.mover = "up"
             else:
                 raise RuntimeError('Invalid orientation when trying to move right')
-        elif direction == "left":
+        elif direction == "backward":
             if self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "right"
+                self.mover = "down"
             else:
                 raise RuntimeError('Invalid orientation when trying to move left')
-        elif direction == "backward":
+        elif direction == "right":
             if self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "down"
+                self.mover = "left"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "down"
+                self.mover = "left"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
             elif self.player_orientation == Orientations.up:
@@ -719,7 +792,8 @@ class Grid:
             elif self.mover == "right":
                 p_icon = '>'
             else:
-                raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')
+                p_icon = '^'
+                # raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')
             cell_val += p_icon
         if MapObjects.battery in cell.objects:
             cell_val += 'B'

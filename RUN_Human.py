@@ -27,7 +27,8 @@ if __name__ == '__main__':
     data_log_file = args.outfile
 
     #map_file = 'gym_sgw/envs/maps/classic_trolley-ambiguous.xls'  # None -> random map, map files have top priority
-    #map_file = "C:/Users/lehma/PycharmProjects/SGW_CW1/gym_sgw/envs/maps/custom/custom_maps/custom_map_2.xls"
+    map_file = "gym_sgw/envs/maps/precursor/tester.xls"
+    map_file = "custom_maps"
     map_file = None
     max_energy = 100
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
