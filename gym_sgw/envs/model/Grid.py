@@ -25,6 +25,7 @@ class Grid:
 
     def __init__(self, map_file: str = None, rows=25, cols=25, random_profile: MapProfiles = MapProfiles.uniform, sound=False):
         self.tag = None
+        self.mover = None
         self.map_file = map_file
         self.rows = rows
         self.cols = cols
@@ -136,12 +137,16 @@ class Grid:
                     self.player_location = [r_, c_]
                     if sheet_cell.value == '^':
                         self.player_orientation = Orientations.up
+                        self.mover = "up"
                     elif sheet_cell.value == '>':
                         self.player_orientation = Orientations.right
+                        self.mover = "right"
                     elif sheet_cell.value == 'v':
                         self.player_orientation = Orientations.down
+                        self.mover = "down"
                     elif sheet_cell.value == '<':
                         self.player_orientation = Orientations.left
+                        self.mover = "left"
                     else:
                         raise ValueError('Invalid player icon')
                 elif sheet_cell.value == SYMBOL_INJURED:
@@ -371,6 +376,7 @@ class Grid:
         # Update player orientation
         elif action == Actions.turn_left:
             # self._execute_turn_left()
+            direction = "left"
             subscore += self._execute_step("left")
         elif action == Actions.turn_right:
             # self._execute_turn_right()
@@ -396,45 +402,61 @@ class Grid:
         if direction == "forward":
             if self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
+                self.mover = "up"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
+                self.mover = "up"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
+                self.mover = "up"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
+                self.mover = "up"
             else:
                 raise RuntimeError('Invalid orientation when trying to move forward')
-        elif direction == "right":
+        elif direction == "right":  #RD, LU, UR, DL
             if self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
+                self.mover = "left"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
+                self.mover = "left"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
+                self.mover = "left"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
+                self.mover = "left"
             else:
                 raise RuntimeError('Invalid orientation when trying to move right')
         elif direction == "left":
             if self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
+                self.mover = "right"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
+                self.mover = "right"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
+                self.mover = "right"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
+                self.mover = "right"
             else:
                 raise RuntimeError('Invalid orientation when trying to move left')
         elif direction == "backward":
             if self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
+                self.mover = "down"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
+                self.mover = "down"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
+                self.mover = "down"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
+                self.mover = "down"
             else:
                 raise RuntimeError('Invalid orientation when trying to move back')
         # Check validity of move
@@ -493,7 +515,7 @@ class Grid:
         else:
             raise RuntimeError('Invalid orientation when trying to change orientation left')
 
-    def _execute_turn_right(self):
+    def _execute_turn_right(self):  #RD, LU, UR, DL
         if self.player_orientation == Orientations.right:
             self.player_orientation = Orientations.down
         elif self.player_orientation == Orientations.left:
@@ -690,13 +712,13 @@ class Grid:
         if MapObjects.none in cell.objects:
             cell_val += '?'
         if MapObjects.player in cell.objects:
-            if self.player_orientation == Orientations.up:
+            if self.mover == "up":      ############
                 p_icon = '^'
-            elif self.player_orientation == Orientations.down:
+            elif self.mover == "down":
                 p_icon = 'v'
-            elif self.player_orientation == Orientations.left:
+            elif self.mover == "left":
                 p_icon = '<'
-            elif self.player_orientation == Orientations.right:
+            elif self.mover == "right":
                 p_icon = '>'
             else:
                 raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')

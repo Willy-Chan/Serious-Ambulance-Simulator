@@ -102,9 +102,6 @@ class SGW:
         # Update the screen with the new observation, use the grid object directly
         # Populate each cell
 
-
-
-
         for r_ in range(self.env.grid.rows):
             for c_ in range(self.env.grid.cols):
                 cell = self.env.grid.grid[r_][c_]
@@ -170,7 +167,7 @@ class SGW:
                 att = None
 
                 UI_Helper = pg.image.load('Images/UI/Helper.png').convert_alpha()
-                self.game_screen.blit(UI_Helper, (750, 600))
+                self.game_screen.blit(UI_Helper, (900, 600))
 
 
                 pop1, pop2 = 51, 51
