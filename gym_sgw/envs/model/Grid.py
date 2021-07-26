@@ -228,8 +228,6 @@ class Grid:
             p_hospital = 86
             p_fire = 87
             p_mud = 88
-            p_injured = 0
-            p_pedestrian = 0
             p_pedestrian_rich = 94
             p_zombie = 99
             p_battery = 100
@@ -239,8 +237,6 @@ class Grid:
             p_hospital = 80
             p_fire = 83
             p_mud = 85
-            p_injured = 0
-            p_pedestrian = 0
             p_injured_rich = 88
             p_pedestrian_poor = 95
             p_zombie = 99
@@ -251,8 +247,6 @@ class Grid:
             p_hospital = 65
             p_fire = 65
             p_mud = 65
-            p_injured = 0
-            p_pedestrian = 0
             p_injured_old = 70
             p_pedestrian_young = 85
             p_zombie = 95
@@ -263,8 +257,6 @@ class Grid:
             p_hospital = 69
             p_fire = 72
             p_mud = 75
-            p_injured = 0
-            p_pedestrian = 0
             p_injured_young = 95
             p_pedestrian_old = 98
             p_zombie = 100
@@ -275,8 +267,6 @@ class Grid:
             p_hospital = 89
             p_fire = 90
             p_mud = 91
-            p_injured = 0
-            p_pedestrian = 0
             p_injured_male = 93
             p_pedestrian_female = 95
             p_zombie = 97
@@ -285,8 +275,6 @@ class Grid:
             p_wall = 2
             p_floor = 53
             p_hospital = 54
-            p_injured = 0
-            p_pedestrian = 0
             p_fire = 79
             p_mud = 91
             p_injured_female = 93
@@ -465,10 +453,8 @@ class Grid:
                 self.mover = "down"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "down"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "down"
             else:
                 raise RuntimeError('Invalid orientation when trying to move back')
         # Check validity of move
@@ -724,13 +710,13 @@ class Grid:
         if MapObjects.none in cell.objects:
             cell_val += '?'
         if MapObjects.player in cell.objects:
-            if self.player_orientation == Orientations.up:      ############
+            if self.mover == "up":      ############
                 p_icon = '^'
-            elif self.player_orientation == Orientations.down:
+            elif self.mover == "down":
                 p_icon = 'v'
-            elif self.player_orientation == Orientations.left:
+            elif self.mover == "left":
                 p_icon = '<'
-            elif self.player_orientation == Orientations.right or self.mover == "right":
+            elif self.mover == "right":
                 p_icon = '>'
             else:
                 raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')
