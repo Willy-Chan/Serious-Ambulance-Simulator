@@ -72,7 +72,7 @@ class Scores(IntEnum):
     FIRE_PENALTY = -1  # -5 per entry into fire (each entry; but otherwise it doesn’t actually hurt you)
     ZOMBIE_REWARD = 2  # +2 per squished zombie (ZOMBIE DEATH!)
     PICKUP_REWARD = 10  # picked up person FINALLY
-    MOVING_FORWARD = 1  # wow they didn't just spin
+    MOVING_FORWARD = 0  # wow they didn't just spin
 
 class wealth_structure_1():
     tag = "Rich/Poor"
