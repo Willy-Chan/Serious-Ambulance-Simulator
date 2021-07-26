@@ -42,7 +42,8 @@ if __name__ == '__main__':
         max_energy=max_energy,
         rand_prof=rand_prof,
         num_rows=num_rows,
-        num_cols=num_cols
+        num_cols=num_cols,
+        sound=True
     )
     sgw_env.run()
 

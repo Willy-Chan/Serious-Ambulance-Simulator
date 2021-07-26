@@ -19,7 +19,7 @@ class SGW:
     """
     # "Constructor"
     def __init__(self, data_log_file='data_log.json', max_energy=50, map_file=None,
-                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25):
+                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25, sound=False):
         self.ENV_NAME = 'SGW-v0'
         self.DATA_LOG_FILE_NAME = data_log_file
         self.GAME_ID = uuid.uuid4()
@@ -38,6 +38,7 @@ class SGW:
         self.play_area = None
         self.reward = "0"
         self.myfont = None
+        self.sound = sound
 
         # Always do these actions upon start
         self._setup()
@@ -52,6 +53,7 @@ class SGW:
         self.env.rand_profile = self.rand_prof
         self.env.num_rows = self.num_rows
         self.env.num_cols = self.num_cols
+        self.env.sound = self.sound
         self.env.reset()
 
         # Report success
