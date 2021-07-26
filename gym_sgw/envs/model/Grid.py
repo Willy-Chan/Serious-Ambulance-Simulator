@@ -224,13 +224,25 @@ class Grid:
         if mode == MapProfiles.trolley:
             p_wall = 10
             p_floor = 69
-            p_injured_poor = 82
-            p_hospital = 86
-            p_fire = 87
-            p_mud = 88
-            p_pedestrian_rich = 94
-            p_zombie = 99
-            p_battery = 100
+            p_hospital = 72
+            p_fire = 73
+            p_mud = 74
+            p_injured = 74
+            p_pedestrian = 80
+            p_zombie = 83
+            p_battery = 83
+            p_injured_rich = 85
+            p_pedestrian_rich = 87
+            p_injured_poor = 94
+            p_pedestrian_poor = 100
+            p_injured_old = 100
+            p_pedestrian_old = 100
+            p_injured_young = 100
+            p_pedestrian_young = 100
+            p_injured_female = 100
+            p_pedestrian_female = 100
+            p_injured_male = 100
+            p_pedestrian_male = 100
         elif mode == MapProfiles.sparse:
             p_wall = 20
             p_floor = 79
@@ -399,64 +411,64 @@ class Grid:
         subscore = 0
         # Get the next position based on orientation
         curr_pos = self.player_location
-        if direction == "forward":
+        if direction == "left":
             if self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "up"
+                self.mover = "right"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "up"
+                self.mover = "right"
             else:
                 raise RuntimeError('Invalid orientation when trying to move forward')
-        elif direction == "right":  #RD, LU, UR, DL
+        elif direction == "forward":  #RD, LU, UR, DL
             if self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "left"
+                self.mover = "up"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "left"
+                self.mover = "up"
             else:
                 raise RuntimeError('Invalid orientation when trying to move right')
-        elif direction == "left":
+        elif direction == "backward":
             if self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "right"
+                self.mover = "down"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "right"
+                self.mover = "down"
             else:
                 raise RuntimeError('Invalid orientation when trying to move left')
-        elif direction == "backward":
+        elif direction == "right":
             if self.player_orientation == Orientations.left:
                 next_pos = [curr_pos[0], curr_pos[1] + 1]
-                self.mover = "down"
+                self.mover = "left"
             elif self.player_orientation == Orientations.right:
                 next_pos = [curr_pos[0], curr_pos[1] - 1]
-                self.mover = "down"
+                self.mover = "left"
             elif self.player_orientation == Orientations.down:
                 next_pos = [curr_pos[0] - 1, curr_pos[1]]
-                self.mover = "down"
+                self.mover = "left"
             elif self.player_orientation == Orientations.up:
                 next_pos = [curr_pos[0] + 1, curr_pos[1]]
-                self.mover = "down"
+                self.mover = "left"
             else:
                 raise RuntimeError('Invalid orientation when trying to move back')
         # Check validity of move
@@ -721,7 +733,8 @@ class Grid:
             elif self.mover == "right":
                 p_icon = '>'
             else:
-                raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')
+                p_icon = '^'
+                # raise ValueError('Invalid player orientation while retrieving cell value for encoding/decoding')
             cell_val += p_icon
         if MapObjects.battery in cell.objects:
             cell_val += 'B'
