@@ -32,8 +32,8 @@ if __name__ == '__main__':
     map_file = None
     max_energy = 100
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
-    num_rows = 10
-    num_cols = 10                       #set map size
+    num_rows = 12
+    num_cols = 12                       #set map size
 
     # Create and run game with those params
     sgw_env = SGW(

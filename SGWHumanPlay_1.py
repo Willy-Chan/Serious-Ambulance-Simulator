@@ -211,7 +211,7 @@ class SGW:
                             (alpha, beta))
                     elif dice1 == 4:
                         att = pg.transform.scale(
-                            pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(),
+                            pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(),
                             (alpha, beta))
                 elif cell_val == 'PR':
                     if dice2 == 1:
