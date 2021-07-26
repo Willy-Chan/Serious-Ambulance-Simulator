@@ -18,8 +18,10 @@ class SGW(gym.Env):
         # Grid set up
         self.num_rows = 20
         self.num_cols = 20
+        self.sound = True
+
         self.grid = Grid(map_file=self.map_file, cols=self.num_cols, rows=self.num_rows,
-                         random_profile=self.rand_profile)
+                         random_profile=self.rand_profile, sound=self.sound)
         # Main parameters
         self.total_score = 0
         self.energy_used = 0
@@ -34,7 +36,7 @@ class SGW(gym.Env):
 
     def reset(self):
         self.grid = Grid(map_file=self.map_file, cols=self.num_cols, rows=self.num_rows,
-                         random_profile=self.rand_profile)
+                         random_profile=self.rand_profile, sound=self.sound)
         self.total_score = 0
         self.energy_used = 0
         self.max_energy = self.grid.map_max_energy if self.grid.map_max_energy is not None else self.max_energy
