@@ -19,7 +19,7 @@ class SGW:
     """
     # "Constructor"
     def __init__(self, data_log_file='data_log.json', max_energy=50, map_file=None,
-                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25):
+                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25, sound=False):
         self.ENV_NAME = 'SGW-v0'
         self.DATA_LOG_FILE_NAME = data_log_file
         self.GAME_ID = uuid.uuid4()
@@ -38,6 +38,7 @@ class SGW:
         self.play_area = None
         self.reward = "0"
         self.myfont = None
+        self.sound = sound
 
         # Always do these actions upon start
         self._setup()
@@ -52,6 +53,7 @@ class SGW:
         self.env.rand_profile = self.rand_prof
         self.env.num_rows = self.num_rows
         self.env.num_cols = self.num_cols
+        self.env.sound = self.sound
         self.env.reset()
 
         # Report success
@@ -102,9 +104,6 @@ class SGW:
         # Update the screen with the new observation, use the grid object directly
         # Populate each cell
 
-
-
-
         for r_ in range(self.env.grid.rows):
             for c_ in range(self.env.grid.cols):
                 cell = self.env.grid.grid[r_][c_]
@@ -153,9 +152,9 @@ class SGW:
                 # Draw the rectangle with the right color for the terrains
                 # rect is play area, color, and (left point, top point, width, height)
                 # DEBUG ISOMETRY
-                pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
-                                                          self.cell_size, self.cell_size))
-                self.game_screen.blit(self.play_area, self.play_area.get_rect())
+                # pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
+                #                                           self.cell_size, self.cell_size))
+                # self.game_screen.blit(self.play_area, self.play_area.get_rect())
 
 
                 # Add in the cell value string
@@ -170,7 +169,7 @@ class SGW:
                 att = None
 
                 UI_Helper = pg.image.load('Images/UI/Helper.png').convert_alpha()
-                self.game_screen.blit(UI_Helper, (750, 600))
+                self.game_screen.blit(UI_Helper, (900, 600))
 
 
                 pop1, pop2 = 51, 51
@@ -214,7 +213,7 @@ class SGW:
                             (alpha, beta))
                     elif dice1 == 4:
                         att = pg.transform.scale(
-                            pg.image.load('Images/agents/injured/Rich_young_female_injured.png').convert_alpha(),
+                            pg.image.load('Images/agents/injured/Rich_young_male_injured.png').convert_alpha(),
                             (alpha, beta))
                 elif cell_val == 'PR':
                     if dice2 == 1:
@@ -304,11 +303,11 @@ class SGW:
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
 
 
-                text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
-                self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
-                                                (r_ * self.cell_size) + self.cell_size // 2))
-                self.game_screen.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
-                                                (r_ * self.cell_size) + self.cell_size // 2))
+                # text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
+                # self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
+                #                                 (r_ * self.cell_size) + self.cell_size // 2))
+                # self.game_screen.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
+                #                                 (r_ * self.cell_size) + self.cell_size // 2))
 
 
                 # Player Isometric Rendering
@@ -337,7 +336,7 @@ class SGW:
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
-        # pg.display.set_caption('SGW {}'.format(Grid.tag))
+        pg.display.set_caption('SGW {}'.format(Grid.tag))
         icon = pg.image.load('Images/icon.jpg')
         pg.display.set_icon(icon)
 
@@ -399,7 +398,9 @@ class SGW:
                             energyvar -= 1
                             self.game_screen.fill((0, 0, 0))
                             if energyvar<=self.env.max_energy and energyvar>(self.env.max_energy*0.9):
-
+                                #
+                                keyy = pg.transform.scale(pg.image.load('Images/legend/legend.png').convert_alpha(), (400,333))
+                                self.game_screen.blit(keyy, (5, 450))
                                 battery = pg.transform.scale(pg.image.load('Images/UI/100per.png').convert_alpha(), (200,100))
                                 self.game_screen.blit(battery, (1200, 10))
                             if energyvar<=(self.env.max_energy*0.9) and energyvar>(self.env.max_energy*0.8):
