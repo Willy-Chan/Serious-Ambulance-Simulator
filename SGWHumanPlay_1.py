@@ -358,6 +358,8 @@ class SGW:
         game_exit = False
         energyvar = self.env.max_energy
         while not game_exit:
+            #keyy = pg.transform.scale(pg.image.load('Images/legend/legend.png').convert_alpha(), (5,100))
+            #self.game_screen.blit(keyy, (1200, 10))
             for event in pg.event.get():
 
                 # Exit game upon window close
@@ -400,6 +402,8 @@ class SGW:
                             battery = None
                             energyvar -= 1
                             self.game_screen.fill((0, 0, 0))
+                            keyy = pg.transform.scale(pg.image.load('Images/legend/legend.png').convert_alpha(), (400,333))
+                            self.game_screen.blit(keyy, (5, 450))
                             if energyvar<=self.env.max_energy and energyvar>(self.env.max_energy*0.9):
 
                                 battery = pg.transform.scale(pg.image.load('Images/UI/100per.png').convert_alpha(), (200,100))
