@@ -30,7 +30,7 @@ if __name__ == '__main__':
     map_file = "gym_sgw/envs/maps/precursor/tester.xls"
     map_file = "custom_maps"
     map_file = None
-    max_energy = 100
+    max_energy = 50
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
     num_rows = 12
     num_cols = 12                       #set map size

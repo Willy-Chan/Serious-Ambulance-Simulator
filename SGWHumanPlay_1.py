@@ -152,9 +152,9 @@ class SGW:
                 # Draw the rectangle with the right color for the terrains
                 # rect is play area, color, and (left point, top point, width, height)
                 # DEBUG ISOMETRY
-                pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
-                                                          self.cell_size, self.cell_size))
-                self.game_screen.blit(self.play_area, self.play_area.get_rect())
+                # pg.draw.rect(self.play_area, cell_color, (c_ * self.cell_size, r_ * self.cell_size,
+                #                                           self.cell_size, self.cell_size))
+                # self.game_screen.blit(self.play_area, self.play_area.get_rect())
 
 
                 # Add in the cell value string
@@ -303,11 +303,11 @@ class SGW:
                     #self.game_screen.blit(player, (c_ * self.cell_size, r_ * self.cell_size))
 
 
-                text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
-                self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
-                                                (r_ * self.cell_size) + self.cell_size // 2))
-                self.game_screen.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
-                                                (r_ * self.cell_size) + self.cell_size // 2))
+                # text_surf = cell_font.render(cell_val, True, pg.color.Color(MapColors.text.value))
+                # self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
+                #                                 (r_ * self.cell_size) + self.cell_size // 2))
+                # self.game_screen.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
+                #                                 (r_ * self.cell_size) + self.cell_size // 2))
 
 
                 # Player Isometric Rendering
@@ -336,7 +336,7 @@ class SGW:
         self.game_screen = pg.display.set_mode((1500, 800))
 
         # caption and icon
-        # pg.display.set_caption('SGW {}'.format(Grid.tag))
+        pg.display.set_caption('SGW {}'.format(Grid.tag))
         icon = pg.image.load('Images/icon.jpg')
         pg.display.set_icon(icon)
 
