@@ -22,11 +22,17 @@ def flatten_json(y):
 
 stuff = open("data_log.json", "r")
 stufflist = []
-for x in stuff.readlines():
-    x = flatten_json(json.loads(x))
+for y,x in enumerate(stuff.readlines()):
+    x = json.loads(x)
+    x = flatten_json(x)
     row = []
+    keys = []
     for key, value in x.items():
+        if y == 0:
+            keys.append(str(key))
         row.append(str(value))
+    if keys:
+        stufflist.append(keys)
     stufflist.append(row)
 
 df = pd.DataFrame(stufflist)
