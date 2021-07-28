@@ -36,4 +36,4 @@ for y,x in enumerate(stuff.readlines()):
     stufflist.append(row)
 
 df = pd.DataFrame(stufflist)
-df.to_csv('data_log_willy.csv')
+df.to_csv('data_log_FATMAN.csv')
