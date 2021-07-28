@@ -4,7 +4,7 @@ from SGWHumanPlay_1 import SGW
 from gym_sgw.envs.enums.Enums import MapProfiles
 
 parser = argparse.ArgumentParser(description='CLI Argument Parser for Human Play.')
-parser.add_argument('--outfile', help='Data logging file name.', default='data_log.json')
+parser.add_argument('--outfile', help='Data logging file name.', default='data_log_willy.json')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
 # parser.add_argument('--NEWARGUMENT',...)          #Add new arguments
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     map_file = "custom_maps"
     map_file = None
     max_energy = 50
-    rand_prof = MapProfiles.trolley     #can change map to "volcano"
+    rand_prof = MapProfiles.volcano    #can change map to "volcano"
     num_rows = 12
     num_cols = 12                       #set map size
 

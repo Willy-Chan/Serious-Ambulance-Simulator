@@ -228,12 +228,12 @@ class Grid:
             p_injured_female = 0
             p_pedestrian_female = 0
             p_injured = 0
-            p_pedestrian_poor = 0
+            p_pedestrian_poor = 75
             p_injured_poor = 82
             p_pedestrian_young = 0
             p_injured_young = 0
-            p_pedestrian_rich = 87
-            p_injured_rich = 0
+            p_pedestrian_rich = 84
+            p_injured_rich = 87
             p_pedestrian_old = 0
             p_injured_old = 0
             p_pedestrian_male = 0
@@ -296,12 +296,12 @@ class Grid:
             p_injured = 0
             p_pedestrian_poor = 0
             p_injured_poor = 0
-            p_pedestrian_young = 0
-            p_injured_young = 79
+            p_pedestrian_young = 71
+            p_injured_young = 78
             p_pedestrian_rich = 0
             p_injured_rich = 0
-            p_pedestrian_old = 86
-            p_injured_old = 0
+            p_pedestrian_old = 82
+            p_injured_old = 86
             p_pedestrian_male = 0
             p_injured_male = 0
             p_pedestrian = 0
@@ -335,8 +335,8 @@ class Grid:
         elif mode == MapProfiles.volcano:
             p_wall = 2
             p_floor = 53
-            p_injured_female = 57
-            p_pedestrian_female = 0
+            p_injured_female = 56
+            p_pedestrian_female = 59
             p_injured = 0
             p_pedestrian_poor = 0
             p_injured_poor = 0
@@ -346,11 +346,11 @@ class Grid:
             p_injured_rich = 0
             p_pedestrian_old = 0
             p_injured_old = 0
-            p_pedestrian_male = 0
-            p_injured_male = 61
+            p_pedestrian_male = 62
+            p_injured_male = 65
             p_pedestrian = 0
-            p_hospital = 65
-            p_fire = 79
+            p_hospital = 69
+            p_fire = 83
             p_mud = 91
             p_zombie = 97
             p_battery = 100
@@ -600,7 +600,7 @@ class Grid:
 
     # Set the Reward Structure
     global hierarchy
-    hierarchy = wealth_structure_1()  # Calls a structure class from Enums.py, allows you to tune rewards
+    hierarchy = gender_structure_2()  # Calls a structure class from Enums.py, allows you to tune rewards
     tag = hierarchy.tag
     def _get_score_of_action(self, subscore):
 

@@ -20,7 +20,7 @@ def flatten_json(y):
     flatten(y)
     return out
 
-stuff = open("data_log.json", "r")
+stuff = open("data_log_willy.json", "r")
 stufflist = []
 for y,x in enumerate(stuff.readlines()):
     x = json.loads(x)
@@ -36,4 +36,4 @@ for y,x in enumerate(stuff.readlines()):
     stufflist.append(row)
 
 df = pd.DataFrame(stufflist)
-df.to_csv('myfile.csv')
+df.to_csv('data_log_willy.csv')
