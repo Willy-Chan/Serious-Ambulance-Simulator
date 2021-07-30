@@ -16,6 +16,7 @@ from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 from gym_sgw.envs.model.Grid import Grid
 import numpy as np
+from tf_agents.agents import DqnAgent
 
 class SGW:
     """
@@ -124,10 +125,30 @@ class SGW:
                            enable_dueling_network=True,
                            # dueling_type='avg'  # what other options are there?
                            )
-        sgw_dqn.compile(Adam(lr=1e-3), metrics=['mse'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
+        time_step = self.env.reset()
+        print('Time step:')
+        print(time_step)
+
+        action = np.array(1, dtype=np.int32)
+
+        next_time_step = self.env.step(action)
+        print('Next time step:')
+        print(next_time_step)
+        train_py_env = suite_gym.load(env_name)
+        eval_py_env = suite_gym.load(env_name)
+        sgw_dqn = DqnAgent(
+            gamma=0.95,
+            debug_summaries=True,
+            optimizer=Adam,
+            epsilon_greedy=0.15
+        )
+        sgw_dqn.initialize()
+        sgw_dqn.train()
+
+        # sgw_dqn.compile(Adam(lr=1e-3), metrics=['mse'])             #RMSProp, Adam, Adagrad, Adadelta, Adamax?
 
         # Training - yes that's all there is to it. Learns off of the "Mean Average Error"
-        history_callback = sgw_dqn.fit(self.env,
+        '''history_callback = sgw_dqn.fit(self.env,
                                        nb_steps=self.training_steps,
                                        verbose=self._verbosity,
                                        nb_max_episode_steps=self.max_turns,
@@ -169,3 +190,4 @@ class SGW:
 
 
         self.done()
+        '''

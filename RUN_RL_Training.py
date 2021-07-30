@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description='CLI Argument Parser for RL Trainin
 parser.add_argument('--modelfilename', help='Output file name for learned model.', default='rl-agent-test')
 parser.add_argument('--logpath', help='Data logging file path.', default='./logs')
 parser.add_argument('--creation', help='Allow creation of output file.', default=True, action='store_true')
-parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=1500000)  #NUMBER OF TRAINING STEPS, should probably be more steps
+parser.add_argument('--training_steps', help='Number of steps to train for.', type=int, default=2000000)  #NUMBER OF TRAINING STEPS, should probably be more steps
 
 
 def validate_data(out_dirs, allow_creation=False):
@@ -55,6 +55,6 @@ if __name__ == '__main__':
         rand_prof=MapProfiles.trolley,
         num_rows=11,
         num_cols=11,
-        continueTraining=False
+        continueTraining=True
     )
     sgw_env.run()

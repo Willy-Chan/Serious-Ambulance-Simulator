@@ -12,6 +12,7 @@ from tensorflow.keras.optimizers import Adam
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
+import numpy as np
 
 
 class SGW:
@@ -21,7 +22,7 @@ class SGW:
     pip install tensorflow keras keras-rl2
     """
     def __init__(self, agent_file, data_log_file='data_log.json', max_energy=50, map_file=None,
-                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25):
+                 rand_prof=MapProfiles.trolley, num_rows=25, num_cols=25, agent=None):
         self.ENV_NAME = 'SGW-v0'
         self.agent_file = agent_file
         self.DATA_LOG_FILE_NAME = data_log_file
@@ -43,11 +44,11 @@ class SGW:
 
         # Always do these actions upon start
         self._setup()
-        self.agent = self._load_agent()
+        self.agent = agent
 
     def _setup(self):
         # Game parameters
-        self.env = gym.make(self.ENV_NAME)
+        # self.env = gym.make(self.ENV_NAME)
         self.env.play_type = PlayTypes.machine  # we need the machine state observations to get actions from the agent
         self.env.render_mode = PlayTypes.machine  # we will draw to the screen manually and not each step
         self.env.max_energy = self.max_energy
@@ -147,6 +148,16 @@ class SGW:
                 self.play_area.blit(text_surf, ((c_ * self.cell_size) + self.cell_size // 2,
                                                 (r_ * self.cell_size) + self.cell_size // 2))
         pg.display.update()
+
+    def render(self):
+        print("im losing my mind omg")
+        return self.env.gridisstupid()
+
+    def get_map(self):
+        print("im actually now losing my mind")
+        #
+        return map
+
 
     def run(self):
 

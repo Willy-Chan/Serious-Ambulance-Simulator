@@ -1,24 +1,32 @@
 from typing import Union
 import gym
-from gym import spaces
+# from gym import spaces
 from gym_sgw.envs.enums.Enums import Actions, PlayTypes, MapProfiles, Terrains, MapObjects
 from gym_sgw.envs.model.Grid import Grid
 from gym_sgw.envs.Print_Colors.PColor import PBack
+from tf_agents.environments.py_environment import PyEnvironment
+from tf_agents.specs import BoundedArraySpec
+import numpy as np
+import tf_agents
+from tf_agents.trajectories import time_step as ts
 
 
-class SGW(gym.Env):
+class SGW(PyEnvironment):
 
     def __init__(self):
+        super().__init__()
         # Tunable parameters
         self.play_type = PlayTypes.machine
         self.render_mode = PlayTypes.machine
         self.max_energy = 50
         self.map_file = None
         self.rand_profile = MapProfiles.uniform
+        self.discount = 0.95
+        # self.unwrapped = False
         # Grid set up
-        self.num_rows = 20
-        self.num_cols = 20
-        self.sound = True
+        self.num_rows = 10
+        self.num_cols = 10
+        self.sound = False
 
         self.grid = Grid(map_file=self.map_file, cols=self.num_cols, rows=self.num_rows,
                          random_profile=self.rand_profile, sound=self.sound)
@@ -28,13 +36,20 @@ class SGW(gym.Env):
         self.is_game_over = False
         self.latest_action = self.decode_raw_action(Actions.step_forward)
         self.turns_executed = 0
+
         # Defining spaces
         self._num_actions = len(Actions)
         self.action_space = None  # Build on reset, which is called after the init, don't build the grid twice
         self.observation_space = None  # Build on reset, which is called after the init, don't build the grid twice
-        self.reset()
+        self.observation = self.get_obs()
+        self.max_episode_steps = 100
+        self._action_spec = BoundedArraySpec(shape=(), dtype=np.int32, name="action", minimum=0,
+                                                             maximum=3)
+        self._observation_spec = BoundedArraySpec(shape=(121,), dtype=np.float32, name="observation",
+                                                                  minimum=0, maximum=1000)
+        self._reset()
 
-    def reset(self):
+    def _reset(self):
         self.grid = Grid(map_file=self.map_file, cols=self.num_cols, rows=self.num_rows,
                          random_profile=self.rand_profile, sound=self.sound)
         self.total_score = 0
@@ -44,16 +59,18 @@ class SGW(gym.Env):
         self.latest_action = self.decode_raw_action(Actions.step_forward)
         self.turns_executed = 0
         self._num_actions = len(Actions)
-        self.action_space = spaces.Discrete(self._num_actions)
-        self.observation_space = spaces.Box(low=0, high=700, shape=(self.num_rows + 1, self.num_cols), dtype='uint8')
+        self._action_spec = BoundedArraySpec(shape=(), dtype=np.int32, name="action", minimum=0,
+                                                             maximum=3)
+        self._observation_spec = BoundedArraySpec(shape=(121,), dtype=np.float32, name="observation",
+                                                                  minimum=0, maximum=1000)
         obs = self.get_obs()
-        return obs
+        # return obs
+        return ts.restart(obs)
 
-    def step(self, raw_action: Actions):
+    def _step(self, raw_action: Actions):
 
         # Ensure that our type assertion holds
         action = self.encode_raw_action(raw_action)
-
         # Adjudicate turn
         turn_score, turn_energy, is_done = self._do_turn(action=action)
         self.latest_action = self.decode_raw_action(action)
@@ -62,22 +79,85 @@ class SGW(gym.Env):
         # Update score and turn counters
         self.total_score += turn_score
         self.energy_used += turn_energy
-
+        self.obs = self.get_obs()
+        obs = self.get_obs()
+        reward = self.total_score
         # Check if done
         if is_done or (abs(self.energy_used) >= self.max_energy):
             self.is_game_over = True
-
+            return ts.termination(obs, reward)
         # Report out basic information for step
-        obs = self.get_obs()
         info = {'turn_reward': turn_score, 'total_reward': self.total_score,
                 'turn_energy_used': turn_energy, 'total_energy_used': self.energy_used,
                 'total_energy_remaining': self.max_energy + self.energy_used}
+        # print("something changed yay",info)
+        # return obs, self.total_score, self.is_game_over, info
+        return ts.transition(obs, reward=reward, discount=self.discount)
 
-        return obs, self.total_score, self.is_game_over, info
+    # def time_step_spec(self):
+        # return {observation: get_obs(), reward: self.total_score}
 
     def _do_turn(self, action):
         score, energy, done = self.grid.do_turn(action=action)
         return score, energy, done
+
+    def get_map(self):
+        # print("im actually now losing my mind")
+        map = [ [ None for i in range(10) ] for j in range(10) ]
+
+        for a,x in enumerate(self.grid.grid):
+            # print(x)
+            for b,y in enumerate(x):
+                # print(y.objects)
+                # map[a][b] = y.objects
+                cell_value = ""
+                for cell_roll in y.objects:
+                    # print(cell_roll)
+                    # print("i hate this with my lifee",cell_roll==MapObjects.zombie)
+                    if cell_roll == MapObjects.player:
+                        cell_value += "^"
+                        # print("I GOT IT IDEK WHY THIS ISNT WORKING WTH")
+                    elif cell_roll == MapObjects.zombie:
+                        cell_value += "Z"
+                    elif cell_roll == MapObjects.injured_female:
+                        cell_value += "IF"
+                    elif cell_roll == MapObjects.pedestrian_female:
+                        cell_value += "PF"
+                    elif cell_roll == MapObjects.injured:
+                        cell_value += "I"
+                    elif cell_roll == MapObjects.pedestrian_poor:
+                        cell_value += "PP"
+                    elif cell_roll == MapObjects.injured_poor:
+                        cell_value += "IP"
+                    elif cell_roll == MapObjects.pedestrian_young:
+                        cell_value += "PY"
+                    elif cell_roll == MapObjects.injured_young:
+                        cell_value += "IY"
+                    elif cell_roll == MapObjects.pedestrian_rich:
+                        cell_value += "PR"
+                    elif cell_roll == MapObjects.injured_rich:
+                        cell_value += "IR"
+                    elif cell_roll == MapObjects.pedestrian_old:
+                        cell_value += "PO"
+                    elif cell_roll == MapObjects.injured_old:
+                        cell_value += "IO"
+                    elif cell_roll == MapObjects.pedestrian_male:
+                        cell_value += "PM"
+                    elif cell_roll == MapObjects.injured_male:
+                        cell_value += "IM"
+                    elif cell_roll == MapObjects.pedestrian:
+                        cell_value += "P"
+                    elif cell_roll == MapObjects.battery:
+                        cell_value += "B"
+                # print("final cell value",cell_value)
+                # print("weird index values",a,b)
+                map[a][b] = cell_value
+                # print("final map before", map)
+                # print("this is part of the array",map[a])
+                # print('this is the thing we just changed', map[a][b])
+        # print("final map",map)
+
+        return map
 
     def get_obs(self):
         if self.play_type == PlayTypes.human:
@@ -86,26 +166,20 @@ class SGW(gym.Env):
                                           energy_remaining=(self.max_energy + self.energy_used),
                                           game_score=self.total_score)
         elif self.play_type == PlayTypes.machine:
-            return self.grid.machine_encode(turns_executed=self.turns_executed,
+            obs = self.grid.machine_encode(turns_executed=self.turns_executed,
                                             action_taken=self.latest_action,
                                             energy_remaining=(self.max_energy + self.energy_used),
                                             game_score=self.total_score)
+            return np.array([item for sublist in obs for item in sublist], dtype=np.float32)
         else:
             raise ValueError('Failed to find acceptable play type.')
 
     def render(self, mode: PlayTypes = PlayTypes.human):
-        if self.render_mode == PlayTypes.human or mode == PlayTypes.human:
-            return self.grid.human_render(turns_executed=self.turns_executed,
-                                          action_taken=self.latest_action,
-                                          energy_remaining=(self.max_energy + self.energy_used),
-                                          game_score=self.total_score, cell_size=30)
-        elif self.render_mode == PlayTypes.machine or mode == PlayTypes.machine:
-            return self.grid.machine_render(turns_executed=self.turns_executed,
+        print("im actually just stupid, i could have done this from the beginning")
+        return self.grid.machine_render(turns_executed=self.turns_executed,
                                             action_taken=self.latest_action,
                                             energy_remaining=(self.max_energy + self.energy_used),
                                             game_score=self.total_score)
-        else:
-            raise ValueError('Failed to find acceptable play type.')
 
     def pp_info(self):
         self.grid.pp_info(turns_executed=self.turns_executed,
@@ -113,6 +187,19 @@ class SGW(gym.Env):
                           energy_remaining=(self.max_energy + self.energy_used),
                           game_score=self.total_score)
 
+    def action_spec(self):
+        return self._action_spec
+
+    def observation_spec(self):
+        return self._observation_spec
+
+    def _seed(self):
+        return "hi"
+    '''
+    @property
+    def spec(self):
+        return self
+    '''
     @staticmethod
     def encode_raw_action(input_str: Union[str, Actions]) -> Actions:
         # Takes in some input string and tries to parse it to a valid action, encoding it in our enum

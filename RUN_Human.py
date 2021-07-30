@@ -30,10 +30,10 @@ if __name__ == '__main__':
     map_file = "gym_sgw/envs/maps/precursor/tester.xls"
     map_file = "custom_maps"
     map_file = None
-    max_energy = 50
+    max_energy = 100
     rand_prof = MapProfiles.trolley     #can change map to "volcano"
-    num_rows = 12
-    num_cols = 12                       #set map size
+    num_rows = 10
+    num_cols = 10                       #set map size
 
     # Create and run game with those params
     sgw_env = SGW(
@@ -42,8 +42,7 @@ if __name__ == '__main__':
         max_energy=max_energy,
         rand_prof=rand_prof,
         num_rows=num_rows,
-        num_cols=num_cols,
-        sound=True
+        num_cols=num_cols
     )
     sgw_env.run()
 

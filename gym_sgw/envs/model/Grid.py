@@ -1,6 +1,7 @@
 import random
 import os
 import json
+from matplotlib.pyplot import grid
 import xlrd
 from typing import List
 import numpy as np
@@ -23,23 +24,26 @@ import os
 
 class Grid:
 
-    def __init__(self, map_file: str = None, rows=25, cols=25, random_profile: MapProfiles = MapProfiles.uniform, sound=False):
+    def __init__(self, map_file="custom_maps", rows=25, cols=25, random_profile: MapProfiles = MapProfiles.uniform, sound=False):
         self.tag = None
         self.mover = None
-        self.map_file = map_file
+        self.map_file = "custom_maps"
         self.rows = rows
         self.cols = cols
         self.random_profile = random_profile
         self.player_orientation = None
         self.player_location = None
-        if map_file == "training_maps" or map_file == "custom_maps":
+        self.map_file = "gym_sgw/envs/maps/custom/custom_maps/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/custom_maps/"))
+        # print(self.map_file)
+        self.grid = self.read_in_map()
+        '''if map_file == "training_maps" or map_file == "custom_maps":
             self.map_file = "gym_sgw/envs/maps/custom/"+map_file+"/"+random.choice(os.listdir("gym_sgw/envs/maps/custom/"+map_file+"/"))
             # print(self.map_file)
             self.grid = self.read_in_map()
         elif map_file is not None:
             self.grid = self.read_in_map()
         else:
-            self.grid = self.random_grid()
+            self.grid = self.random_grid()'''
         self.map_max_energy = None
         self.sound = sound
 
@@ -383,6 +387,8 @@ class Grid:
                 # Start the player in the middle of the grid facing right
                 if r_ == int(self.rows // 2) and c_ == int(self.cols // 2):
                     grid[r_][c_].add_map_object(MapObjects.player)
+                    # print("im the player yayay")
+                    # print(grid[r_][c_].get_data())
                     self.player_location = [r_, c_]
                     self.player_orientation = Orientations.right
                     continue
@@ -937,6 +943,10 @@ class Grid:
 
         return cell_val
 
+    def gridisstupid(self):
+        print(self.grid)
+        # for x in range(grid)
+
     def human_encode(self, turns_executed, action_taken, energy_remaining, game_score):
         # Package up "Grid" object in a way that is viewable to humans (multi-line string)
         grid_data = dict()
@@ -962,17 +972,17 @@ class Grid:
         # Package up the "grid" object to be compatible with state space
         # self.observation_space = spaces.Box(low=0, high=60, shape=(self.num_rows, self.num_cols), dtype='uint8')
         # Create a numpy array with the right dtype filled with zeros and then add in the state values for each cell
-        machine_state = np.zeros((self.rows + 1, self.cols), dtype='uint8')
+        machine_state = np.zeros((self.rows, self.cols), dtype=np.dtype(np.float32))
         for r_ in range(self.rows):
             for c_ in range(self.cols):
                 cell_val = self._get_machine_cell_value(r_, c_)
                 machine_state[r_, c_] = cell_val
 
         # Add some status fields to the state in the last row
-        machine_state[self.rows, 0] = int(turns_executed)
-        machine_state[self.rows, 1] = int(action_taken[1])
-        machine_state[self.rows, 2] = int(energy_remaining)
-        machine_state[self.rows, 3] = int(game_score)
+        # machine_state[self.rows, 0] = int(turns_executed)
+        # machine_state[self.rows, 1] = int(action_taken[1])
+        # machine_state[self.rows, 2] = int(energy_remaining)
+        # machine_state[self.rows, 3] = int(game_score)
 
         return machine_state
 

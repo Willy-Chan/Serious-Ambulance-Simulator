@@ -16,7 +16,7 @@ class MapObjects(IntEnum):
     pedestrian = 2
     zombie = 3
     battery = 4
-    player = 5
+    pedestrian_male = 5
     injured_rich = 6
     pedestrian_rich = 7
     injured_poor = 8
@@ -28,7 +28,7 @@ class MapObjects(IntEnum):
     injured_female = 14
     pedestrian_female = 15
     injured_male = 16
-    pedestrian_male = 17
+    player = 17
 
 
 
