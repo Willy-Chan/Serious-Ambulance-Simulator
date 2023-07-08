@@ -4,7 +4,9 @@
 This is an interactive and educational project designed to teach serious game development with AI. It provides a framework for creating grid-based games where players navigate through a world, encountering various challenges and obstacles. The game is implemented using Python and incorporates artificial intelligence techniques for character movement, decision-making, and problem-solving. It offers both a CLI and GUI for interacting with the game and modifying its behavior.
 
 ## Demo & Preview
-
+![demo image of serious game](https://github.com/Willy-Chan/Serious-Ambulance-Simulator/blob/master/demo.jpg)
+![UI modifications](https://github.com/Willy-Chan/Serious-Ambulance-Simulator/blob/master/uimods.jpg)
+![moral policy outline demo](https://github.com/Willy-Chan/Serious-Ambulance-Simulator/blob/master/moral%20policy.jpg)
 * [Video Presentation](https://www.youtube.com/watch?v=azn8ET8DWrg&t=16s)
 * [Slides](https://docs.google.com/presentation/d/1UPA6eENH6xawylrea0Eiy9OtmUplKpaCV3yKZzsvb8s/edit?usp=sharing)
 
