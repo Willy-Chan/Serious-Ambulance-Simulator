@@ -5,6 +5,8 @@ This is an interactive and educational project designed to teach serious game de
 
 ## Demo & Preview
 
+* [Video Presentation](https://www.youtube.com/watch?v=azn8ET8DWrg&t=16s)
+* [Slides](https://docs.google.com/presentation/d/1UPA6eENH6xawylrea0Eiy9OtmUplKpaCV3yKZzsvb8s/edit?usp=sharing)
 
 ## Prerequisites / Installation
 To get started, ensure that you have Python 3.8 or higher installed on your system. You can check your Python version by opening the command prompt (Windows) or Terminal (macOS) and running python --version. If you have a version less than Python 3.8 or encounter an error, follow the instructions below to install Python version 3.8.5.
