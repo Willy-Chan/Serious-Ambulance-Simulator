@@ -1,61 +1,45 @@
-SGW are the base classes
+# Pandemic Crisis Management Simulation with AI
 
-RUN refers to the "Runner" files - providing an interface between you and the game Classes (SGW files)
-Runners = Things you're supposed to change (things that are running)
+## Overview
+This is an interactive and educational project designed to teach serious game development with AI. It provides a framework for creating grid-based games where players navigate through a world, encountering various challenges and obstacles. The game is implemented using Python and incorporates artificial intelligence techniques for character movement, decision-making, and problem-solving. It offers both a CLI and GUI for interacting with the game and modifying its behavior.
 
+## Demo & Preview
 
-# Serious Grid World Game (now with zombies!)
-
-BWSI Serious Grid World. A project based approach to learning serious games with AI.
-
-This README will help you get the game running so that you can start your own modifications.
 
 ## Prerequisites / Installation
+To get started, ensure that you have Python 3.8 or higher installed on your system. You can check your Python version by opening the command prompt (Windows) or Terminal (macOS) and running python --version. If you have a version less than Python 3.8 or encounter an error, follow the instructions below to install Python version 3.8.5.
 
-First, you need to have Python on your system. If you think you already have python on your computer, you can double
-check with the following: Open either `cmd` (Windows) or Terminal (macOS) and type `python --version`. 
-If this throws an error, or shows a version less than Python 3.8, please follow the instructions below to install 
-python version 3.8 (the code was tested on 3.8.5).
+We recommend using Anaconda as your Python package manager. Anaconda comes with many required packages. Although we can provide an Anaconda environment file, it complicates the installation process. Instead, we will use pip (another Python package manager) to install the necessary packages that are not included in Anaconda.
 
-We are using Anaconda for our python package manager. Anaconda is nice because it comes include with a number of 
-packages we will need. While we can provide an Anaconda env file for the project, we've found this actually complicates 
-installation. Our plan for installation is to provide pip installation (another python package manager) of the 
-packages that we need that are not in Anaconda.
+Here are the steps for installation:
 
-Here are instructions for downloading anaconda. Download the latest version or one that comes with python 3.8 or greater.
-Graphical installers [found here](https://www.anaconda.com/products/individual). The Anaconda download includes 
-python so downloading Anaconda will get you most of the way there.
+* Download [Anaconda](https://www.anaconda.com/) from the official website. Choose the latest version that includes Python 3.8 or higher.
+* Install Anaconda, which will also install Python.
+* Ensure that Git is properly set up on your system. If you need help with Git, refer to the [GitHub documentation](https://docs.github.com/en/github/getting-started-with-github/set-up-git).
 
-The final tool to make sure is set up properly is Git. For a Git primer, 
-check out this [help page](https://docs.github.com/en/github/getting-started-with-github/set-up-git)
-
-Once Anaconda, Python, and Git are installed, here are a list of packages that still need to be installed. To install 
-these, use pip as follows:
-`pip install tensorflow keras keras-rl2 gym>=0.2.3 pygame argparse uuid json xlrd pandas matplotlib`
+After installing Anaconda, Python, and Git, you need to install additional packages using pip. Open the command prompt or Terminal and run the following command:
+```shell
+pip install tensorflow keras keras-rl2 gym>=0.2.3 pygame argparse uuid json xlrd pandas m
+```
 
 ## Getting Started
-Step 0: Install python and the required packages by following the Prerequisites / Installation above.
-Step 1: Follow instructions on how to set up an SSH key between your computer and MIT github:
-[git help link](https://docs.github.com/en/enterprise-server@2.19/github/authenticating-to-github/connecting-to-github-with-ssh)
-
-Finally: Clone the repository via command prompt:
-```
+Follow these steps to get started:
+* Ensure that you have installed Python and the required packages by following the Prerequisites / Installation section above.
+* Set up an SSH key between your computer and MIT GitHub. Refer to the [Git documentation](https://docs.github.com/en/enterprise-server@2.19/github/authenticating-to-github/connecting-to-github-with-ssh) for instructions.
+* Clone the repository by running the following commands in the command prompt or Terminal:
+```shell
 git clone git@github.mit.edu:BWSI-SGAI-2021/SGW_MAIN.git
 cd SGW
 git status
 ```
+These commands will clone the repository to your system, and you will see the repository files in the SGW directory. You can run Python files in the main directory to explore the game.
 
-This will get all the repository files on your system. Python files in the main directory can be run to get
-an idea of how to use the game.
+## Game Details
+_Note:_ this repository contains the base classes (SGW) and the "Runner" files (RUN) that provide an interface between you and the game classes. The **Runner** files are the files you're supposed to modify and run.
 
-# Game Details
-Out of the box, this is a command line interface (CLI) game and can be ran from a command prompt (or terminal) or 
-from an integrated development environment (IDE). The entry points for the code have "RUN" as a prefix.
+The game is a command-line interface (CLI) game and can be run from a command prompt, terminal, or integrated development environment (IDE). The entry points for the code have "RUN" as a prefix.
 
-For example, to run basic tests, use the following command. NOTE: this command prints the help commands
-for the CLI options. It will show you the usage and options for the CLI.
-```
+For example, to run basic tests and view the available CLI options, use the following command:
+```shell
 python RUN_Basic.Tests.py -h
 ```
-
-More details about the game and this software implementation will be provided over time via lectures.
